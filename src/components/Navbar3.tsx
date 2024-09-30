@@ -1,10 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export default function Navbar3() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
       };
+
+      useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+          if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setIsDropdownOpen(false);
+          }
+        };
+        // Attach the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        // Clean up the event listener
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
   return (
     <nav className="bg-gray-800 p-4">
     <div className="container mx-auto flex items-center justify-between">
@@ -43,7 +58,7 @@ export default function Navbar3() {
         </a>
 
         {/* Profile Icon */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}
               className="text-gray-400 hover:text-white focus:outline-none"
