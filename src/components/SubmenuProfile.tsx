@@ -11,7 +11,7 @@ export default function SubmenuProfile() {
                         className="h-8 w-8 rounded-full"
                     />
                     <div className='flex flex-col ml-2.5'>
-                        <span className='text-xs'>Eleomar F. Fajutna</span>
+                        <span className='text-xs'>Eleomar F. Fajutnao</span>
                         <span className='text-xs'>marco@gmail.com</span>
                     </div>
                 </div>

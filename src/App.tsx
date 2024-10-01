@@ -4,7 +4,9 @@ import NavigationBar from './components/NavigationBar';
 function App() {
   return (
     <>
-      <NavigationBar />
+      <div className='bg-gray-800'>
+        <NavigationBar />
+      </div>
     </>
   );
 }

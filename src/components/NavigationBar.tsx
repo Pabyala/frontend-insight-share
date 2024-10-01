@@ -6,16 +6,16 @@ import NavigationMenuItems from './NavigationMenuItems';
 
 export default function NavigationBar() {
     
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+    const toggleProfileDropdown = () => {
+        setIsProfileOpen(!isProfileOpen);
     };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsDropdownOpen(false);
+                setIsProfileOpen(false);
             }
         };
         // Attach the event listener
@@ -27,8 +27,8 @@ export default function NavigationBar() {
     }, []);
 
     return (
-        <div className="container mx-auto bg-gray-800">
-            <div className="px-3 pt-3 pb-2 lg:px-8">
+        <div className="container mx-auto">
+            <div className="px-3 pt-3 pb-2">
                 <div className="mx-auto flex items-center justify-between">
                     <div className="text-white text-xl font-bold">
                         <a href="#">Logo</a>
@@ -52,7 +52,7 @@ export default function NavigationBar() {
 
                         <div className="relative flex" ref={dropdownRef}>
                             <button
-                                onClick={toggleDropdown}
+                                onClick={toggleProfileDropdown}
                                 className="text-gray-400 hover:text-white focus:outline-none"
                             >
                                 <img
@@ -61,7 +61,7 @@ export default function NavigationBar() {
                                     className="h-8 w-8 rounded-full"
                                 />
                             </button>
-                            {isDropdownOpen && ( <SubmenuProfile /> )}
+                            {isProfileOpen && ( <SubmenuProfile /> )}
                         </div>
                     </div>
                 </div>
