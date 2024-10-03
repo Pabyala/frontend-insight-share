@@ -1,6 +1,6 @@
 import { Avatar } from '@mui/material'
 import React from 'react'
-import { AntDesignSettingFilled, ClarityUserSolid, IonLogOut } from './CustomIcons'
+import { AntDesignSettingFilled, ClarityUserSolid, IonLogOut } from './custom-icons'
 
 export default function SubmenuProfile() {
     return (

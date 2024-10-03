@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 import {
   FluentPersonArrowBack24Filled,
   MingcuteUserRemove2Fill,
-} from "./CustomIcons";
+} from "./custom-icons";
 
 export default function FollowersRequestContent() {
   return (

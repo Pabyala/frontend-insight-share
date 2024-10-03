@@ -9,7 +9,7 @@ import {
   NotoSadButRelievedFace,
   TwemojiFire,
   TwemojiRaisingHands,
-} from "./CustomIcons";
+} from "./custom-icons";
 import '../components/style-navigation.css'
 import './Style.css'
 

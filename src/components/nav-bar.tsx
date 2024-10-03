@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import SubmenuProfile from "./SubmenuProfile";
-import NavigationMenuItems from "./NavigationMenuItems";
-import NotificationIcon from "./NotificationIcon";
+import SubmenuProfile from "./sub-menu-profile";
+import NavigationMenuItems from "./nav-menu-items";
+import NotificationIcon from "./mui-nav-notification-icon";
 import Avatar from "@mui/material/Avatar";
-import NotificationContent from "./NotificationContent";
+import NotificationContent from "./notification-content";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import FollowersIcon from "./FollowersIcon";
+import FollowersIcon from "./mui-nav-followers-icon";
 import FollowersRequest from "./followers-request-content";
 import FollowersRequestContent from "./followers-request-content";
 
