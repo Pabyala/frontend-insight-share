@@ -13,8 +13,8 @@ export default function SubmenuProfile() {
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     />
                     <div className='flex flex-col ml-2.5'>
-                        <span className='text-xs'>Eleomar F. Fajutnao</span>
-                        <span className='text-xs'>marco@gmail.com</span>
+                        <span className='text-sm'>Eleomar F. Fajutnao</span>
+                        <span className='text-sm'>marco@gmail.com</span>
                     </div>
                 </div>
             </div>
@@ -22,26 +22,26 @@ export default function SubmenuProfile() {
                 <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
             </div>
 
-            <a href="/" className="block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
-                        <ClarityUserSolid />
+                        <ClarityUserSolid className='text-2xl' />
                     </div>
                     <span>Your Profile </span>
                 </div>
             </a>
-            <a href="/" className="block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
-                        <AntDesignSettingFilled />
+                        <AntDesignSettingFilled className='text-2xl' />
                     </div>
                     <span>Settings</span>
                 </div>
             </a>
-            <a href="/" className="block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
-                        <IonLogOut />
+                        <IonLogOut className='text-2xl' />
                     </div>
                     <span>Logout</span>
                 </div>
