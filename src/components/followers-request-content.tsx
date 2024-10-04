@@ -4,15 +4,42 @@ import {
   FluentPersonArrowBack24Filled,
   MingcuteUserRemove2Fill,
 } from "./custom-icons";
+import { useEffect, useRef, useState } from "react";
 
 export default function FollowersRequestContent() {
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const dropdownRef = useRef(null);
+  const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleShowMoreNotif = () => {
+    setShowAllNotification(true);
+  };
+
+  const setFollowersDisplay = showAllNotification
+    ? followerRequest
+    : followerRequest.slice(0, 7);
+    
   return (
-    <div className="absolute right-0 mt-0 w-96 bg-white rounded-md shadow-lg py-2">
+    <div
+      ref={dropdownRef}
+      className="absolute right-0 mt-0 w-96 bg-white rounded-md shadow-lg py-2"
+      style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto" }}
+    >
       <div className="block px-4 py-2 text-gray-800 ">
         <h4 className="text-base font-bold">Followers</h4>
         <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
       </div>
-      {followerRequest.map((follower) => (
+      {setFollowersDisplay.map((follower) => (
         <div className="block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm">
           <div className="flex justify-between space-x-2">
             <div className="profileandName flex items-center space-x-4">
@@ -46,6 +73,18 @@ export default function FollowersRequestContent() {
           </div>
         </div>
       ))}
+
+      {!showAllNotification && (
+        <div className="block text-center px-4 py-2">
+          <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
+          <button
+            onClick={handleShowMoreNotif}
+            className="text-blue-500 text-sm font-bold hover:underline"
+          >
+            Show More
+          </button>
+        </div>
+      )}
     </div>
   );
 }

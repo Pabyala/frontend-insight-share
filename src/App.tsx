@@ -1,4 +1,5 @@
 import './App.css';
+import MainContainer from './components/main-container';
 import NavigationBar from './components/nav-bar';
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <>
       <div className='bg-gray-800'>
         <NavigationBar />
+        <MainContainer />
       </div>
     </>
   );
