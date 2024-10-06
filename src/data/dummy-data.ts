@@ -32,7 +32,7 @@ interface followerInterface {
 export const notification: notificationInterface[] = [
     {
         notificationId: "1",
-        postId: "1",
+        postId: "1",    
         authorId: "1",
         userFollowingId: "",
         notificationType: "reacted",

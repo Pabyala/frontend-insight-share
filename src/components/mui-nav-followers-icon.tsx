@@ -21,7 +21,7 @@ export default function FollowersIcon() {
                 badgeContent={4}
                 color="secondary"
             >
-                <PeopleAltIcon className='text-white' />
+                <PeopleAltIcon className='' />
             </StyledBadge>
         </IconButton>
   )

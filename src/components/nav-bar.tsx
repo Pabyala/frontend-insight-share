@@ -9,6 +9,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import FollowersIcon from "./mui-nav-followers-icon";
 import FollowersRequest from "./followers-request-content";
 import FollowersRequestContent from "./followers-request-content";
+import { IconButton, Tooltip } from "@mui/material";
 
 export default function NavigationBar() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
@@ -33,37 +34,39 @@ export default function NavigationBar() {
     setIsFollowerOpen(false);
   };
 
-//   useEffect(() => {
-//     const handleClickOutside = (event: MouseEvent) => {
-//       if (
-//         dropdownRef.current &&
-//         !dropdownRef.current.contains(event.target as Node)
-//       ) {
-//         setIsProfileOpen(false);
-//         setIsNotificationOpen(false);
-//         setIsFollowerOpen(false);
-//       }
-//     };
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, []);
+  //   useEffect(() => {
+  //     const handleClickOutside = (event: MouseEvent) => {
+  //       if (
+  //         dropdownRef.current &&
+  //         !dropdownRef.current.contains(event.target as Node)
+  //       ) {
+  //         setIsProfileOpen(false);
+  //         setIsNotificationOpen(false);
+  //         setIsFollowerOpen(false);
+  //       }
+  //     };
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //     return () => {
+  //       document.removeEventListener("mousedown", handleClickOutside);
+  //     };
+  //   }, []);
 
   return (
-    <div className="container mx-auto">
-      <div className="px-3 pt-3 pb-2">
-        <div className="mx-auto flex items-center justify-between">
-          <div className="text-white text-xl font-bold">
-            <a href="#">Logo</a>
-          </div>
-          <div className="relative flex justify-center flex-grow px-4 max-w-md">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full text-xs p-2 pl-10 rounded-md bg-gray-700 text-white outline-none xl:text-sm"
-            />
-            <CiSearch className="absolute left-6 top-2 text-gray-400 xl:left-7 xl:top-2.5" />
+    <div className="container w-full mx-auto">
+      <div className="pt-3 pb-2">
+        <div className="mx-auto flex items-center justify-between overflow-hidden">
+          <div className="flex items-center">
+            <div className="text-black text-xl font-bold">
+              <a href="#" className="text-bas">Logo</a>
+            </div>
+            <div className="relative flex justify-center flex-grow px-4 max-w-md">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="w-full text-xs p-2 pl-10 rounded-md bg-lightGrayBlue text-slate-950 outline-none xl:text-sm"
+              />
+              <CiSearch className="absolute left-6 top-2 text-black xl:left-7 xl:top-2.5" />
+            </div>
           </div>
 
           <div className="flex items-center space-x-4">
@@ -72,6 +75,7 @@ export default function NavigationBar() {
               className="relative text-gray-400 hover:text-white"
             >
               <div onClick={toggleFollowersDropdown}>
+
                 <FollowersIcon />
               </div>
 
@@ -103,7 +107,7 @@ export default function NavigationBar() {
             </div>
           </div>
         </div>
-        <hr className="h-px mt-2.5 mb-1 bg-gray-200 border-0 dark:bg-gray-700 xl:mt-3 xl:mb-1.5" />
+        <hr className="w-full h-px mt-2.5 mb-1 bg-gray-200 border-0 dark:bg-gray-700 xl:mt-3 xl:mb-1.5" />
         <NavigationMenuItems />
       </div>
     </div>

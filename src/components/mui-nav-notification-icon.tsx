@@ -10,6 +10,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
         top: 7,
         // border: `2px solid ${theme.palette.background.paper}`,
         // padding: '0',
+        
     },
 }));
 
@@ -19,8 +20,9 @@ export default function NotificationIcon() {
             <StyledBadge
                 badgeContent={4}
                 color="secondary"
+                
             >
-                <NotificationsIcon className='text-white' />
+                <NotificationsIcon className='' />
             </StyledBadge>
         </IconButton>
     )

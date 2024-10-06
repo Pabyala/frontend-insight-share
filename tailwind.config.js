@@ -14,6 +14,13 @@ module.exports = {
         '2xl': '6rem',
       },
     },
+    extend: {
+      colors: {
+        lightGrayBlue: '#DCDCDC', 
+        lightWhite: '#ffff',
+        fontColor: '606266'
+      },
+    },
   },
   plugins: [],
 }
