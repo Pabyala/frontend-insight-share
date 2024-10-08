@@ -9,7 +9,6 @@ import { dummyPosts } from "../data/dummy-post";
 
 interface Reaction {
     userId: string;
-    // Other properties for Reaction can be added here
 }
 
 interface Comment {
@@ -21,7 +20,7 @@ interface Comment {
     lastName: string;
     avatarUrl: string;
     timestamp: string;
-    replies?: Reply[]; // Assuming Reply is another defined interface
+    replies?: Reply[]; 
 }
 
 interface Reply {
