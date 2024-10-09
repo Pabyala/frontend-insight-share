@@ -105,7 +105,11 @@ export default function Posts() {
         </div>
        )
     })}
-    {openPostModal && <PostModal selectedPost={selectedPost} onClose={() => handlePostModal('')} />}
+    { openPostModal && 
+        <PostModal 
+            selectedPost={selectedPost} 
+            onClose={() => handlePostModal('')} 
+        />}
     </div>
     )
 }

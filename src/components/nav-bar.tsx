@@ -10,6 +10,7 @@ import FollowersIcon from "./mui-nav-followers-icon";
 import FollowersRequest from "./followers-request-content";
 import FollowersRequestContent from "./followers-request-content";
 import { IconButton, Tooltip } from "@mui/material";
+import SuggestedFollowing from "./SuggestedFollowing";
 
 export default function NavigationBar() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
@@ -19,6 +20,7 @@ export default function NavigationBar() {
 
   const toggleFollowersDropdown = () => {
     setIsFollowerOpen(!isFollowerOpen);
+    console.log(isFollowerOpen)
     setIsNotificationOpen(false);
     setIsProfileOpen(false);
   };
@@ -80,6 +82,7 @@ export default function NavigationBar() {
               </div>
 
               {isFollowerOpen && <FollowersRequestContent />}
+              <FollowersRequestContent />
             </div>
             <div
               ref={dropdownRef}

@@ -10,7 +10,7 @@ export default function FollowersRequestContent() {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const dropdownRef = useRef(null);
   const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
-
+  console.log("Follower Request: ", followerRequest)
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
@@ -40,7 +40,7 @@ export default function FollowersRequestContent() {
         <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
       </div>
       {setFollowersDisplay.map((follower) => (
-        <div className="block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm">
+        <div key={follower.followerUserId} className="block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm">
           <div className="flex justify-between space-x-2">
             <div className="profileandName flex items-center space-x-4">
               <div className="flex" style={{ margin: "auto" }}>

@@ -17,7 +17,7 @@ export default function NotificationContent() {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const dropdownRef = useRef(null);
   const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
-
+  console.log("Notification: ", notification)
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
