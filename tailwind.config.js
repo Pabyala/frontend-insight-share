@@ -18,7 +18,8 @@ module.exports = {
       colors: {
         lightGrayBlue: '#DCDCDC', 
         lightWhite: '#ffff',
-        fontColor: '606266'
+        fontColor: '606266',
+        customGray: '#F0F2F5',
       },
     },
   },

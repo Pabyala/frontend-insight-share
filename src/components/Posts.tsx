@@ -94,6 +94,11 @@ export default function Posts() {
                             <span className='text-sm font-medium text-slate-500'>Comment</span>
                         </div>
                         {/* {openPostModal && <PostModal post={post} onClose={handlePostModal}/>} */}
+                        { openPostModal && 
+                            <PostModal 
+                                selectedPost={selectedPost} 
+                                onClose={() => handlePostModal('')} 
+                            />}
                         <div className='w-1/3 flex items-center justify-center space-x-1 cursor-pointer p-1.5 rounded-full hover:bg-slate-200'>
                             <FluentShare28Filled className='text-lg'/>
                             <span className='text-sm font-medium text-slate-500'>Share</span>
@@ -105,11 +110,11 @@ export default function Posts() {
         </div>
        )
     })}
-    { openPostModal && 
+    {/* { openPostModal && 
         <PostModal 
             selectedPost={selectedPost} 
             onClose={() => handlePostModal('')} 
-        />}
+        />} */}
     </div>
     )
 }
