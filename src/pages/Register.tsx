@@ -1,174 +1,216 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import CustomDatePicker from "../components/CustomDatePicker";
+import { userGender } from "../data/app-data";
+import { Link } from "react-router-dom";
+import { MdiEye, MdiEyeOff } from "../components/custom-icons";
 
 export default function Register() {
-    const [formData, setFormData] = useState({
-        username: '',
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        password: '',
-        email: '',
-        gender: '',
-        phoneNumber: '',
-        dateOfBirth: ''
+  const [formData, setFormData] = useState({
+    username: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    password: "",
+    email: "",
+    gender: "",
+    phoneNumber: "",
+    dateOfBirth: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Submit the form data to the backend
+    console.log(formData);
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Submit the form data to the backend
-        console.log(formData);
-    };
+  const handleGenderSelect = (gender: string) => {
+    setSelectGender(gender);
+    setIsSelected(false);
+  };
 
-    return (
-        <div className="container flex justify-center items-center min-h-screen bg-[#F0F2F5]">
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-md w-full">
-                <h1 className="text-lg font-bold text-center mb-1">Sign Up</h1>
-                <p className="text-center text-sm text-gray-500 mb-2">
-                    It’s quick and easy.
-                </p>
-                <hr className="mb-2" />
+  const [selectGender, setSelectGender] = useState<string>("--Select--");
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  console.log(showPassword)
+  // const togglePasswordVisibility = () => {
+  //   setShowPassword(!showPassword);
+  // }
 
-                <form onSubmit={handleSubmit} className=''>
-                    <div className="flex space-x-3">
-                        <input
-                            type="text"
-                            name="firstName"
-                            placeholder="First Name"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            className="text-sm w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-customGray focus:bg-customGray"
-                            required
-                        />
-                        <input
-                            type="text"
-                            name="middleName"
-                            placeholder="Middle Name"
-                            onChange={handleChange}
-                            className="text-sm w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-customGray focus:bg-customGray"
-                            required
-                        />
-                        <input
-                            type="text"
-                            name="lastName"
-                            placeholder="Last Name"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            className="text-sm w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-customGray focus:bg-customGray"
-                            required
-                        />
-                    </div>
+  return (
+    <div className="container flex justify-center items-center min-h-screen bg-[#F0F2F5]">
+      <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full">
+        <h3 className="text-lg font-bold text-center mb-1">Create a new account</h3>
+        <p className="text-center text-sm text-gray-500 mb-2">
+          It’s quick and easy.
+        </p>
+        <hr className="mb-2" />
 
-                    <div className="mb-4 flex justify-between">
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        {/* <input
-                            type="text"
-                            name="phoneNumber"
-                            placeholder="Phone Number"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        /> */}
-                    </div>
-
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            name="phoneNumber"
-                            placeholder="Phone Number"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                
-
-                
-                    <div className='flex justify-between w-full space-x-3'>      
-                        <div className="mb-4 w-1/2">
-                            <input
-                                type="date"
-                                name="dateOfBirth"
-                                placeholder="Date of Birth"
-                                value={formData.dateOfBirth}
-                                onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-4 w-1/2">
-                            <select
-                                name="gender"
-                                value={formData.gender}
-                                onChange={handleChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            >
-                                <option value="" disabled>
-                                    Select Gender
-                                </option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>  
-
-                    <div className="mb-4">
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Set Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                    <div className="mb-4">
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Confirm Password"
-                            // value={formData.password}
-                            // onChange={handleChange}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors"
-                    >
-                        Sign Up
-                    </button>
-                </form>
-
-                <p className="text-center text-gray-500 text-sm mt-6">
-                    By clicking Sign Up, you agree to our <span className="text-blue-600">Terms</span> and <span className="text-blue-600">Privacy Policy</span>.
-                </p>
+        <form onSubmit={handleSubmit} className="mb-3.5 space-y-3">
+          <div className="flex flex-col space-y-1">
+            <div className="flex justify-between space-x-2">
+              <div className="flex flex-col w-full">
+                <p className="text-sm mb-0.5">First Name:</p>
+                <input
+                  type="text"
+                  name="firstName"
+                  // placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="text-sm w-full p-1.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                  required
+                />
+              </div>
+              <div className="flex flex-col w-full">
+                <p className="text-sm mb-0.5">Last Name:</p>
+                <input
+                  type="text"
+                  name="lastName"
+                  // placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="text-sm w-full p-1.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                  required
+                />
+              </div>
             </div>
+
+            <div className="">
+              <p className="text-sm mb-0.5">Set your date of birth:</p>
+              <CustomDatePicker />
+            </div>
+
+            <div className="">
+              <div className="w-full relative">
+                <p className="text-sm mb-0.5">Select gender:</p>
+                <div
+                  className="p-2 flex items-center cursor-pointer border border-gray-300 bg-white rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                  onClick={() => setIsSelected(!isSelected)}
+                >
+                  <span className="text-sm">{selectGender}</span>
+                </div>
+                {isSelected && (
+                  <div className="right-0 top-16 bg-gray-200 w-full absolute h-fit overflow-x-hidden overflow-y-hidden p-2 cursor-pointer rounded text-sm  text-slate-700 font-semibold hover:text-black  transition-colors">
+                    {userGender.map((gender) => (
+                      <div
+                        key={gender.id}
+                        className="p-1.5 rounded hover:bg-gray-300 hover:text-black"
+                        onClick={() => handleGenderSelect(gender.label)}
+                      >
+                        <span className="text-sm font-medium">{gender.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className=" flex flex-col justify-between">
+              <p className="text-sm mb-0.5">Email:</p>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="text-sm w-full p-1.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                required
+              />
+            </div>
+
+            <div className=" flex flex-col">
+              <p className="text-sm mb-0.5">Phone Number:</p>
+              <input
+                type="text"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="text-sm w-full p-1.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                required
+              />
+            </div>
+
+            <div className=" flex flex-col">
+              <p className="text-sm mb-0.5">Set Password:</p>
+              <div className="w-full relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  // value={formData.password}
+                  value={password}
+                  // onChange={handleChange}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="text-sm w-full py-1.5 pl-1.5 pr-10 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                  // required
+                />
+                <button 
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200">
+                  <span className="text-base">
+                    {showPassword ? <MdiEye/> : <MdiEyeOff/>}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div className=" flex flex-col">
+              <p className="text-sm mb-0.5">Confirm Password:</p>
+              <div className="w-full relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="password"
+                  // value={formData.password}
+                  value={confirmPassword}
+                  // onChange={handleChange}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="text-sm w-full py-1.5 pl-1.5 pr-10 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                  // required
+                />
+                <button 
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200">
+                  <span className="text-base ">
+                    {showConfirmPassword ? <MdiEye/> : <MdiEyeOff/>}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex justify-center items-center">
+            <p className="text-center text-gray-500 text-xs">
+            By clicking Sign Up, you agree to our{" "}
+            <span className="text-blue-600">Terms</span> and{" "}
+            <span className="text-blue-600">Privacy Policy</span>.
+          </p>
+          </div>
+
+          <div className="w-full flex justify-center items-center">
+            <button
+                type="submit"
+                className="w-full text-sm p-2 rounded font-semibold bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black  transition-colors"
+              >
+                Sign Up
+            </button>
+          </div>
+        </form>
+
+        <div className="w-full flex justify-center items-center">
+          <Link to='/login' className="text-blue-600 text-center text-sm">Already have an account?</Link>
         </div>
-    );
+
+      </div>
+    </div>
+  );
 }

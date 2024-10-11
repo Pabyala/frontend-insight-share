@@ -7,15 +7,17 @@ import Register from "./pages/Register";
 
 function App() {
   return (
-    <div className="">
-      {/* <NavigationBar />
-      <div className="flex min-h-screen mx-auto bg-gray-100">
-        <MainContainer />
-      </div> */}
-      <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-      </Routes>
+    <div className="bg-gray-100">
+        <div className="container mx-auto min-h-screen bg-gray-100">
+        {/* <NavigationBar />
+        <div className="flex min-h-screen mx-auto bg-gray-100">
+          <MainContainer />
+        </div> */}
+        <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
     </div>
   );
 }
