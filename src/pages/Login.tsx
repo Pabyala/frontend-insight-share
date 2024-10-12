@@ -1,7 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { MdiEye, MdiEyeOff } from '../components/custom-icons';
 
 export default function Login() {
+
+    const navigate = useNavigate()
+    const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const handleSubmit = () => {
+        navigate('/')
+    }
+
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100">
 
@@ -19,12 +29,28 @@ export default function Login() {
                     placeholder="Email or Phone Number"
                     className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
                 />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
-                />
-                <button className="w-full text-sm font-semibold rounded p-2.5 bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors">
+                <div className='w-full relative'>
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                    />
+                    <button
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200"
+                    >
+                        <span>
+                            {password.length !== 0 && (
+                                showPassword ? <MdiEye/> : <MdiEyeOff/>
+                            )}
+                        </span>
+                    </button>
+                </div>
+                <button 
+                    onClick={handleSubmit}
+                    className="w-full text-sm font-semibold rounded p-2.5 bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors">
                     Log In
                 </button>
 

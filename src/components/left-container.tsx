@@ -4,7 +4,12 @@ import { EmojioneV1Newspaper, FluentColorPeople48, StreamlineEmojisWrappedGift2 
 
 export default function LeftContainer() {
   return (
-    <div className="hidden w-3/12 space-y-2 h-screen xl:block">
+    <div className="hidden w-3/12 xl:block overflow-hidden bg-slate-500">
+    <div 
+      className="fixed space-y-2 h-full w-full overflow-hidden"
+      style={{zIndex: '1'}}
+    >
+    <div className="flex flex-col ">
       <div>
         <div className="profileandName flex items-center space-x-4">
           <div className="flex">
@@ -92,6 +97,8 @@ export default function LeftContainer() {
           </div>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }

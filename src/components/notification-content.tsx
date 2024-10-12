@@ -36,15 +36,17 @@ export default function NotificationContent() {
     ? notification
     : notification.slice(0, 7);
 
+    console.log("Notif", notification)
+
   return (
     <div
       ref={dropdownRef}
-      className="notif-cont absolute right-0 mt-0 w-96 bg-white rounded-md shadow-lg py-2"
+      className="notif-cont absolute top-full right-[-44px] mt-3 w-[392px] bg-white rounded-md shadow-lg py-2"
       style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto" }}
     >
       <div className="custom-scroll-bar max-h-none">
         <div className="blo ck px-4 py-2 text-gray-800 ">
-          <h4 className="text-base font-bold">Notifications</h4>
+          <span className="text-sm font-semibold">Notifications</span>
           <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
         </div>
         {setNotificationDisplay.map((notif) => (
@@ -68,7 +70,7 @@ export default function NotificationContent() {
                 <div>
                   {notif.notificationType === "reacted" && (
                     <>
-                      <span className="font-bold text-sm">
+                      <span className="font-semibold text-sm">
                         {notif.firstName} {notif.middleName} {notif.lastName}
                       </span>
                       <span className="text-sm">
@@ -84,7 +86,7 @@ export default function NotificationContent() {
                       <span className="font-bold text-sm">
                         {notif.firstName} {notif.middleName} {notif.lastName}{" "}
                       </span>
-                      <span>stated following you</span>
+                      <span className="text-sm">stated following you</span>
                     </>
                   )}
                 </div>
@@ -130,7 +132,7 @@ export default function NotificationContent() {
             <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
             <button
               onClick={handleShowMoreNotif}
-              className="text-blue-500 text-sm font-bold hover:underline"
+              className="text-blue-500 text-sm font-semibold hover:underline"
             >
               Show More
             </button>

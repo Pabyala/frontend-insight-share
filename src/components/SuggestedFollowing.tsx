@@ -12,7 +12,7 @@ export default function SuggestedFollowing() {
   return (
     <div className="">
       <p className="text-base font-semibold mb-1">Suggested for you</p>
-      <div className="max-h-96 overflow-y-scroll overflow-x-hidden">
+      <div className="overflow-x-hidden">
         {followerRequest.map((follower) => (
           <div
             key={follower.followerUserId}

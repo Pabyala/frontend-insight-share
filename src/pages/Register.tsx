@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import CustomDatePicker from "../components/CustomDatePicker";
 import { userGender } from "../data/app-data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdiEye, MdiEyeOff } from "../components/custom-icons";
 
 export default function Register() {
+
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     username: "",
     firstName: "",
@@ -31,6 +33,8 @@ export default function Register() {
     e.preventDefault();
     // Submit the form data to the backend
     console.log(formData);
+    navigate('/login')
+
   };
 
   const handleGenderSelect = (gender: string) => {
@@ -158,7 +162,9 @@ export default function Register() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200">
                   <span className="text-base">
-                    {showPassword ? <MdiEye/> : <MdiEyeOff/>}
+                    {password.length !== 0 && (
+                      showPassword ? <MdiEye/> : <MdiEyeOff/>
+                    )}
                   </span>
                 </button>
               </div>
@@ -177,11 +183,13 @@ export default function Register() {
                   className="text-sm w-full py-1.5 pl-1.5 pr-10 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
                   // required
                 />
-                <button 
+                <button
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200">
                   <span className="text-base ">
-                    {showConfirmPassword ? <MdiEye/> : <MdiEyeOff/>}
+                    {confirmPassword.length !== 0 && (
+                      showConfirmPassword ? <MdiEye/> : <MdiEyeOff/>
+                    )}
                   </span>
                 </button>
               </div>

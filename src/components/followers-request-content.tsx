@@ -1,10 +1,12 @@
 import { followerRequest } from "../data/dummy-data";
 import { Avatar } from "@mui/material";
 import {
+  BxsUpArrow,
   FluentPersonArrowBack24Filled,
   MingcuteUserRemove2Fill,
 } from "./custom-icons";
 import { useEffect, useRef, useState } from "react";
+import './Style.css'
 
 export default function FollowersRequestContent() {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
@@ -32,11 +34,11 @@ export default function FollowersRequestContent() {
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 mt-0 w-96 bg-white rounded-md shadow-lg py-2"
-      style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto" }}
+      className="absolute top-full right-[-88px] mt-3 w-[392px] bg-white rounded-md shadow-lg py-2"
+      style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto", zIndex: '2' }}
     >
       <div className="block px-4 py-2 text-gray-800 ">
-        <h4 className="text-base font-bold">Followers</h4>
+        <span className="text-sm font-semibold">Followers</span>
         <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
       </div>
       {setFollowersDisplay.map((follower) => (
@@ -52,7 +54,7 @@ export default function FollowersRequestContent() {
               </div>
               <div>
                 <div>
-                  <span className="font-bold text-sm">
+                  <span className="font-semibold text-sm">
                     {follower?.firstName} {follower?.middleName}{" "}
                     {follower.lastName}
                   </span>
@@ -79,7 +81,7 @@ export default function FollowersRequestContent() {
           <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
           <button
             onClick={handleShowMoreNotif}
-            className="text-blue-500 text-sm font-bold hover:underline"
+            className="text-blue-500 text-sm font-semibold hover:underline"
           >
             Show More
           </button>

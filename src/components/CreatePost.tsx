@@ -22,7 +22,7 @@ export default function CreatePost() {
                     onClick={toggleShowPostTextArea}
                     className="w-full flex flex-grow cursor-pointer"
                 >
-                <span className="w-full flex items-center cursor-pointer text-xs py-2 px-3 rounded bg-customGray text-black outline-none xl:text-sm">
+                <span className="w-full flex items-center cursor-pointer text-sm py-2 px-3 rounded bg-customGray text-black outline-none">
                     What's on your mind, Marco?
                 </span>
                 </div>

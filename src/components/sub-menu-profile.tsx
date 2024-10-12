@@ -1,10 +1,10 @@
 import { Avatar } from '@mui/material'
 import React from 'react'
-import { AntDesignSettingFilled, ClarityUserSolid, IonLogOut } from './custom-icons'
+import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled, IconoirPostSolid, IonLogOut, MdiGift, MingcuteUserFollow2Fill } from './custom-icons'
 
 export default function SubmenuProfile() {
     return (
-        <div className="absolute right-0 mt-9 w-52 bg-white rounded-md shadow-lg py-2">
+        <div className="absolute top-full right-[0px] mt-3 w-[392px] bg-white rounded-md shadow-lg py-2">
             <div className='block px-4 py-2 text-gray-800 hover:bg-gray-100'>
                 <div className="flex">
                     <Avatar
@@ -13,7 +13,7 @@ export default function SubmenuProfile() {
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     />
                     <div className='flex flex-col ml-2.5'>
-                        <span className='text-sm'>Eleomar F. Fajutnao</span>
+                        <span className='text-sm font-semibold'>Eleomar F. Fajutnao</span>
                         <span className='text-sm'>marco@gmail.com</span>
                     </div>
                 </div>
@@ -27,9 +27,46 @@ export default function SubmenuProfile() {
                     <div>
                         <ClarityUserSolid className='text-2xl' />
                     </div>
-                    <span>Your Profile </span>
+                    <span>Your Profile</span>
                 </div>
             </a>
+
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+                <div className='flex items-center space-x-2'>
+                    <div>
+                        <MingcuteUserFollow2Fill className='text-2xl' />
+                    </div>
+                    <span>Following</span>
+                </div>
+            </a>
+
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+                <div className='flex items-center space-x-2'>
+                    <div>
+                        <FluentPersonArrowBack24Filled className='text-2xl' />
+                    </div>
+                    <span>Followers</span>
+                </div>
+            </a>
+
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+                <div className='flex items-center space-x-2'>
+                    <div>
+                        <IconoirPostSolid className='text-2xl' />
+                    </div>
+                    <span>Post</span>
+                </div>
+            </a>
+
+            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+                <div className='flex items-center space-x-2'>
+                    <div>
+                        <MdiGift className='text-2xl' />
+                    </div>
+                    <span>Today's birthday</span>
+                </div>
+            </a>
+
             <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>

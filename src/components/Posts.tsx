@@ -21,9 +21,11 @@ export default function Posts() {
     console.log("Selected Post ID: ", selectedPost)
     console.log("All post: ", dummyPosts)
 
+    const allPost = dummyPosts.slice(0,5)
+
     return (
         <div className='flex flex-col space-y-3'>
-        {dummyPosts.map((post) => {
+        {allPost.map((post) => {
             const totalCommets = post.comments.length;
             const totolReplies = post.comments.reduce((acc, comment) => acc + (comment.replies?.length || 0), 0);
             let totalCommentsAndReplies: number = totalCommets + totolReplies;

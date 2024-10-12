@@ -256,6 +256,146 @@ export const dummyPosts: Post[] = [
             }
         ]
     },
+    {
+        //4th Post
+        postId: '4',
+        authorId: "60c72b2f9b1d4b3e4e4e1b1b",
+        captionPost: "Who else loves coding at night?",
+        firstName: "Monkey",
+        middleName: "D.",
+        lastName: "Luffy",
+        authorAvatarUrl: 'https://fastly.picsum.photos/id/925/256/256.jpg?hmac=DVD_og_saPRyWNwapFSqA4K2aJXt8RqEcreKnXkavy0',
+        reactions: {
+            like: [
+                {
+                    reactionId: "5",
+                    userId: "60c72b2f9b1d4b3e4e4e1b3c",
+                    firstName: "Jane",
+                    middleName: "B.",
+                    lastName: "Smith",
+                    avatarUrl: "https://fastly.picsum.photos/id/81/256/256.jpg?hmac=ObrGC5DXhcsTiKljVNa0gC7EmY3Vvagfh2rYuP_0hFE",
+                    timestamp: new Date().toISOString()
+                }
+            ],
+            heart: []
+        },
+        comments: [
+            {
+                commentId: "2sadsad",
+                userId: "60c72b2f9b1d4b3e4e4e1b61",
+                text: "Keep up the great work!",
+                firstName: "Diana",
+                middleName: "F.",
+                lastName: "Prince",
+                avatarUrl: "https://fastly.picsum.photos/id/518/256/256.jpg?hmac=j5mBOAyfPJlfCPHv4pIMG7QVBThr8Te8Q1wESiujYNQ",
+                timestamp: new Date().toISOString(),
+                replies: [
+                    {
+                        replyId: "2-1",
+                        userId: "60c72b2f9b1d4b3e4e4e1b62",
+                        text: "Thanks, Diana!",
+                        firstName: "Eve",
+                        middleName: "G.",
+                        lastName: "Adams",
+                        avatarUrl: "https://fastly.picsum.photos/id/952/256/256.jpg?hmac=cqjEtIeeLXFDWCry9OpkV9uDbigAJoydAHBj0PPqwV4",
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            },
+            {
+                commentId: "2asd112",
+                userId: "60c72b2f9b1d4b3e4e4e1b61",
+                text: "Keep up the great work!",
+                firstName: "Diana",
+                middleName: "F.",
+                lastName: "Prince",
+                avatarUrl: "https://fastly.picsum.photos/id/518/256/256.jpg?hmac=j5mBOAyfPJlfCPHv4pIMG7QVBThr8Te8Q1wESiujYNQ",
+                timestamp: new Date().toISOString(),
+                replies: [
+                    {
+                        replyId: "2-1",
+                        userId: "60c72b2f9b1d4b3e4e4e1b62",
+                        text: "Thanks, Diana!",
+                        firstName: "Eve",
+                        middleName: "G.",
+                        lastName: "Adams",
+                        avatarUrl: "https://fastly.picsum.photos/id/952/256/256.jpg?hmac=cqjEtIeeLXFDWCry9OpkV9uDbigAJoydAHBj0PPqwV4",
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        //5th Post
+        postId: '5',
+        authorId: "60c72b2f9b1d4b3e4e4e1b1b",
+        captionPost: "Who else loves coding at night?",
+        firstName: "Monkey",
+        middleName: "D.",
+        lastName: "Luffy",
+        authorAvatarUrl: 'https://fastly.picsum.photos/id/925/256/256.jpg?hmac=DVD_og_saPRyWNwapFSqA4K2aJXt8RqEcreKnXkavy0',
+        reactions: {
+            like: [
+                {
+                    reactionId: "5",
+                    userId: "60c72b2f9b1d4b3e4e4e1b3c",
+                    firstName: "Jane",
+                    middleName: "B.",
+                    lastName: "Smith",
+                    avatarUrl: "https://fastly.picsum.photos/id/81/256/256.jpg?hmac=ObrGC5DXhcsTiKljVNa0gC7EmY3Vvagfh2rYuP_0hFE",
+                    timestamp: new Date().toISOString()
+                }
+            ],
+            heart: []
+        },
+        comments: [
+            {
+                commentId: "2sadsad",
+                userId: "60c72b2f9b1d4b3e4e4e1b61",
+                text: "Keep up the great work!",
+                firstName: "Diana",
+                middleName: "F.",
+                lastName: "Prince",
+                avatarUrl: "https://fastly.picsum.photos/id/518/256/256.jpg?hmac=j5mBOAyfPJlfCPHv4pIMG7QVBThr8Te8Q1wESiujYNQ",
+                timestamp: new Date().toISOString(),
+                replies: [
+                    {
+                        replyId: "2-1",
+                        userId: "60c72b2f9b1d4b3e4e4e1b62",
+                        text: "Thanks, Diana!",
+                        firstName: "Eve",
+                        middleName: "G.",
+                        lastName: "Adams",
+                        avatarUrl: "https://fastly.picsum.photos/id/952/256/256.jpg?hmac=cqjEtIeeLXFDWCry9OpkV9uDbigAJoydAHBj0PPqwV4",
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            },
+            {
+                commentId: "2asd112",
+                userId: "60c72b2f9b1d4b3e4e4e1b61",
+                text: "Keep up the great work!",
+                firstName: "Diana",
+                middleName: "F.",
+                lastName: "Prince",
+                avatarUrl: "https://fastly.picsum.photos/id/518/256/256.jpg?hmac=j5mBOAyfPJlfCPHv4pIMG7QVBThr8Te8Q1wESiujYNQ",
+                timestamp: new Date().toISOString(),
+                replies: [
+                    {
+                        replyId: "2-1",
+                        userId: "60c72b2f9b1d4b3e4e4e1b62",
+                        text: "Thanks, Diana!",
+                        firstName: "Eve",
+                        middleName: "G.",
+                        lastName: "Adams",
+                        avatarUrl: "https://fastly.picsum.photos/id/952/256/256.jpg?hmac=cqjEtIeeLXFDWCry9OpkV9uDbigAJoydAHBj0PPqwV4",
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            }
+        ]
+    },
     // {
     //     authorId: "60c72b2f9b1d4b3e4e4e1b1a",
     //     captionPost: "React is great for building UIs!",
