@@ -14,8 +14,8 @@ export default function AllReactions() {
     return (
     // <div className='flex bg-black'>
     <div
-      className="all-reaction relative flex items-center"
-      style={{ minWidth: "100px", height: "24px" }}
+      // className="all-reaction relative flex items-center min-w-fit h-[24px] w-full"
+      className="all-reaction relative flex items-center h-[24px] min-w-[90px]"
     >
       <div
         className="absolute bg-slate-400 p-1 rounded-full border-white border-2"

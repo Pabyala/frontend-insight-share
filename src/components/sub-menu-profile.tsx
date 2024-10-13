@@ -1,6 +1,7 @@
 import { Avatar } from '@mui/material'
 import React from 'react'
 import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled, IconoirPostSolid, IonLogOut, MdiGift, MingcuteUserFollow2Fill } from './custom-icons'
+import { Link } from 'react-router-dom'
 
 export default function SubmenuProfile() {
     return (
@@ -22,14 +23,14 @@ export default function SubmenuProfile() {
                 <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
             </div>
 
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <Link to='/profile' className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <ClarityUserSolid className='text-2xl' />
                     </div>
                     <span>Your Profile</span>
                 </div>
-            </a>
+            </Link>
 
             <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
@@ -75,14 +76,14 @@ export default function SubmenuProfile() {
                     <span>Settings</span>
                 </div>
             </a>
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <Link to='/login' className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <IonLogOut className='text-2xl' />
                     </div>
                     <span>Logout</span>
                 </div>
-            </a>
+            </Link>
         </div>
     )
 }

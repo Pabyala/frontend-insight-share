@@ -130,3 +130,20 @@ export default function NavigationBar() {
     // </div>
   );
 }
+
+
+
+
+ {/* {followerRequest.map((fol) => (
+                    <div key={fol.followerUserId} className='absolute bg-white p-0.5 rounded-full z-[8]'>
+                        <div className='relative inline-flex cursor-pointer'>
+                            <div className="cursor-pointer" >
+                                <img
+                                    src={fol.avatarUrl}
+                                    alt={fol.username}
+                                    className="relative inline-block h-[33px] w-[33px] !rounded-full object-cover object-center"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ))} */}

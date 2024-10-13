@@ -12,7 +12,7 @@ export default function LeftBar() {
     return (
         <div className="hidden xl:w-[26%] xl:block">
             <div
-                className="h-full fixed overflow-hidden w-full xl:max-w-[290px] 2xl:max-w-[348px] py-2"
+                className="h-full fixed overflow-hidden w-full xl:max-w-[290px] 2xl:max-w-[348px]"
                 style={{ zIndex: "1" }}
             >
                 {/* profile */}

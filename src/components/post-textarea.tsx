@@ -51,7 +51,7 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
                             <textarea 
                                 name="" 
                                 id=""
-                                className="w-full text-base p-2 rounded-md bg-gray-200 border outline-none resize-none max-h-32 overflow-y-auto min-h-28"
+                                className="w-full text-base p-2 rounded-md bg-gray-100 border outline-none resize-none max-h-32 overflow-y-auto min-h-28"
                                 placeholder="What's on your mind?"
                             >
 
