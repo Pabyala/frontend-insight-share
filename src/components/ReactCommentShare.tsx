@@ -21,7 +21,7 @@ export default function ReactCommentShare({ post }: Post ) {
         <div className='flex'>
             <div className='pt-1 flex justify-between w-full'>
                 {/* reaction */}
-                <div className='w-1/3 flex items-center justify-center'>
+                <div className='w-1/3 flex items-center justify-start'>
                     <span className='text-sm text-slate-500 cursor-pointer'>12.1K</span>
                 </div>
                 {/* comment */}
@@ -36,7 +36,7 @@ export default function ReactCommentShare({ post }: Post ) {
                     </span>
                 </div>
                 {/* share */}
-                <div className='w-1/3 flex items-center justify-center'>
+                <div className='w-1/3 flex items-center justify-end'>
                     <span className='text-sm text-slate-500 cursor-pointer'>1K shares</span>
                 </div>
             </div>

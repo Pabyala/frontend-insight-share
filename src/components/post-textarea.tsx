@@ -51,7 +51,7 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
                             <textarea 
                                 name="" 
                                 id=""
-                                className="w-full text-base p-2 rounded-md bg-customGray border outline-none resize-none max-h-32 overflow-y-auto min-h-28"
+                                className="w-full text-base p-2 rounded-md bg-gray-200 border outline-none resize-none max-h-32 overflow-y-auto min-h-28"
                                 placeholder="What's on your mind?"
                             >
 
@@ -59,7 +59,7 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
                         </div>
                         <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
                         <div>
-                            <button className="bg-gray-100 w-full p-2 text-sm font-semibold rounded text-slate-500 hover:bg-gray-200">
+                            <button className="bg-gray-200 w-full p-2 text-sm font-semibold rounded text-slate-500 hover:bg-gray-300">
                                 Post
                             </button>
                         </div>

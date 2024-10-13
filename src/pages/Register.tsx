@@ -54,8 +54,9 @@ export default function Register() {
   // }
 
   return (
-    <div className="container flex justify-center items-center min-h-screen bg-[#F0F2F5]">
-      <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full">
+    <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5]">
+      <div className='container mx-auto'>
+      <div className="bg-white mx-auto p-5 rounded-lg shadow-md max-w-md w-full">
         <h3 className="text-lg font-bold text-center mb-1">Create a new account</h3>
         <p className="text-center text-sm text-gray-500 mb-2">
           It’s quick and easy.
@@ -218,6 +219,7 @@ export default function Register() {
           <Link to='/login' className="text-blue-600 text-center text-sm">Already have an account?</Link>
         </div>
 
+      </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import React from 'react'
 export default function Sponsored() {
     return (
         <div className=''>
-            <p className='text-base font-semibold mb-1'>Sponsored</p>
+            <p className='text-sm font-semibold mb-1.5'>Sponsored</p>
                 <div className='flex flex-col space-y-3'>
                     <div className='flex bg-white rounded-lg overflow-hidden'>
                         <div className='w-2/5 flex'>

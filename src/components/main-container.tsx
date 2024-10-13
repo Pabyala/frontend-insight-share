@@ -16,7 +16,7 @@ export default function MainContainer() {
       // <RightContainer />
     // </div>
 
-    <div className="container mx-auto flex justify-between pt-[105px] lg:pt-[110px] xl:pt-[115px] relative overflow-hidden">
+    <div className="container mx-auto flex justify-between pt-[63px] lg:pt-[65px] xl:pt-[68px] relative overflow-hidden">
       {/* <LeftContainer />
       <CenterContainer />
       <RightContainer /> */}

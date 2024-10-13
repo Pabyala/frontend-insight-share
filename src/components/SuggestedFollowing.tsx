@@ -11,12 +11,12 @@ import {
 export default function SuggestedFollowing() {
   return (
     <div className="">
-      <p className="text-base font-semibold mb-1">Suggested for you</p>
+      <p className="text-sm font-semibold mb-1">Suggested for you</p>
       <div className="overflow-x-hidden">
         {followerRequest.map((follower) => (
           <div
             key={follower.followerUserId}
-            className="block px-1.5 cursor-pointer rounded-lg py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm"
+            className="block px-1.5 cursor-pointer rounded py-1.5 text-xs text-gray-800 hover:bg-gray-300 lg:text-sm"
           >
             <div className="flex justify-between space-x-2">
               <div className="profileandName flex items-center space-x-4">

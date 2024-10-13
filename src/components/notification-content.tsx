@@ -41,11 +41,11 @@ export default function NotificationContent() {
   return (
     <div
       ref={dropdownRef}
-      className="notif-cont absolute top-full right-[-44px] mt-3 w-[392px] bg-white rounded-md shadow-lg py-2"
-      style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto" }}
+      className="notif-cont absolute top-full right-[-44px] mt-[12px] w-[392px] bg-white rounded-md shadow-lg py-2 px-2.5"
+      style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto", zIndex: '2'}}
     >
       <div className="custom-scroll-bar max-h-none">
-        <div className="blo ck px-4 py-2 text-gray-800 ">
+        <div className="block py-2 text-gray-800 ">
           <span className="text-sm font-semibold">Notifications</span>
           <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
         </div>
@@ -54,11 +54,13 @@ export default function NotificationContent() {
             key={notif.notificationId}
             className={
               notif.isRead
-                ? "bg-gray-100 block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm cursor-pointer"
-                : "block px-4 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm cursor-pointer"
+                ? "bg-gray-100 block px-2 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm cursor-pointer rounded"
+                : "block px-2 py-1.5 text-xs text-gray-800 hover:bg-gray-100 lg:text-sm cursor-pointer rounded"
             }
           >
-            <div className="flex justify-between space-x-2">
+            <div 
+              className="flex justify-between space-x-2"
+            >
               <div className="profileAndDisc flex items-center space-x-2">
                 <div className="flex" style={{ margin: "auto" }}>
                   <Avatar
@@ -75,7 +77,7 @@ export default function NotificationContent() {
                       </span>
                       <span className="text-sm">
                         {" "}
-                        reacted to your post: "{notif.postContent.slice(0, 33)}
+                        reacted to your post: "{notif.postContent.slice(0, 25)}
                         ..."
                       </span>
                     </>

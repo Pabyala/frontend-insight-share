@@ -14,7 +14,7 @@ export default function Login() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100">
-
+            <div className='container mx-auto'>
             <div className="w-full flex flex-col justify-center mb-8">
                 <h2 className="text-2xl text-center font-bold text-blue-600 lg:text-3xl lg:mb-1">Insight Share</h2>
                 <p className="text-base text-gray-600 w-f text-center">
@@ -23,7 +23,7 @@ export default function Login() {
             </div>
 
 
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
+            <div className="bg-white mx-auto p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
                 <input
                     type="text"
                     placeholder="Email or Phone Number"
@@ -67,6 +67,7 @@ export default function Login() {
                         Create New Account
                     </Link>
                 </div>
+            </div>
             </div>
         </div>
     );

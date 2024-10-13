@@ -4,7 +4,7 @@ import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled
 
 export default function SubmenuProfile() {
     return (
-        <div className="absolute top-full right-[0px] mt-3 w-[392px] bg-white rounded-md shadow-lg py-2">
+        <div className="absolute top-full right-[0px] mt-[11px] w-[392px] bg-white rounded-md shadow-lg py-2">
             <div className='block px-4 py-2 text-gray-800 hover:bg-gray-100'>
                 <div className="flex">
                     <Avatar

@@ -24,7 +24,7 @@ export default function Posts() {
     const allPost = dummyPosts.slice(0,5)
 
     return (
-        <div className='flex flex-col space-y-3'>
+        <div className='flex flex-col space-y-2 lg:space-y-3'>
         {allPost.map((post) => {
             const totalCommets = post.comments.length;
             const totolReplies = post.comments.reduce((acc, comment) => acc + (comment.replies?.length || 0), 0);
@@ -33,7 +33,6 @@ export default function Posts() {
                 
         <div key={post.postId} className='w-full'>
             <div className='bg-lightWhite p-3 rounded'>
-                
                 {/* Profile and more option */}
                 <div className='mb-1'>
                     <div className="flex justify-between">
