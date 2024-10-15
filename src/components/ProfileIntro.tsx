@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FluentPeopleTeam48Filled, MdiInternet, MingcuteLocation2Fill, TablerHomeFilled } from './custom-icons'
+import { FluentPeopleTeam48Filled, IconParkSolidBirthdayCake, MaterialSymbolsSchoolRounded, MaterialSymbolsWorkHistory, MdiInternet, MingcuteLocation2Fill, TablerHomeFilled } from './custom-icons'
 import { Link } from 'react-router-dom'
 import { followerRequest } from '../data/dummy-data';
 import DetailsModal from './DetailsModal';
@@ -89,6 +89,39 @@ export default function ProfileIntro() {
                             </div>
                             <div className='flex'>
                                 <p className='text-sm'>Followed by <span className='font-semibold'>206 people</span></p>
+                            </div>
+                        </div>
+
+                        <div className='flex items-center space-x-3 py-2'>
+                            <div className='flex'>
+                                <span className='text-[25px]'>
+                                    <MaterialSymbolsSchoolRounded/>
+                                </span>
+                            </div>
+                            <div className='flex'>
+                                <p className='text-sm'>Study at <span className='font-semibold'>UP Diliman</span></p>
+                            </div>
+                        </div>
+
+                        <div className='flex items-center space-x-3 py-2'>
+                            <div className='flex'>
+                                <span className='text-[25px]'>
+                                    <MaterialSymbolsWorkHistory/>
+                                </span>
+                            </div>
+                            <div className='flex'>
+                                <p className='text-sm'>Work at <span className='font-semibold'>Accenture</span></p>
+                            </div>
+                        </div>
+
+                        <div className='flex items-center space-x-3 py-2'>
+                            <div className='flex'>
+                                <span className='text-[25px]'>
+                                    <IconParkSolidBirthdayCake/>
+                                </span>
+                            </div>
+                            <div className='flex'>
+                                <p className='text-sm'>Birthday <span className='font-semibold'>October 22, 2000</span></p>
                             </div>
                         </div>
 
