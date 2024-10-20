@@ -2,8 +2,20 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled, IconoirPostSolid, IonLogOut, MdiGift, MingcuteUserFollow2Fill } from './custom-icons'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectCurrentToken } from '../features/auth/authSlice'
+import { useGetUserDataQuery } from '../features/auth/authApiSlice'
 
 export default function SubmenuProfile() {
+
+    const token = useSelector(selectCurrentToken)
+    // Fetch user data; skip fetching if user is not logged in
+    const { data: userData, error, isLoading } = useGetUserDataQuery(undefined, {
+        skip: !token,
+    });
+
+    // const notificationCount = userData?.userInfo?.followers.length
+
     return (
         <div className="absolute top-full right-[0px] mt-[11px] w-[392px] bg-white rounded-md shadow-lg py-2">
             <div className='block px-4 py-2 text-gray-800 hover:bg-gray-100'>
@@ -14,8 +26,13 @@ export default function SubmenuProfile() {
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     />
                     <div className='flex flex-col ml-2.5'>
-                        <span className='text-sm font-semibold'>Eleomar F. Fajutnao</span>
-                        <span className='text-sm'>marco@gmail.com</span>
+                        {/* <span className='text-sm font-semibold'>Eleomar F. Fajutnao</span> */}
+                        <p className="text-sm font-semibold">
+                            <span>{userData?.userInfo?.firstName} </span>  
+                            <span>{userData?.userInfo?.middleName} </span>  
+                            <span>{userData?.userInfo?.lastName}</span>
+                        </p>
+                        <span className='text-sm'>{userData?.userInfo?.username}</span>
                     </div>
                 </div>
             </div>
@@ -37,7 +54,13 @@ export default function SubmenuProfile() {
                     <div>
                         <MingcuteUserFollow2Fill className='text-2xl' />
                     </div>
-                    <span>Following</span>
+                    <span>
+                        Following {userData?.userInfo?.following && userData.userInfo.following.length !== 0 
+                            ? userData.userInfo.following.length 
+                            : ''
+                        }
+                    </span>
+
                 </div>
             </a>
 
@@ -46,7 +69,12 @@ export default function SubmenuProfile() {
                     <div>
                         <FluentPersonArrowBack24Filled className='text-2xl' />
                     </div>
-                    <span>Followers</span>
+                    <span>
+                        Followers {userData?.userInfo?.followers && userData.userInfo.followers.length !== 0 
+                            ? userData.userInfo.followers.length 
+                            : ''
+                        }
+                    </span>
                 </div>
             </a>
 

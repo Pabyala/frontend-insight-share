@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import Datepicker from "react-tailwindcss-datepicker";
 import './Style.css'
 
-export default function CustomDatePicker() {
+interface CustomDatePickerProps {
+    onChange: (date: string) => void; 
+}
 
+export default function CustomDatePicker({ onChange }: CustomDatePickerProps) {
     const [date, setDate] = useState({
         startDate: null,  // Single date selection will use startDate
         endDate: null     // Will remain null as useRange is false
@@ -11,6 +14,11 @@ export default function CustomDatePicker() {
 
     const handleChange = (newValue: any) => {
         setDate(newValue);  // newValue will be an object with startDate and endDate
+        if (newValue.startDate) {
+            const selectedDate = new Date(newValue.startDate);
+            const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+            onChange(formattedDate)
+        }
     };
 
     return (

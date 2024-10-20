@@ -1,7 +1,7 @@
 import { Avatar, IconButton, Tooltip } from '@mui/material'
 import React, { useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { FluentCommentEdit16Filled, FluentShare28Filled, NotoOrangeHeart } from './custom-icons';
+import { FluentCommentEdit16Filled, FluentShare28Filled, MingcuteSaveFill, MingcuteSaveLine, NotoOrangeHeart } from './custom-icons';
 import AllReactions from './AllReactions';
 import SelectOneReaction from './SelectOneReaction';
 import ReactCommentShare from './ReactCommentShare';
@@ -101,8 +101,8 @@ export default function Posts() {
                                 onClose={() => handlePostModal('')} 
                             />}
                         <div className='w-1/3 flex items-center justify-center space-x-1 cursor-pointer p-1.5 rounded-full hover:bg-slate-200'>
-                            <FluentShare28Filled className='text-lg'/>
-                            <span className='text-sm font-medium text-slate-500'>Share</span>
+                            <MingcuteSaveLine className='text-lg'/>
+                            <span className='text-sm font-medium text-slate-500'>Save</span>
                         </div>
                         
                     </div>

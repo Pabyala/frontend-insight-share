@@ -1,14 +1,24 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 import {
-  EmojioneV1Newspaper,
-  FluentColorPeople48,
-  StreamlineEmojisWrappedGift2,
+    EmojioneV1Newspaper,
+    FluentColorPeople48,
+    StreamlineEmojisWrappedGift2,
 } from "./custom-icons";
 import Sponsored from "./Sponsored";
 import { Link } from "react-router-dom";
+import { selectCurrentToken } from "../features/auth/authSlice";
+import { useGetUserDataQuery } from "../features/auth/authApiSlice";
+import { useSelector } from "react-redux";
 
 export default function LeftBar() {
+
+    const token = useSelector(selectCurrentToken)
+    // Fetch user data; skip fetching if user is not logged in
+    const { data: userData, error, isLoading } = useGetUserDataQuery(undefined, {
+        skip: !token,
+    });
+
     return (
         <div className="hidden xl:w-[26%] xl:block">
             <div
@@ -25,7 +35,11 @@ export default function LeftBar() {
                         />
                     </div>
                     <div>
-                        <span className="font-medium text-sm">Eleomar F. Fajutnao</span>
+                        <p className="font-medium text-sm">
+                            <span>{userData?.userInfo?.firstName} </span>  
+                            <span>{userData?.userInfo?.middleName} </span>  
+                            <span>{userData?.userInfo?.lastName}</span>
+                        </p>
                     </div>
                 </Link>
 
@@ -36,8 +50,11 @@ export default function LeftBar() {
                                 <FluentColorPeople48 />
                             </span>
                         </div>
-                        <div>
+                        <div className="flex space-x-1">
                             <span className="font-medium text-sm">Followers</span>
+                            {userData?.userInfo?.followers.length !== 0 &&
+                                (<span className="font-semibold text-sm">{userData?.userInfo?.followers.length }</span>)
+                            }
                         </div>
                     </Link>
 
@@ -49,8 +66,12 @@ export default function LeftBar() {
                                 <EmojioneV1Newspaper />
                             </span>
                         </div>
-                        <div>
+                        <div className="flex space-x-1">
                             <span className="font-medium text-sm">Posts</span>
+                            {userData?.userInfo?.followers.length !== 0 &&
+                                (<span className="font-semibold text-sm">{userData?.userInfo?.followers.length }</span>)
+                            }
+                            <span className="font-semibold text-sm">(100)</span>
                         </div>
                     </Link>
                 {/* </div> */}

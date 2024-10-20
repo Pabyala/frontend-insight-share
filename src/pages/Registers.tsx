@@ -10,7 +10,6 @@ export default function Register() {
   const [formData, setFormData] = useState({
     username: "",
     firstName: "",
-    middleName: "",
     lastName: "",
     password: "",
     email: "",
@@ -18,6 +17,12 @@ export default function Register() {
     phoneNumber: "",
     dateOfBirth: "",
   });
+  const [selectGender, setSelectGender] = useState<string>("--Select--");
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -29,29 +34,37 @@ export default function Register() {
     });
   };
 
+  const isPasswordMatch = (password: string, confirmPassword: string) => {
+    return password === confirmPassword;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Submit the form data to the backend
-    console.log(formData);
-    navigate('/login')
-
+    if(isPasswordMatch(formData.password, confirmPassword)) {
+      console.log("Password is match")
+      console.log(formData);
+      navigate('/login')
+    } else {
+      console.log("Password not match")
+    }
+    
   };
 
   const handleGenderSelect = (gender: string) => {
     setSelectGender(gender);
+    setFormData({
+      ...formData,
+      gender: gender,
+    });
     setIsSelected(false);
   };
 
-  const [selectGender, setSelectGender] = useState<string>("--Select--");
-  const [isSelected, setIsSelected] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  console.log(showPassword)
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // }
+  const handleDateChange = (date: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      dateOfBirth: date,
+    }));
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5]">
@@ -65,6 +78,17 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} className="mb-3.5 space-y-3">
           <div className="flex flex-col space-y-1">
+            <div className=" flex flex-col justify-between">
+                <p className="text-sm mb-0.5">Username:</p>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="text-sm w-full p-1.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                  required
+                />
+              </div>
             <div className="flex justify-between space-x-2">
               <div className="flex flex-col w-full">
                 <p className="text-sm mb-0.5">First Name:</p>
@@ -94,7 +118,7 @@ export default function Register() {
 
             <div className="">
               <p className="text-sm mb-0.5">Set your date of birth:</p>
-              <CustomDatePicker />
+              <CustomDatePicker onChange={handleDateChange} />
             </div>
 
             <div className="">
@@ -137,7 +161,7 @@ export default function Register() {
             <div className=" flex flex-col">
               <p className="text-sm mb-0.5">Phone Number:</p>
               <input
-                type="text"
+                type="number"
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
@@ -153,9 +177,9 @@ export default function Register() {
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   // value={formData.password}
-                  value={password}
+                  value={formData.password}
                   // onChange={handleChange}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="text-sm w-full py-1.5 pl-1.5 pr-10 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
                   // required
                 />

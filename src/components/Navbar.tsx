@@ -5,6 +5,10 @@ import FollowersRequestContent from "./followers-request-content";
 import NotificationContent from "./notification-content";
 import SubmenuProfile from "./sub-menu-profile";
 import { Link } from "react-router-dom";
+import { useGetUserDataQuery } from "../features/auth/authApiSlice";
+import { useSelector } from "react-redux";
+import { selectCurrentId, selectCurrentToken } from "../features/auth/authSlice";
+import { RootState } from "../app/store";
 
 export default function Navbar() {
 
@@ -12,6 +16,8 @@ export default function Navbar() {
     const [showFollowerMenu, setShowFollowerMenu] = useState<boolean>(false);
     const [showNotificationMenu, setShowNotificationMenu] = useState<boolean>(false);
     const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
+    const currentUserId = useSelector((state: RootState) => selectCurrentId(state));
+    
 
     const followerRef = useRef<HTMLDivElement>(null);
     const notificationRef = useRef<HTMLDivElement>(null);
@@ -52,11 +58,11 @@ export default function Navbar() {
         document.removeEventListener("mousedown", handleClickOutside);
     };
     }, []);
-   
+
     return (
         <div 
             // className='fixed top-0 left-0 right-0 pt-3 pb-2 flex items-center justify-between bg-white z-50'
-            style={{zIndex: '2'}}
+            style={{zIndex: '10'}}
             className="w-full flex justify-center items-center fixed bg-white"
         >
             <div className="container">
@@ -91,9 +97,14 @@ export default function Navbar() {
                                 <FluentColorPeople48/>
                             </span>
                         </button>
-                        {countFollower != 0 && (
+                        {/* {userData?.userInfo?.followers.length > 0 && (
                             <span className="absolute top-0.5 right-0.5 grid min-h-[18px] min-w-[18px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-500 p-0.5 text-[12px] font-medium leading-none text-white content-['']">
-                            {countFollower}
+                                {userData?.userInfo?.followers.length}
+                            </span>
+                        )} */}
+                        {countFollower > 0 && (
+                            <span className="absolute top-0.5 right-0.5 grid min-h-[18px] min-w-[18px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-500 p-0.5 text-[12px] font-medium leading-none text-white content-['']">
+                                {countFollower}
                             </span>
                         )}
                         {showFollowerMenu && (
