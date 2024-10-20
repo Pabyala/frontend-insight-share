@@ -1,6 +1,5 @@
 import "./App.css";
-import MainContainer from "./components/main-container";
-import NavigationBar from "./components/nav-bar";
+import MainContainer from "./components/timeline/MainContainer";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -10,7 +9,7 @@ import Layout from "./components/Layout";
 import Welcome from "./components/Welcome";
 import RequiredAuth from "./components/RequiredAuth";
 import Welcomeuser from "./components/Welcomeuser";
-import Logout from "./components/Logout";
+import Logout from "./components/loguot/Logout";
 
 function App() {
   return (

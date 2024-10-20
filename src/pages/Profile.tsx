@@ -1,9 +1,8 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
-import ProfileHeader from '../components/ProfileHeader'
-import ProfileUserPost from '../components/ProfileUserPost'
-import ProfileIntro from '../components/ProfileIntro'
-import Posts from '../components/Posts'
+import Navbar from '../components/navbar/Navbar'
+import ProfileHeader from '../components/user/profile/ProfileHeader'
+import ProfileIntro from '../components/user/profile/ProfileIntro'
+import Posts from '../components/post/Posts'
 
 export default function Profile() {
     return (

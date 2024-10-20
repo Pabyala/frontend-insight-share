@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { MdiEye, MdiEyeOff } from '../components/custom-icons';
-import { useGetUserDataQuery, useLoginMutation } from '../features/auth/authApiSlice';
+import { MdiEye, MdiEyeOff } from '../components/others/CustomIcons';
+import { useLoginMutation } from '../features/auth/authApiSlice';
 import { useDispatch } from 'react-redux';
 import { setCredentials, setUserDetails } from '../features/auth/authSlice';
 
@@ -17,8 +17,6 @@ export default function SignIn() {
     const location = useLocation();
     // const from = location.state?.from?.pathname || '/welcome'; 
     const from = location.state?.from?.pathname || '/'; 
-    const { data: userData, error, refetch } = useGetUserDataQuery(undefined, { skip: true }); // Fetch user data after login
-
     const handleSubmit = async () => {
 
         if(username === '' || password === '') return alert('username and password required')

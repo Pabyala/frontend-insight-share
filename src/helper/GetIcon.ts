@@ -1,5 +1,5 @@
 import React from 'react'
-import { EmojioneV1Newspaper, IonLogOut, AntDesignSettingFilled, ClarityUserSolid } from '../components/custom-icons'
+import { EmojioneV1Newspaper, IonLogOut, AntDesignSettingFilled, ClarityUserSolid } from '../components/others/CustomIcons'
 
 interface IconMap {
     [key: string]: JSX.Element;

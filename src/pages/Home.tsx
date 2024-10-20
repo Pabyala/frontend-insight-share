@@ -1,7 +1,6 @@
 import React from 'react'
-import NavigationBar from '../components/nav-bar'
-import MainContainer from '../components/main-container'
-import Navbar from '../components/Navbar'
+import MainContainer from '../components/timeline/MainContainer'
+import Navbar from '../components/navbar/Navbar'
 
 export default function Home() {
   return (

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import CustomDatePicker from "../components/CustomDatePicker";
+import CustomDatePicker from "../components/others/CustomDatePicker";
 import { userGender } from "../data/app-data";
 import { Link, useNavigate } from "react-router-dom";
-import { MdiEye, MdiEyeOff } from "../components/custom-icons";
+import { MdiEye, MdiEyeOff } from "../components/others/CustomIcons";
 
 export default function SignUp() {
     const navigate = useNavigate();
