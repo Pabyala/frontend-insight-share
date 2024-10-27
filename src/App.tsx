@@ -10,6 +10,11 @@ import Welcome from "./components/Welcome";
 import RequiredAuth from "./components/RequiredAuth";
 import Welcomeuser from "./components/Welcomeuser";
 import Logout from "./components/loguot/Logout";
+import Prefetch from "./features/auth/Prefetch";
+import Settings from "./pages/Settings";
+import Followers from "./pages/Followers";
+import Following from "./pages/Following";
+import UploadProfileImg from "./components/user/profile/UploadProfileImg";
 
 function App() {
   return (
@@ -23,13 +28,23 @@ function App() {
             
 
             {/* Protected routes */}
-            <Route element={<RequiredAuth/>}>
-              <Route path="/" element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/welcome" element={<Welcome />} />
-              <Route path="/userlist" element={<Welcomeuser />} />
-              <Route path="/logout" element={<Logout />} />
-            </Route>
+            {/* <Route element={<Prefetch/>}> */}
+              <Route element={<RequiredAuth/>}>
+                <Route path="/" element={<Home />} />
+                <Route path="/followers" element={<Followers />} />
+                <Route path="/following" element={<Following />} />
+                <Route path="/profile" element={<Profile />} />
+                {/* <Route path="/my-post" element={< />} /> */}
+                <Route path="/settings" element={<Settings />} />
+
+
+                {/* for demo */}
+                <Route path="/upload-img" element={<UploadProfileImg />} />
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/userlist" element={<Welcomeuser />} />
+                <Route path="/logout" element={<Logout />} />
+              </Route>
+            {/* </Route> */}
           </Route>
         </Routes>
       {/* </div> */}

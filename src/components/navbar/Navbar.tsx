@@ -5,8 +5,11 @@ import NotificationContent from "./NotificationContent";
 import SubmenuProfile from "./SubMenuProfile";
 import { Link } from "react-router-dom";
 import FollowersRequestContent from "./FollowersRequestContent";
+import { useGetUserQuery } from "../../features/users/usersApiSlice";
 
 export default function Navbar() {
+
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
 
     const countFollower: number = 4;
     const [showFollowerMenu, setShowFollowerMenu] = useState<boolean>(false);
@@ -153,6 +156,7 @@ export default function Navbar() {
                         <div className="cursor-pointer" >
                             <img
                                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
+                                // src={}
                                 alt="profile picture"
                                 className="relative inline-block h-[33px] w-[33px] !rounded-full object-cover object-center"
                             />

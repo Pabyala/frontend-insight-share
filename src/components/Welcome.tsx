@@ -3,25 +3,17 @@ import { useSelector } from 'react-redux'
 import { selectCurrentId, selectCurrentToken, selectCurrentUser, selectCurrentUserData } from '../features/auth/authSlice'
 import { Link } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-import { useGetUserDataQuery } from '../features/auth/authApiSlice'
+// import { useGetUserDataQuery } from '../features/auth/authApiSlice'
 import { RootState } from '../app/store'; 
+import { useGetUserQuery } from '../features/users/usersApiSlice'
 
 export default function Welcome() {
-    const username = useSelector(selectCurrentUser)
-    const token = useSelector(selectCurrentToken)
-    const id = useSelector(selectCurrentId)
+    // const userId = useSelector(selectCurrentId)
+    // const userId: string | null = '';
+    // console.log("My Id", userId)
 
-    console.log("Username:", username);
-    console.log("Token:", token); 
-    console.log("My Id:", id); 
-
-    const currentUserId = useSelector((state: RootState) => selectCurrentId(state));
-    const currentUsername = useSelector((state: RootState) => selectCurrentUser(state));
-
-    // fetch full user data using the query, skipping if user is not logged in
-    const { data: userData, error, isLoading, refetch } = useGetUserDataQuery(undefined, {
-        skip: !token, // skip fetching if user is not logged in
-    });
+    const { data: userData, error, isLoading, refetch } =  useGetUserQuery();
+    console.log("My Data", userData?.userInfo?._id);
 
     console.log(userData)
 
@@ -36,7 +28,7 @@ export default function Welcome() {
     return (
         <div>
             <div>
-            <h1>Welcome, {currentUsername || 'User'}!</h1>
+            <h1>Welcome!</h1>
             {userData && (
                 <div>
                     <h2>Your Profile Information:</h2>

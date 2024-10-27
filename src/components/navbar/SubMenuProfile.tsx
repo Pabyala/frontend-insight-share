@@ -3,17 +3,15 @@ import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectCurrentToken } from '../../features/auth/authSlice'
-import { useGetUserDataQuery } from '../../features/auth/authApiSlice'
+// import { useGetUserDataQuery } from '../../features/auth/authApiSlice'
+import { useGetUserQuery } from '../../features/users/usersApiSlice'
 
 export default function SubmenuProfile() {
 
     const token = useSelector(selectCurrentToken)
-    // Fetch user data; skip fetching if user is not logged in
-    const { data: userData, error, isLoading } = useGetUserDataQuery(undefined, {
-        skip: !token,
-    });
+    const { data: userInfo, error, isLoading } = useGetUserQuery();
 
-    // const notificationCount = userData?.userInfo?.followers.length
+    // const notificationCount = userInfo?.followers.length
 
     return (
         <div className="absolute top-full right-[0px] mt-[11px] w-[392px] bg-white rounded-md shadow-lg py-2">
@@ -22,16 +20,16 @@ export default function SubmenuProfile() {
                     <Avatar
                         sx={{ width: 32, height: 32 }}
                         alt="Remy Sharp"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={userInfo?.avatarUrl}
                     />
                     <div className='flex flex-col ml-2.5'>
                         {/* <span className='text-sm font-semibold'>Eleomar F. Fajutnao</span> */}
                         <p className="text-sm font-semibold">
-                            <span>{userData?.userInfo?.firstName} </span>  
-                            <span>{userData?.userInfo?.middleName} </span>  
-                            <span>{userData?.userInfo?.lastName}</span>
+                            <span>{userInfo?.firstName} </span>  
+                            {/* <span>{userInfo?.middleName} </span>   */}
+                            <span>{userInfo?.lastName}</span>
                         </p>
-                        <span className='text-sm'>{userData?.userInfo?.username}</span>
+                        <span className='text-sm'>{userInfo?.username}</span>
                     </div>
                 </div>
             </div>
@@ -54,8 +52,8 @@ export default function SubmenuProfile() {
                         <MingcuteUserFollow2Fill className='text-2xl' />
                     </div>
                     <span>
-                        Following {userData?.userInfo?.following && userData.userInfo.following.length !== 0 
-                            ? userData.userInfo.following.length 
+                        Following {userInfo?.following && userInfo.following.length !== 0 
+                            ? userInfo.following.length 
                             : ''
                         }
                     </span>
@@ -69,8 +67,8 @@ export default function SubmenuProfile() {
                         <FluentPersonArrowBack24Filled className='text-2xl' />
                     </div>
                     <span>
-                        Followers {userData?.userInfo?.followers && userData.userInfo.followers.length !== 0 
-                            ? userData.userInfo.followers.length 
+                        Followers {userInfo?.followers && userInfo.followers.length !== 0 
+                            ? userInfo.followers.length 
                             : ''
                         }
                     </span>

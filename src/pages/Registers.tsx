@@ -67,7 +67,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5]">
+    <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5] pb-5">
       <div className='container mx-auto'>
       <div className="bg-white mx-auto p-5 rounded-lg shadow-md max-w-md w-full">
         <h3 className="text-lg font-bold text-center mb-1">Create a new account</h3>

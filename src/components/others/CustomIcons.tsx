@@ -40,10 +40,16 @@ export function ClarityUserSolid(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 36 36" {...props}><path fill="blue" d="M30.61 24.52a17.16 17.16 0 0 0-25.22 0a1.5 1.5 0 0 0-.39 1v6A1.5 1.5 0 0 0 6.5 33h23a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-.39-.98" className="clr-i-solid clr-i-solid-path-1"></path><circle cx={18} cy={10} r={7} fill="blue" className="clr-i-solid clr-i-solid-path-2"></circle><path fill="none" d="M0 0h36v36H0z"></path></svg>);
 }
 
-// setting
+// setting color blue
 export function AntDesignSettingFilled(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024" {...props}><path fill="blue" d="M512.5 390.6c-29.9 0-57.9 11.6-79.1 32.8c-21.1 21.2-32.8 49.2-32.8 79.1s11.7 57.9 32.8 79.1c21.2 21.1 49.2 32.8 79.1 32.8s57.9-11.7 79.1-32.8c21.1-21.2 32.8-49.2 32.8-79.1s-11.7-57.9-32.8-79.1a110.96 110.96 0 0 0-79.1-32.8m412.3 235.5l-65.4-55.9c3.1-19 4.7-38.4 4.7-57.7s-1.6-38.8-4.7-57.7l65.4-55.9a32.03 32.03 0 0 0 9.3-35.2l-.9-2.6a442.5 442.5 0 0 0-79.6-137.7l-1.8-2.1a32.12 32.12 0 0 0-35.1-9.5l-81.2 28.9c-30-24.6-63.4-44-99.6-57.5l-15.7-84.9a32.05 32.05 0 0 0-25.8-25.7l-2.7-.5c-52-9.4-106.8-9.4-158.8 0l-2.7.5a32.05 32.05 0 0 0-25.8 25.7l-15.8 85.3a353.4 353.4 0 0 0-98.9 57.3l-81.8-29.1a32 32 0 0 0-35.1 9.5l-1.8 2.1a445.9 445.9 0 0 0-79.6 137.7l-.9 2.6c-4.5 12.5-.8 26.5 9.3 35.2l66.2 56.5c-3.1 18.8-4.6 38-4.6 57c0 19.2 1.5 38.4 4.6 57l-66 56.5a32.03 32.03 0 0 0-9.3 35.2l.9 2.6c18.1 50.3 44.8 96.8 79.6 137.7l1.8 2.1a32.12 32.12 0 0 0 35.1 9.5l81.8-29.1c29.8 24.5 63 43.9 98.9 57.3l15.8 85.3a32.05 32.05 0 0 0 25.8 25.7l2.7.5a448.3 448.3 0 0 0 158.8 0l2.7-.5a32.05 32.05 0 0 0 25.8-25.7l15.7-84.9c36.2-13.6 69.6-32.9 99.6-57.5l81.2 28.9a32 32 0 0 0 35.1-9.5l1.8-2.1c34.8-41.1 61.5-87.4 79.6-137.7l.9-2.6c4.3-12.4.6-26.3-9.5-35m-412.3 52.2c-97.1 0-175.8-78.7-175.8-175.8s78.7-175.8 175.8-175.8s175.8 78.7 175.8 175.8s-78.7 175.8-175.8 175.8"></path></svg>);
 }
+
+// setting color white
+export function AntDesignSettingFilledWhite(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024" {...props}><path fill="white" d="M512.5 390.6c-29.9 0-57.9 11.6-79.1 32.8c-21.1 21.2-32.8 49.2-32.8 79.1s11.7 57.9 32.8 79.1c21.2 21.1 49.2 32.8 79.1 32.8s57.9-11.7 79.1-32.8c21.1-21.2 32.8-49.2 32.8-79.1s-11.7-57.9-32.8-79.1a110.96 110.96 0 0 0-79.1-32.8m412.3 235.5l-65.4-55.9c3.1-19 4.7-38.4 4.7-57.7s-1.6-38.8-4.7-57.7l65.4-55.9a32.03 32.03 0 0 0 9.3-35.2l-.9-2.6a442.5 442.5 0 0 0-79.6-137.7l-1.8-2.1a32.12 32.12 0 0 0-35.1-9.5l-81.2 28.9c-30-24.6-63.4-44-99.6-57.5l-15.7-84.9a32.05 32.05 0 0 0-25.8-25.7l-2.7-.5c-52-9.4-106.8-9.4-158.8 0l-2.7.5a32.05 32.05 0 0 0-25.8 25.7l-15.8 85.3a353.4 353.4 0 0 0-98.9 57.3l-81.8-29.1a32 32 0 0 0-35.1 9.5l-1.8 2.1a445.9 445.9 0 0 0-79.6 137.7l-.9 2.6c-4.5 12.5-.8 26.5 9.3 35.2l66.2 56.5c-3.1 18.8-4.6 38-4.6 57c0 19.2 1.5 38.4 4.6 57l-66 56.5a32.03 32.03 0 0 0-9.3 35.2l.9 2.6c18.1 50.3 44.8 96.8 79.6 137.7l1.8 2.1a32.12 32.12 0 0 0 35.1 9.5l81.8-29.1c29.8 24.5 63 43.9 98.9 57.3l15.8 85.3a32.05 32.05 0 0 0 25.8 25.7l2.7.5a448.3 448.3 0 0 0 158.8 0l2.7-.5a32.05 32.05 0 0 0 25.8-25.7l15.7-84.9c36.2-13.6 69.6-32.9 99.6-57.5l81.2 28.9a32 32 0 0 0 35.1-9.5l1.8-2.1c34.8-41.1 61.5-87.4 79.6-137.7l.9-2.6c4.3-12.4.6-26.3-9.5-35m-412.3 52.2c-97.1 0-175.8-78.7-175.8-175.8s78.7-175.8 175.8-175.8s175.8 78.7 175.8 175.8s-78.7 175.8-175.8 175.8"></path></svg>);
+}
+
 
 // logout
 export function IonLogOut(props: SVGProps<SVGSVGElement>) {
@@ -111,7 +117,7 @@ export function MdiEyeOff(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="gray" d="M11.83 9L15 12.16V12a3 3 0 0 0-3-3zm-4.3.8l1.55 1.55c-.05.21-.08.42-.08.65a3 3 0 0 0 3 3c.22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53a5 5 0 0 1-5-5c0-.79.2-1.53.53-2.2M2 4.27l2.28 2.28l.45.45C3.08 8.3 1.78 10 1 12c1.73 4.39 6 7.5 11 7.5c1.55 0 3.03-.3 4.38-.84l.43.42L19.73 22L21 20.73L3.27 3M12 7a5 5 0 0 1 5 5c0 .64-.13 1.26-.36 1.82l2.93 2.93c1.5-1.25 2.7-2.89 3.43-4.75c-1.73-4.39-6-7.5-11-7.5c-1.4 0-2.74.25-4 .7l2.17 2.15C10.74 7.13 11.35 7 12 7"></path></svg>);
 }
 
-// arrow
+// arrow up
 export function BxsUpArrow(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="gray" d="M3 19h18a1.002 1.002 0 0 0 .823-1.569l-9-13c-.373-.539-1.271-.539-1.645 0l-9 13A.999.999 0 0 0 3 19"></path></svg>);
 }
@@ -179,4 +185,43 @@ export function MingcuteSaveLine(props: SVGProps<SVGSVGElement>) {
 // save full colored
 export function MingcuteSaveFill(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><g fill="none" fillRule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"></path><path fill="gray" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6.414A2 2 0 0 0 19.414 5L17 2.586A2 2 0 0 0 15.586 2zm10.238 8.793a1 1 0 1 0-1.414-1.414l-4.242 4.243l-1.415-1.415a1 1 0 0 0-1.414 1.414l2.05 2.051a1.1 1.1 0 0 0 1.556 0l4.88-4.879Z"></path></g></svg>);
+}
+
+// delete
+export function MaterialSymbolsDelete(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="gray" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z"></path></svg>);
+}
+
+// check color white
+export function MingcuteCheck2Fill(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><g fill="none" fillRule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"></path><path fill="white" d="M19.495 3.133a1 1 0 0 1 1.352.309l.99 1.51a1 1 0 0 1-.155 1.279l-.003.004l-.014.013l-.057.053l-.225.215a84 84 0 0 0-3.62 3.736c-2.197 2.416-4.806 5.578-6.562 8.646c-.49.856-1.687 1.04-2.397.301l-6.485-6.738a1 1 0 0 1 .051-1.436l1.96-1.768A1 1 0 0 1 5.6 9.2l3.309 2.481c5.169-5.097 8.1-7.053 10.586-8.548"></path></g></svg>);
+}
+
+// check color gray
+export function MingcuteCheck2FillGray(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><g fill="none" fillRule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"></path><path fill="gray" d="M19.495 3.133a1 1 0 0 1 1.352.309l.99 1.51a1 1 0 0 1-.155 1.279l-.003.004l-.014.013l-.057.053l-.225.215a84 84 0 0 0-3.62 3.736c-2.197 2.416-4.806 5.578-6.562 8.646c-.49.856-1.687 1.04-2.397.301l-6.485-6.738a1 1 0 0 1 .051-1.436l1.96-1.768A1 1 0 0 1 5.6 9.2l3.309 2.481c5.169-5.097 8.1-7.053 10.586-8.548"></path></g></svg>);
+}
+
+// x or close
+export function MdiCloseThick(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="gray" d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12z"></path></svg>);
+}
+
+// birthday cake
+export function StreamlineEmojisBirthdayCake1(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" {...props}><path fill="#45413c" d="M6.5 45.5a17.5 1.5 0 1 0 35 0a17.5 1.5 0 1 0-35 0" opacity={0.15}></path><path fill="#bf8256" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M6.5 24c0 3.59 7.84 6.5 17.5 6.5s17.5-2.91 17.5-6.5v15c0 3.59-7.84 6.5-17.5 6.5S6.5 42.59 6.5 39Z"></path><path fill="#ffe3cf" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M6.5 30c0 3.59 7.84 6.5 17.5 6.5s17.5-2.91 17.5-6.5v5c0 3.59-7.84 6.5-17.5 6.5S6.5 38.59 6.5 35Z"></path><path fill="#ff6242" d="M30.5 33.5a.5.5 0 0 1 1 0a2.5 2.5 0 0 0 5 0v-2a1.5 1.5 0 0 1 3 0a1.5 1.5 0 0 0 3 0V24c0-3.59-8.28-6.5-18.5-6.5S5.5 20.41 5.5 24v8a1.5 1.5 0 0 0 3 0a1.5 1.5 0 0 1 3 0v3a2.5 2.5 0 0 0 5 0a1.5 1.5 0 0 1 3 0v1a1.5 1.5 0 0 0 3 0v-.5a2.5 2.5 0 0 1 5 0V37a1.5 1.5 0 0 0 3 0Z"></path><path fill="#ff866e" d="M24 20c7.41 0 14 1 18.08 2.63c-1.79-2.93-9.2-5.13-18.08-5.13S7.71 19.7 5.92 22.63C10 21 16.59 20 24 20"></path><path fill="none" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M30.5 33.5a.5.5 0 0 1 1 0a2.5 2.5 0 0 0 5 0v-2a1.5 1.5 0 0 1 3 0a1.5 1.5 0 0 0 3 0V24c0-3.59-8.28-6.5-18.5-6.5S5.5 20.41 5.5 24v8a1.5 1.5 0 0 0 3 0a1.5 1.5 0 0 1 3 0v3a2.5 2.5 0 0 0 5 0a1.5 1.5 0 0 1 3 0v1a1.5 1.5 0 0 0 3 0v-.5a2.5 2.5 0 0 1 5 0V37a1.5 1.5 0 0 0 3 0Z"></path><path fill="none" stroke="#e04122" strokeLinecap="round" strokeLinejoin="round" d="M40.5 24c0 2.49-7.39 4.5-16.5 4.5S7.5 26.49 7.5 24"></path><path fill="#fffef2" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M19.5 25.5v-8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a2.17 2.17 0 0 0 2 1a2.17 2.17 0 0 0 2-1"></path><path fill="#ffe500" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M15.2 11.55a2.37 2.37 0 0 0 4.62 1.1c.41-1.73-2.23-2-2.17-4.58a5 5 0 0 0-2.45 3.48"></path><path fill="#fffef2" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M13.5 22.5v-8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a2.17 2.17 0 0 0 2 1a2.17 2.17 0 0 0 2-1"></path><path fill="#ffe500" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M9.2 8.55a2.37 2.37 0 0 0 4.62 1.1c.41-1.73-2.23-2-2.17-4.58A5 5 0 0 0 9.2 8.55"></path><path fill="#fffef2" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M38.5 22.5v-8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a2.5 2.5 0 0 0 4 0"></path><path fill="#ffe500" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M34.2 8.55a2.37 2.37 0 1 0 4.62 1.1c.41-1.73-2.23-2-2.17-4.58a5 5 0 0 0-2.45 3.48"></path><path fill="#fffef2" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M32.5 25.5v-8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a2.17 2.17 0 0 0 2 1a2.17 2.17 0 0 0 2-1"></path><path fill="#ffe500" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M28.2 11.55a2.37 2.37 0 0 0 4.62 1.1c.41-1.73-2.23-2-2.17-4.58a5 5 0 0 0-2.45 3.48"></path><path fill="#fffef2" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M26 19.5v-8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v8a2.17 2.17 0 0 0 2 1a2.17 2.17 0 0 0 2-1"></path><path fill="#ffe500" stroke="#45413c" strokeLinecap="round" strokeLinejoin="round" d="M21.7 5.55a2.37 2.37 0 0 0 4.62 1.1c.41-1.73-2.23-2-2.17-4.58a5 5 0 0 0-2.45 3.48"></path></svg>);
+}
+
+// camera
+// export function GridiconsCamera(props: SVGProps<SVGSVGElement>) {
+// 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="gray" d="M17 12c0 1.7-1.3 3-3 3s-3-1.3-3-3s1.3-3 3-3s3 1.3 3 3m5-5v11c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2V4h4v1h2l1-2h6l1 2h2c1.1 0 2 .9 2 2M7.5 9c0-.8-.7-1.5-1.5-1.5S4.5 8.2 4.5 9s.7 1.5 1.5 1.5S7.5 9.8 7.5 9M19 12c0-2.8-2.2-5-5-5s-5 2.2-5 5s2.2 5 5 5s5-2.2 5-5"></path></svg>);
+// }
+
+export function GridiconsCamera(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="black" d="M17 12c0 1.7-1.3 3-3 3s-3-1.3-3-3s1.3-3 3-3s3 1.3 3 3m5-5v11c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2V4h4v1h2l1-2h6l1 2h2c1.1 0 2 .9 2 2M7.5 9c0-.8-.7-1.5-1.5-1.5S4.5 8.2 4.5 9s.7 1.5 1.5 1.5S7.5 9.8 7.5 9M19 12c0-2.8-2.2-5-5-5s-5 2.2-5 5s2.2 5 5 5s5-2.2 5-5"></path></svg>);
+}
+
+// right arrow
+export function FeArrowRight(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}><path fill="gray" fillRule="evenodd" d="m9.005 4l8 8l-8 8L7 18l6.005-6L7 6z"></path></svg>);
 }

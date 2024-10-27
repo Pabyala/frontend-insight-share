@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { Avatar } from "@mui/material";
 import PostTextArea from "./PostTextarea";
+import { useSelector } from "react-redux";
+// import { useGetUserDataQuery } from "../../features/auth/authApiSlice";
+import { selectCurrentToken } from "../../features/auth/authSlice";
+import { useGetUserQuery } from "../../features/users/usersApiSlice";
 
 export default function CreatePost() {
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
 
+    const token = useSelector(selectCurrentToken)
+    const { data: userInfo, error, isLoading } = useGetUserQuery();
+    
     const toggleShowPostTextArea = () => {
         setOpenPostTextArea(!openPostTextAre);
     };
@@ -15,7 +22,7 @@ export default function CreatePost() {
                     <Avatar
                         sx={{ width: 38, height: 38 }}
                         alt="Remy Sharp"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={userInfo?.avatarUrl}
                     />
                 </div>
                 <div
@@ -23,7 +30,7 @@ export default function CreatePost() {
                     className="w-full flex flex-grow cursor-pointer"
                 >
                 <span className="w-full flex items-center cursor-pointer text-sm py-2 px-3 rounded bg-customGray text-black outline-none">
-                    What's on your mind, Marco?
+                    What's on your mind, {userInfo?.firstName}?
                 </span>
                 </div>
             </div>

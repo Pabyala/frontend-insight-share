@@ -15,6 +15,7 @@ export default function SignIn() {
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
     const location = useLocation();
+
     // const from = location.state?.from?.pathname || '/welcome'; 
     const from = location.state?.from?.pathname || '/'; 
     const handleSubmit = async () => {
@@ -58,7 +59,7 @@ export default function SignIn() {
     }, [username, password])
 
     return (
-        <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-5">
             <div className='container mx-auto'>
             <div className="w-full flex flex-col justify-center mb-8">
                 <h2 className="text-2xl text-center font-bold text-blue-600 lg:text-3xl lg:mb-1">Insight Share</h2>

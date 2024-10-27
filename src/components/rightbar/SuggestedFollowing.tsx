@@ -4,8 +4,8 @@ import { MingcuteUserFollow2Fill } from "../others/CustomIcons";
 
 export default function SuggestedFollowing() {
   return (
-    <div className="">
-      <p className="text-sm font-semibold mb-1">Suggested for you</p>
+    <div className="bg-white p-1">
+      <p className="text-sm font-semibold mb-1 lg:text-base">Suggested for you</p>
       <div className="overflow-x-hidden">
         {followerRequest.map((follower) => (
           <div

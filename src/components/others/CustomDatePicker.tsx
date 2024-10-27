@@ -26,7 +26,7 @@ export default function CustomDatePicker({ onChange }: CustomDatePickerProps) {
             <Datepicker
                 useRange={false}
                 asSingle={true}
-                value={date}  // The value must be an object, not a string
+                value={date} 
                 onChange={handleChange}
                 inputClassName={'custom-datepicker relative transition-all duration-300 py-2 pl-2 pr-14 w-full rounded tracking-wide font-light text-sm font-medium placeholder-gray-400 bg-white focus:ring-customGray focus:bg-customGray focus:border-transparent focus:outline-none'}
             />
