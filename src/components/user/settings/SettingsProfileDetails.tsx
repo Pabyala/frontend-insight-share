@@ -1,7 +1,16 @@
 import React, { useState } from 'react'
 import { BxsUpArrow, FeArrowRight } from '../../others/CustomIcons'
+import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
+import BdayFormater from '../../helper/BdayFormater';
+import DefaultImg from '../../../asset/DefaultImg.jpg'
+import DefaultBg from '../../../asset/DefaultBg.png'
 
 export default function SettingsProfileDetails() {
+
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+
+    const formattedDate = BdayFormater(userInfo?.dateOfBirth);
 
     const [activeElement, setActiveElement] = useState<string | null>(null);
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(true);
@@ -34,10 +43,11 @@ export default function SettingsProfileDetails() {
                                 First Name
                             </label> */}
                             <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
+                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="text" 
                                 placeholder='First Name'
                                 name="" 
+                                value={userInfo?.firstName}
                                 id=""
                             />
                         </div>
@@ -46,10 +56,11 @@ export default function SettingsProfileDetails() {
                                 Middle Name
                             </label> */}
                             <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
+                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="text" 
                                 placeholder='Middle Name'
                                 name="" 
+                                value={userInfo?.middleName}
                                 id=""
                             />
                         </div>
@@ -58,10 +69,11 @@ export default function SettingsProfileDetails() {
                                 Last Name
                             </label> */}
                             <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
+                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="text" 
                                 placeholder='Last Name'
                                 name="" 
+                                value={userInfo?.lastName}
                                 id=""
                             />
                         </div>
@@ -91,10 +103,11 @@ export default function SettingsProfileDetails() {
                     <div className="flex flex-col space-y-1.5 lg:space-y-2.5">
                         <div className='flex flex-col space-y-1'>
                             <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
+                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="text" 
                                 placeholder='Username'
                                 name="" 
+                                value={userInfo?.username}
                                 id=""
                             />
                         </div>
@@ -122,9 +135,9 @@ export default function SettingsProfileDetails() {
                 >
                     <div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-white lg:w-[168px] lg:h-[168px] mx-auto'>
                         <img 
-                            src='https://fastly.picsum.photos/id/582/256/256.jpg?hmac=peqwFP3WuZEwg549dK3PuPyou-m-mCW6Hmd3d3bzlrA' 
+                            // src='https://fastly.picsum.photos/id/582/256/256.jpg?hmac=peqwFP3WuZEwg549dK3PuPyou-m-mCW6Hmd3d3bzlrA' 
                             // src={profilePreviewUrl}
-                            // src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
+                            src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
                             alt="Profile"
                             className='w-full h-full object-cover'
                         />
@@ -162,8 +175,8 @@ export default function SettingsProfileDetails() {
                 >
                     <div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px] dark:bg-gray-700'>
                         <img 
-                            src='https://0nepiece.netlify.app/static/media/strawhatpirates.eccf099b1766a064828c.jpg'
-                            // src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
+                            // src='https://0nepiece.netlify.app/static/media/strawhatpirates.eccf099b1766a064828c.jpg'
+                            src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
                             // src={backgroundPreviewUrl}
                             alt="Background"
                             className='w-full h-full object-cover rounded'

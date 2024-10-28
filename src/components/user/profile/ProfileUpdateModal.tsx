@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 import { MdiCloseThick } from '../../others/CustomIcons';
-import { useGetUserFollowersQuery, useGetUserQuery, useUpdateUserProfilePictureMutation, useUploadImageMutation } from '../../../features/users/usersApiSlice';
+import { useGetUserFollowersQuery, useGetUserQuery, useUpdateUserProfilePictureMutation, useUploadBgPhotoMutation, useUploadProfilePhotoMutation } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
 import { UserInfo } from '../../../interface/user';
@@ -14,7 +14,8 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
     const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
 
     const [updateUserProfilePicture, { isLoading: isUpdating, error: updateError }] = useUpdateUserProfilePictureMutation();
-    const [uploadImage, { isLoading: updateImgLoading }] = useUploadImageMutation();
+    const [uploadProfilePhoto, { isLoading: updateProfilePhotoLoading }] = useUploadProfilePhotoMutation();
+    const [uploadBgPhoto, { isLoading: updateBgPhotoLoading }] = useUploadBgPhotoMutation();
 
     const initialProfileImageUrl = userInfo?.avatarUrl || DefaultImg;
     const initialBackgroundImageUrl = userInfo?.coverPhotoUrl || DefaultBg;
@@ -64,12 +65,15 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
     const handleSave = async (type: 'profile' | 'background') => {
         try {
             if (type === 'profile' && profileFile) {
-                const response = await uploadImage({image: profilePreviewUrl}).unwrap();
-                console.log("Upload success:", response);
+                const response = await uploadProfilePhoto({image: profilePreviewUrl}).unwrap();
+                console.log("Upload profile photo success:", response);
                 refetchUserInfo();
                 setIsUpdatingProfile(false);
                 console.log("Profile picture updated successfully");
             } else if (type === 'background' && backgroundFile) {
+                const response = await uploadBgPhoto({image: backgroundPreviewUrl}).unwrap();
+                console.log("Upload background photo success:", response);
+                refetchUserInfo();
                 setIsUpdatingBackground(false);
                 console.log("Background picture updated successfully");
             }

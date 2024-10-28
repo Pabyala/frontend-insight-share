@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { FeArrowRight } from '../../others/CustomIcons';
+import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
 
 export default function SettingsPasswordAndSecurity() {
+
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+
     const [activeElement, setActiveElement] = useState<string | null>(null);
 
     const toggleAccordion = (section: string) => {
@@ -86,6 +91,7 @@ export default function SettingsPasswordAndSecurity() {
                                 type="email" 
                                 placeholder='Current email'
                                 name="" 
+                                value={userInfo?.email}
                                 id=""
                             />
                         </div>

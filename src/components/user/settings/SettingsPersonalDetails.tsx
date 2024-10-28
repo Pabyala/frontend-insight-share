@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import { FeArrowRight, MaterialSymbolsDelete, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons'
 import CustomDatePicker from '../../others/CustomDatePicker';
+import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
 
 export default function SettingsPersonalDetails() {
+
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
 
     const [activeElement, setActiveElement] = useState<string | null>(null);
 
@@ -40,6 +44,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Bio'
                                 name="" 
+                                value={userInfo?.bio}
                                 id=""
                             />
                         </div>
@@ -72,6 +77,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Lives in'
                                 name="" 
+                                value={userInfo?.livesIn}
                                 id=""
                             />
                         </div>
@@ -104,6 +110,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='From'
                                 name="" 
+                                value={userInfo?.locFrom}
                                 id=""
                             />
                         </div>
@@ -136,6 +143,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Study'
                                 name="" 
+                                value={userInfo?.studyAt}
                                 id=""
                             />
                         </div>
@@ -167,6 +175,7 @@ export default function SettingsPersonalDetails() {
                                 className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="text" 
                                 placeholder='Company'
+                                value={userInfo?.workAt.companyName}
                                 name="" 
                                 id=""
                             />
@@ -177,6 +186,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Position'
                                 name="" 
+                                value={userInfo?.workAt.position}
                                 id=""
                             />
                         </div>
@@ -207,7 +217,8 @@ export default function SettingsPersonalDetails() {
                             <input 
                                 className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="date" 
-                                placeholder='Company'
+                                placeholder='Date'
+                                value={userInfo?.dateOfBirth}
                                 name="" 
                                 id=""
                             />
@@ -274,6 +285,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Gender'
                                 name="" 
+                                value={userInfo?.gender}
                                 id=""
                             />
                         </div>
@@ -305,6 +317,7 @@ export default function SettingsPersonalDetails() {
                                 className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="number" 
                                 placeholder='Number'
+                                value={userInfo?.phoneNumber}
                                 name="" 
                                 id=""
                             />
@@ -367,7 +380,37 @@ export default function SettingsPersonalDetails() {
                     <div className="flex flex-col space-y-1.5 lg:space-y-2.5">
                         <div className='flex flex-col space-y-1'>
                             <div className='w-full flex flex-col justify-between items-center space-y-1'>
-                                    <div className='flex w-full justify-between'>
+                                    {userInfo?.socials.map((social) => (
+                                        <div key={social.urlId} className='flex w-full justify-between'>
+                                            <div className='w-[75%]'>
+                                                <a 
+                                                href={social.url}
+                                                className='w-full text-sm text-[#0866FF] '
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                >{social.url}</a>
+                                            </div>
+                                            <div className='w-[20%] flex justify-between'>
+                                                <button 
+                                                    // onClick={() => handleUpdate(social.urlId)}
+                                                    className='w-[47%] flex justify-center p-1.5 text-white font-medium text-sm rounded bg-gray-200 hover:bg-gray-300'
+                                                >
+                                                    <span className='text-[18px]'>
+                                                        <MdiPen/>
+                                                    </span>
+                                                </button>
+                                                <button 
+                                                    // onClick={() => removeSocial(social.urlId)}
+                                                    className='w-[47%] flex justify-center p-1.5 text-white font-medium text-sm rounded bg-gray-200 hover:bg-gray-300'
+                                                >
+                                                    <span className='text-[18px]'>
+                                                        <MaterialSymbolsDelete/>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {/* <div className='flex w-full justify-between'>
                                         <div className='w-[75%]'>
                                             <a 
                                             href='https://marfportfolio.netlify.app'
@@ -394,8 +437,8 @@ export default function SettingsPersonalDetails() {
                                                 </span>
                                             </button>
                                         </div>
-                                    </div>
-                                    <div className='flex w-full justify-between'>
+                                    </div> */}
+                                    {/* <div className='flex w-full justify-between'>
                                         <div className='w-[75%]'>
                                             <a 
                                             href='https://github.com/Pabyala'
@@ -423,7 +466,7 @@ export default function SettingsPersonalDetails() {
                                                 </span>
                                             </button>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className='w-full flex justify-between'>
                                         <input 
                                             // value={newSocialUrl}

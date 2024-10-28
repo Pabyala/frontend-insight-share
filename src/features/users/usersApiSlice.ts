@@ -39,9 +39,16 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['UserInfo'],
         }),
-        uploadImage: builder.mutation({
+        uploadProfilePhoto: builder.mutation({
             query: (formData) => ({
                 url: '/user/update/profile-photo',
+                method: 'POST',
+                body: formData,
+            }),
+        }),
+        uploadBgPhoto: builder.mutation({
+            query: (formData) => ({
+                url: '/user/update/bg-photo',
                 method: 'POST',
                 body: formData,
             }),
@@ -55,7 +62,8 @@ export const {
     useGetUserFollowersQuery,
     useUpdateUserDetailsMutation,
     useUpdateUserProfilePictureMutation,  
-    useUploadImageMutation,  
+    useUploadProfilePhotoMutation,  
+    useUploadBgPhotoMutation,
 } = usersApiSlice; 
 
 // // creates memoized selector
