@@ -7,21 +7,25 @@ import ReactCommentShare from './ReactCommentShare';
 import PostModal from './PostModal';
 import { dummyPosts } from '../../data/dummy-post';
 import SelectOneReaction from './SelectOneReaction';
-import { useGetUserPostsQuery } from '../../features/posts/postsApiSlice';
-// import { useGetUserDataQuery } from '../../features/auth/authApiSlice';
 import { useSelector } from 'react-redux';
 import { selectCurrentId, selectCurrentToken } from '../../features/auth/authSlice';
-import { Post } from '../../interface/posts-type';
+import { Post, TimelinePosts } from '../../interface/your-posts';
 
 interface PostsProps {
-    posts: Post[] | undefined; // Allow for undefined to handle loading state
+    posts: Post[]; // Array of posts
+    isLoading: boolean;
+    error: any;
 }
 
-export default function Posts({ posts }: PostsProps) {
+export default function Posts({ posts, isLoading, error }: PostsProps) {
 
     const [openPostModal, setOpenPostModal] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<string>('');
     console.log("Your posts..", posts)
+
+    if (isLoading) return <div>Loading posts...</div>;
+    if (error) return <div>Error loading posts</div>;
+    if (!posts || posts.length === 0) return <div>No posts available</div>;
 
     const handlePostModal = (postId: string) => {
         setSelectedPost(postId)
@@ -30,8 +34,8 @@ export default function Posts({ posts }: PostsProps) {
 
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
-            {posts ? (
-                posts.map(post => (
+            {/* {posts ? ( */}
+                {posts?.map(post => (
                     <div key={post._id} className='w-full'>
                         <div className='bg-lightWhite p-3 rounded'>
                             {/* Profile and more option */}
@@ -110,12 +114,12 @@ export default function Posts({ posts }: PostsProps) {
                             </div>
                         </div>
                     </div>
-                ))
-            ) : (
+                ))}
+            {/* ) : (
                 <div className='bg-lightWhite p-3 rounded w-full flex justify-center'>
                     <span className=''>No posts available.</span>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }

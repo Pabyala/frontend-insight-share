@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import ProfileIntro from '../components/user/profile/ProfileIntro'
@@ -8,21 +8,33 @@ import { useGetUserPostsQuery } from '../features/auth/authApiSlice'
 import Posts from '../components/post/Posts'
 import { useGetUserFollowersQuery, useGetUserQuery } from '../features/users/usersApiSlice'
 import BdayPost from '../components/post/BdayPost'
+import { useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
 
 export default function Profile() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const userId = userInfo?._id;
-    const { data: posts, error, isLoading } = useGetUserPostsQuery(userId || null, {
-        skip: !userId, // Skip the query if userId is not available
-    });
-    const { data: followersData, isError } = useGetUserFollowersQuery();
+    const { data: followersData, error: followersError } = useGetUserFollowersQuery();
+    const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
+    console.log("My posts", yourPosts)
 
-    console.log("My posts", posts)
+    const myBirthday = userInfo?.dateOfBirth; // 1990-11-01
+    const isTodayBirthday = () => {
+        if (!myBirthday) return false;
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error fetching posts</div>;
-    console.log(error)
+        const today = new Date();
+        const birthDate = new Date(myBirthday);
+        
+        return today.getDate() === birthDate.getDate() && today.getMonth() === birthDate.getMonth();
+    };
+
+    useEffect(() => {
+        refetchYourPosts();
+    }, [refetchYourPosts]);
+
+    if (isUserInfoLoading) return <div>Loading...</div>;
+    if (userInfoError) return <div>Error fetching posts</div>;
+    console.log(userInfoError)
 
     return (
         <div className='flex flex-col pb-5'>
@@ -34,8 +46,14 @@ export default function Profile() {
                         <ProfileIntro  />
                     </div>
                     <div className='lg:w-[56%]'>
-                        <BdayPost myName={userInfo?.firstName} />
-                        <Posts posts={posts?.yourAllPost} />
+                        {isTodayBirthday() && (
+                            <BdayPost myName={userInfo?.firstName} />
+                        )}
+                        <Posts 
+                            posts={yourPosts || []} // Directly pass your posts
+                            isLoading={isLoadingYourPosts} 
+                            error={errorYourPosts}
+                        />
                     </div>
                 </div>
             </div>
