@@ -5,12 +5,15 @@ import { useSelector } from "react-redux";
 // import { useGetUserDataQuery } from "../../features/auth/authApiSlice";
 import { selectCurrentToken } from "../../features/auth/authSlice";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
+import { useAddPostMutation } from "../../features/posts/postsApiSlice";
 
 export default function CreatePost() {
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
 
     const token = useSelector(selectCurrentToken)
-    const { data: userInfo, error, isLoading } = useGetUserQuery();
+    const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
+    // const { data: createPost, error: errorCreatePost, isLoading: isLoadingCreatePost } = useAddPostMutation();
+    // const [addPost] = useAddPostMutation();
     
     const toggleShowPostTextArea = () => {
         setOpenPostTextArea(!openPostTextAre);

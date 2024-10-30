@@ -15,10 +15,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             transformResponse: (response: { userInfo: UserInfo }) => response.userInfo,
             providesTags: ['UserInfo'],
         }),
-        // getUserFollowing: builder.query<UserInfo, void>({
-        //     query: () => '/user/following',
-        //     transformResponse: (response: { userInfo: UserInfo }) => response.userInfo,
-        // }),
         getUserFollowers: builder.query<Followers, void>({
             query: () => '/user/followers',
             transformResponse: (response: Followers ) => response,
@@ -33,9 +29,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         updateUserProfilePicture: builder.mutation<UserInfo, FormData>({
             query: (formData) => ({
-                url: '/uploadImage', // Assuming this is your endpoint for uploading images
+                url: '/uploadImage', 
                 method: 'POST',
-                body: formData, // Send FormData directly
+                body: formData, 
             }),
             invalidatesTags: ['UserInfo'],
         }),
@@ -58,7 +54,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const { 
     useGetUsersQuery, 
     useGetUserQuery, 
-    // useGetUserFollowingQuery, 
     useGetUserFollowersQuery,
     useUpdateUserDetailsMutation,
     useUpdateUserProfilePictureMutation,  

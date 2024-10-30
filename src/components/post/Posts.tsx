@@ -10,6 +10,7 @@ import SelectOneReaction from './SelectOneReaction';
 import { useSelector } from 'react-redux';
 import { selectCurrentId, selectCurrentToken } from '../../features/auth/authSlice';
 import { Post, TimelinePosts } from '../../interface/your-posts';
+import PostTextArea from './PostTextarea';
 
 interface PostsProps {
     posts: Post[]; // Array of posts
@@ -20,8 +21,11 @@ interface PostsProps {
 export default function Posts({ posts, isLoading, error }: PostsProps) {
 
     const [openPostModal, setOpenPostModal] = useState<boolean>(false);
+    const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<string>('');
+    const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     console.log("Your posts..", posts)
+    console.log("Your posts id", selectedPostId)
 
     if (isLoading) return <div>Loading posts...</div>;
     if (error) return <div>Error loading posts</div>;
@@ -32,11 +36,22 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
         setOpenPostModal(!openPostModal)
     }
 
+    const handleOption = (postId: string) => {
+        console.log("clicked post", postId)
+        // setOpenPostModal(true)
+        setSelectedPostId(postId)
+        // toggleShowPostTextArea()
+    }
+
+    const toggleShowPostTextArea = () => {
+        setOpenPostTextArea(!openPostTextAre);
+    };
+
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
             {/* {posts ? ( */}
                 {posts?.map(post => (
-                    <div key={post._id} className='w-full'>
+                    <div key={post._id} className='w-full relative'>
                         <div className='bg-lightWhite p-3 rounded'>
                             {/* Profile and more option */}
                             <div className='mb-1'>
@@ -54,7 +69,9 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                     </div>
                                     <div>
                                         <Tooltip title="Show more">
-                                            <IconButton>
+                                            <IconButton
+                                                onClick={() => handleOption(post._id)}
+                                            >
                                                 <MoreVertIcon />
                                             </IconButton>
                                         </Tooltip>
@@ -65,7 +82,12 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                             <div className=''>
                                 <div className="flex">
                                     <div className="my-2">
-                                        <span className='text-sm'>{post.captionPost}</span>
+                                        {post.captionPost.split('\n').map((line, index) => (
+                                            <span key={index}>
+                                                {line}
+                                                {index < post.captionPost.split('\n').length - 1 && <br />}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -113,8 +135,17 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                 </div>
                             </div>
                         </div>
+                        {/* <div className='absolute top-[30px] right-[55px]'>
+                            <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start'>
+                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Update post</button>
+                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Delete post</button>
+                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Save post</button>
+                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Unsave post</button>
+                            </div>
+                        </div> */}
                     </div>
                 ))}
+                {openPostTextAre && <PostTextArea onClose={toggleShowPostTextArea} />}
             {/* ) : (
                 <div className='bg-lightWhite p-3 rounded w-full flex justify-center'>
                     <span className=''>No posts available.</span>

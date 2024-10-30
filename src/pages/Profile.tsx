@@ -50,7 +50,7 @@ export default function Profile() {
                             <BdayPost myName={userInfo?.firstName} />
                         )}
                         <Posts 
-                            posts={yourPosts || []} // Directly pass your posts
+                            posts={yourPosts || []} 
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
                         />

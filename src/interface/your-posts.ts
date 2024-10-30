@@ -23,15 +23,32 @@ export interface Post {
     reactions: Reactions;
     authorId: Author;
     captionPost: string;
-    comments: any[];  // Replace `any` with a comment type if defined
+    comments: any[]; 
     createdAt: string;
     updatedAt: string;
     __v: number;
 }
 
 
-
 export interface TimelinePosts {
     message: string;      
     dataPost: Post[];     
+}
+
+/// added post
+export interface newPost {
+    authorId: string;
+    captionPost: string
+    reactions: Reactions;
+    comments: any[]
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+
+}
+
+export interface AddPost {
+    message: string; 
+    newPost: newPost;
 }
