@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import { EmojioneV1Newspaper, FluentColorPeople48 } from "../others/CustomIcons";
+import { EmojioneV1Newspaper, FlatColorIconsFolder, FluentColorPeople48 } from "../others/CustomIcons";
 import Sponsored from "./Sponsored";
 import { Link } from "react-router-dom";
 import { selectCurrentToken } from "../../features/auth/authSlice";
@@ -19,7 +19,7 @@ export default function LeftBar() {
                 className="h-full fixed overflow-hidden w-full xl:max-w-[290px] 2xl:max-w-[348px]"
                 style={{ zIndex: "1" }}
             >
-                <div className="flex flex-col bg-white rounded mb-3 p-1">
+                <div className="flex flex-col bg-white rounded mb-3 p-1.5">
                     {/* profile */}
                     <Link to='/profile' className="profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded cursor-pointer">
                         <div className="flex">
@@ -66,7 +66,7 @@ export default function LeftBar() {
                         </div>
                     </Link>
                     {/* My posts */}
-                    <Link to='/my-post' className="profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded mb-2">
+                    <Link to='/my-post' className="profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded">
                         <div className="flex">
                             <span className="text-3xl">
                                 <EmojioneV1Newspaper />
@@ -78,6 +78,16 @@ export default function LeftBar() {
                                 (<span className="font-semibold text-sm">{userInfo?.followers.length }</span>)
                             }
                             <span className="font-semibold text-sm">(100)</span>
+                        </div>
+                    </Link>
+                    <Link to='/my-post' className="profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded">
+                        <div className="flex">
+                            <span className="text-3xl">
+                                <FlatColorIconsFolder />
+                            </span>
+                        </div>
+                        <div className="flex space-x-1">
+                            <span className="font-medium text-sm">Saved Posts</span>
                         </div>
                     </Link>
                 </div>
