@@ -13,9 +13,10 @@ import { useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
 export default function Profile() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const userId = userInfo?._id;
     const { data: followersData, error: followersError } = useGetUserFollowersQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
+
+    const posts = yourPosts ? yourPosts.dataPost : [];
     console.log("My posts", yourPosts)
 
     const myBirthday = userInfo?.dateOfBirth; // 1990-11-01
@@ -50,7 +51,7 @@ export default function Profile() {
                             <BdayPost myName={userInfo?.firstName} />
                         )}
                         <Posts 
-                            posts={yourPosts || []} 
+                            posts={posts} 
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
                         />

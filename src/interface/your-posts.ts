@@ -31,7 +31,8 @@ export interface Post {
 
 
 export interface TimelinePosts {
-    message: string;      
+    message: string;    
+    postCount: number;  
     dataPost: Post[];     
 }
 

@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Tooltip } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FluentCommentEdit16Filled, MingcuteSaveLine } from '../others/CustomIcons';
 import AllReactions from './AllReactions';
@@ -11,21 +11,41 @@ import { useSelector } from 'react-redux';
 import { selectCurrentId, selectCurrentToken } from '../../features/auth/authSlice';
 import { Post, TimelinePosts } from '../../interface/your-posts';
 import PostTextArea from './PostTextarea';
+import { useGetUserQuery } from '../../features/users/usersApiSlice';
 
 interface PostsProps {
-    posts: Post[]; // Array of posts
+    posts: Post[]; 
     isLoading: boolean;
     error: any;
 }
 
 export default function Posts({ posts, isLoading, error }: PostsProps) {
 
+    const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
+    
     const [openPostModal, setOpenPostModal] = useState<boolean>(false);
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<string>('');
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-    console.log("Your posts..", posts)
-    console.log("Your posts id", selectedPostId)
+
+    
+    const handleOption = (postId: string) => {
+        console.log("clicked post: ", postId)
+        setSelectedPostId((prevId) => (prevId === postId ? null : postId));
+    }
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => { 
+            if ( selectedPostId &&
+                !document.getElementById(`options-${selectedPostId}`)?.contains(event.target as Node)) {
+                setSelectedPostId(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [selectedPostId]);
 
     if (isLoading) return <div>Loading posts...</div>;
     if (error) return <div>Error loading posts</div>;
@@ -34,13 +54,6 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
     const handlePostModal = (postId: string) => {
         setSelectedPost(postId)
         setOpenPostModal(!openPostModal)
-    }
-
-    const handleOption = (postId: string) => {
-        console.log("clicked post", postId)
-        // setOpenPostModal(true)
-        setSelectedPostId(postId)
-        // toggleShowPostTextArea()
     }
 
     const toggleShowPostTextArea = () => {
@@ -67,7 +80,7 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                             <span className='text-xs text-slate-600'>9m ago</span>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div id={`options-${post._id}`} >
                                         <Tooltip title="Show more">
                                             <IconButton
                                                 onClick={() => handleOption(post._id)}
@@ -75,6 +88,21 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                                 <MoreVertIcon />
                                             </IconButton>
                                         </Tooltip>
+                                        {selectedPostId === post._id && (
+                                            <div className='absolute top-[30px] right-[55px] z-[2]'>
+                                                <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start border-[1px] rounded'>
+                                                    {userInfo?._id === post.authorId._id && (
+                                                        <>
+                                                            <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Update post</div>
+                                                            <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Delete post</div>
+                                                        </>
+                                                    )}
+                                                    
+                                                    <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Save post</div>
+                                                    <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Unsave post</div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +127,7 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                             <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
                             {/* react, comment */}
                             <div className='pt-1'>
-                                <div className='w-full flex justify-between'>
+                                <div  className='w-full flex justify-between'>
                                     <div 
                                         className='w-1/3 flex items-center justify-center space-x-1 relative group p-1.5 rounded-full hover:bg-slate-200 cursor-pointer'
                                         style={{ minWidth: '100px', minHeight: '24px' }}
@@ -114,12 +142,16 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                             <SelectOneReaction/>
                                         </div>
                                     </div>
-                                    <div 
-                                        className='w-1/3 flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200'
-                                        onClick={() => handlePostModal(post._id)}
-                                    >
-                                        <FluentCommentEdit16Filled className='text-lg'/>
-                                        <span className='text-sm font-medium text-slate-500'>Comment</span>
+                                    <div >
+                                        <div 
+                                            
+                                            data-dropdown-toggle="mega-menu-dropdown"
+                                            className='w-1/3 flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200'
+                                            onClick={() => handlePostModal(post._id)}
+                                        >
+                                            <FluentCommentEdit16Filled className='text-lg'/>
+                                            <span className='text-sm font-medium text-slate-500'>Comment</span>
+                                        </div>
                                     </div>
                                     {/* {openPostModal && <PostModal post={post} onClose={handlePostModal}/>} */}
                                     { openPostModal && 
@@ -135,14 +167,10 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className='absolute top-[30px] right-[55px]'>
-                            <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start'>
-                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Update post</button>
-                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Delete post</button>
-                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Save post</button>
-                                <button className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm'>Unsave post</button>
-                            </div>
-                        </div> */}
+                        {/* Option modal show*/}
+                        {/* {openOptions[post._id] && ( */}
+                        
+                        
                     </div>
                 ))}
                 {openPostTextAre && <PostTextArea onClose={toggleShowPostTextArea} />}

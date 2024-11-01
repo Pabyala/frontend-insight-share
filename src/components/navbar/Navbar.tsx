@@ -6,6 +6,7 @@ import SubmenuProfile from "./SubMenuProfile";
 import { Link } from "react-router-dom";
 import FollowersRequestContent from "./FollowersRequestContent";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
+import DefaultImg from '../../asset/DefaultImg.jpg'
 
 export default function Navbar() {
 
@@ -38,23 +39,23 @@ export default function Navbar() {
         setShowNotificationMenu(false);
         setShowProfileMenu(!showProfileMenu);
     }
-
+    
     useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-        if (followerRef.current && !followerRef.current.contains(event.target as Node)) {
-            setShowFollowerMenu(false);
-        }
-        if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
-            setShowNotificationMenu(false);
-        }
-        if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-            setShowProfileMenu(false);
-        }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-    };
+        const handleClickOutside = (event: MouseEvent) => {
+            if (followerRef.current && !followerRef.current.contains(event.target as Node)) {
+                setShowFollowerMenu(false);
+            }
+            if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+                setShowNotificationMenu(false);
+            }
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setShowProfileMenu(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, []);
 
     return (
@@ -155,9 +156,9 @@ export default function Navbar() {
                     >
                         <div className="cursor-pointer" >
                             <img
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
-                                // src={}
-                                alt="profile picture"
+                                // src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
+                                src={userInfo?.avatarUrl == '' ? DefaultImg : userInfo?.avatarUrl}
+                                alt={userInfo?.username}
                                 className="relative inline-block h-[33px] w-[33px] !rounded-full object-cover object-center"
                             />
                         </div>
