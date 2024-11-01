@@ -13,6 +13,7 @@ import { Post, TimelinePosts } from '../../interface/your-posts';
 import PostTextArea from './PostTextarea';
 import { useGetUserQuery } from '../../features/users/usersApiSlice';
 import UpdatePostModal from './UpdatePostModal';
+import { useDeletePostMutation } from '../../features/posts/postsApiSlice';
 
 interface PostsProps {
     posts: Post[]; 
@@ -28,6 +29,7 @@ interface PostData {
 export default function Posts({ posts, isLoading, error }: PostsProps) {
 
     const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
+    const [deletePost] = useDeletePostMutation();
 
     const [openPostModal, setOpenPostModal] = useState<boolean>(false);
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
@@ -71,6 +73,17 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
     const handleShowModalUpdate = (post: Post) => {
         setSelectedPostData(post)
         setOpenUpdateModal(true)
+    }
+
+    const handleDeletePost = async (postId: string) => {
+        if(!postId) return
+        try {
+            await deletePost(postId).unwrap();
+            setSelectedPostId(null);
+            console.log(`Post id: ${postId} deleted!`)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -120,7 +133,12 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                                             >
                                                                 Update post
                                                             </div>
-                                                            <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Delete post</div>
+                                                            <div 
+                                                                onClick={() => handleDeletePost(post._id)}
+                                                                className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'
+                                                            >
+                                                                Delete post
+                                                            </div>
                                                         </>
                                                     )}
                                                     

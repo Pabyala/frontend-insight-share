@@ -49,6 +49,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: updatedPost, 
             }),
             invalidatesTags: ['UserPosts', 'TimelinePosts'],
+        }),
+        deletePost: builder.mutation({
+            query: (postId) => ({
+                url: `/post/delete/${postId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['UserPosts', 'TimelinePosts'],
         })
     }),
 });
@@ -60,4 +67,5 @@ export const {
     useGetUserAllPostsQuery,
     useAddPostMutation,
     useUpdatePostMutation,
+    useDeletePostMutation,
 } = usersApiSlice;
