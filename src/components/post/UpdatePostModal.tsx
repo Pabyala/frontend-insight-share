@@ -19,23 +19,20 @@ interface UpdatePostPropsInterface {
 
 export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePostPropsInterface) {
 
-    // const { _id, captionPost, authorId } = selectedPostData
-
+    const { _id, captionPost, authorId } = selectedPostData || {}
     const [updatePost] = useUpdatePostMutation();
-
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-
-    const [caption, setCaption] = useState<string>(selectedPostData?.captionPost || '');
+    const [caption, setCaption] = useState<string>(captionPost || '');
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(true);
+
     useEffect(() => {
         setIsBtnDisable(setCaption.length === 0);
     }, [caption]);
-    const postId = selectedPostData?._id;
+
     const handleUpdatePost = async () => {
         console.log(isBtnDisable)
         console.log("Updated post")
         try {
-            await updatePost({ postId, updatedPost: { captionPost: caption } }).unwrap();
+            await updatePost({ postId: _id, updatedPost: { captionPost: caption } }).unwrap();
             onClose();
         } catch (error) {
             console.error('Failed to update the post:', error);
@@ -64,14 +61,14 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                     <div className="flex space-x-4 mb-3">
                             <Avatar
                                 sx={{ width: 40, height: 40 }}
-                                alt={userInfo?.username}
-                                src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
+                                alt={authorId?.username}
+                                src={authorId?.avatarUrl}
                             />
                             <div className='flex items-center font-semibold  '>
                                 <p className='text-sm'>
-                                    <span>{userInfo?.firstName} </span>
-                                    <span>{userInfo?.middleName} </span>
-                                    <span>{userInfo?.lastName}</span>
+                                    <span>{authorId?.firstName} </span>
+                                    <span>{authorId?.middleName} </span>
+                                    <span>{authorId?.lastName}</span>
                                 </p>
                             </div>
                         </div>
@@ -81,7 +78,7 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                                 id=""
                                 onChange={(e) => setCaption(e.target.value)}
                                 className="w-full text-base p-2 rounded-md bg-gray-50 border outline-none resize-none max-h-32 overflow-y-auto min-h-28"
-                                placeholder={`What's on your mind, ${userInfo?.firstName}?`}
+                                placeholder={`What's on your mind, ${authorId?.firstName}?`}
                                 value={caption}
                             />
                             <button 
