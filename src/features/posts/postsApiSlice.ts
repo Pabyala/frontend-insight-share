@@ -1,6 +1,6 @@
 import { apiSlice } from '../../app/api/apiSlice';
 import { GetAllPostsByUserResponse } from '../../interface/posts-type';
-import { AddPost, TimelinePosts } from '../../interface/your-posts';
+import { AddPost, Post, TimelinePosts } from '../../interface/your-posts';
 
 // add post
 interface RequiredPost {
@@ -21,27 +21,35 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         getUserAllPosts: builder.query<TimelinePosts, void>({
             query: () => '/post/your-post', 
             transformResponse: (response: TimelinePosts) => {
-              console.log("API Response your all posts:", response);
-              return response}
+                console.log("API Response your all posts:", response);
+                return response}
             ,
             providesTags: ['UserPosts'],
         }),
         getPostsForTimeline: builder.query<TimelinePosts, void>({
             query: () => '/post/get-posts', 
             transformResponse: (response: TimelinePosts) => {
-              console.log("API Response your timeline posts:", response);
-              return response
+                console.log("API Response your timeline posts:", response);
+                return response
             },
             providesTags: ['TimelinePosts'],
         }),
         addPost: builder.mutation<AddPost, RequiredPost>({
-          query: (newPost) => ({
-              url: '/post/add-post', 
-              method: 'POST',
-              body: newPost, 
-          }),
-          invalidatesTags: ['UserPosts', 'TimelinePosts'],
-      }),
+            query: (newPost) => ({
+                url: '/post/add-post', 
+                method: 'POST',
+                body: newPost, 
+            }),
+            invalidatesTags: ['UserPosts', 'TimelinePosts'],
+        }),
+        updatePost: builder.mutation({
+            query: ({ postId, updatedPost }) => ({
+                url: `/post/update/${postId}`,
+                method: 'PUT',
+                body: updatedPost, 
+            }),
+            invalidatesTags: ['UserPosts', 'TimelinePosts'],
+        })
     }),
 });
 
@@ -51,4 +59,5 @@ export const {
     useGetPostsForTimelineQuery,
     useGetUserAllPostsQuery,
     useAddPostMutation,
+    useUpdatePostMutation,
 } = usersApiSlice;

@@ -12,6 +12,7 @@ import { selectCurrentId, selectCurrentToken } from '../../features/auth/authSli
 import { Post, TimelinePosts } from '../../interface/your-posts';
 import PostTextArea from './PostTextarea';
 import { useGetUserQuery } from '../../features/users/usersApiSlice';
+import UpdatePostModal from './UpdatePostModal';
 
 interface PostsProps {
     posts: Post[]; 
@@ -19,18 +20,25 @@ interface PostsProps {
     error: any;
 }
 
+interface PostData {
+    postId: string;
+    captionPost: string;
+}
+
 export default function Posts({ posts, isLoading, error }: PostsProps) {
 
     const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
-    
+
     const [openPostModal, setOpenPostModal] = useState<boolean>(false);
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
+    const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<string>('');
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-
+    const [selectedPostData, setSelectedPostData] = useState<Post>()
+    const userId = userInfo?._id;
+    // console.log("Post id: ", selectedPostId)
     
     const handleOption = (postId: string) => {
-        console.log("clicked post: ", postId)
         setSelectedPostId((prevId) => (prevId === postId ? null : postId));
     }
 
@@ -60,6 +68,11 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
         setOpenPostTextArea(!openPostTextAre);
     };
 
+    const handleShowModalUpdate = (post: Post) => {
+        setSelectedPostData(post)
+        setOpenUpdateModal(true)
+    }
+
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
             {/* {posts ? ( */}
@@ -75,10 +88,18 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                             alt="Remy Sharp"
                                             src={post?.authorId?.avatarUrl}
                                         />
-                                        <div className='flex flex-col'>
-                                            <span className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</span>
-                                            <span className='text-xs text-slate-600'>9m ago</span>
-                                        </div>
+                                        {/* <div className='flex fle-col'> */}
+                                            <div className='flex flex-col'>
+                                                <div className='flex space-x-2'>
+                                                    <p className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</p>
+                                                    <p className='text-sm font-semibold text-blue-500'>Follow</p>
+                                                </div>
+                                                <p className='text-xs text-slate-600'>9m ago</p>
+                                            </div>
+                                            {/* <div>
+                                                <span>Hello</span>
+                                            </div>
+                                        </div> */}
                                     </div>
                                     <div id={`options-${post._id}`} >
                                         <Tooltip title="Show more">
@@ -91,9 +112,14 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                                         {selectedPostId === post._id && (
                                             <div className='absolute top-[30px] right-[55px] z-[2]'>
                                                 <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start border-[1px] rounded'>
-                                                    {userInfo?._id === post.authorId._id && (
+                                                    {userId === post.authorId._id && (
                                                         <>
-                                                            <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Update post</div>
+                                                            <div 
+                                                                onClick={() => handleShowModalUpdate(post)}
+                                                                className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'
+                                                            >
+                                                                Update post
+                                                            </div>
                                                             <div className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'>Delete post</div>
                                                         </>
                                                     )}
@@ -179,6 +205,15 @@ export default function Posts({ posts, isLoading, error }: PostsProps) {
                     <span className=''>No posts available.</span>
                 </div>
             )} */}
+
+            {openUpdateModal &&  (
+                <UpdatePostModal
+                    onClose={() => setOpenUpdateModal(false)}
+                    selectedPostData={selectedPostData}
+                    // pass the post here
+                    
+                />
+            )}
         </div>
     )
 }
