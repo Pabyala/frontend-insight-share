@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
+import FollowingList from '../components/followers/FollowingList'
 
 export default function Following() {
     return (
@@ -11,22 +12,10 @@ export default function Following() {
                 <ProfileHeader />
                 <div className='flex flex-col space-y-1.5 lg:space-y-0 lg:flex-row lg:justify-between'>
                     <div className='lg:w-[42%]'>
-                        {/* <ProfileIntro  /> */}
                         <MenuListLeftBar/>
                     </div>
                     <div className='lg:w-[56%]'>
-                        {/* <TestPost01
-                            posts={mySavedPosts} 
-                            isLoading={isLoadingSavedPosts} 
-                            error={errorSavedPosts}
-                            savedPostIds={allSavedPostId}
-                        /> */}
-                        {/* <Posts
-                            posts={mySavedPosts} 
-                            isLoading={isLoadingSavedPosts} 
-                            error={errorSavedPosts}
-                            savedPostIds={allSavedPostId}
-                        /> */}
+                        <FollowingList/>
                     </div>
                 </div>
             </div>

@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
-import ProfileIntro from '../components/user/profile/ProfileIntro'
 import Posts from '../components/post/Posts'
-import { useGetUserFollowersQuery, useGetUserQuery } from '../features/users/usersApiSlice'
-import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
+import { useGetUserQuery } from '../features/users/usersApiSlice'
+import { useGetSavedPostQuery } from '../features/posts/postsApiSlice'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
-import TestPost01 from '../components/post/TestPost01'
 
 export default function SavedPost() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
     const { data: savedPosts, error: errorSavedPosts, isLoading: isLoadingSavedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery()
-
+    const userId = userInfo?._id
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
     console.log("All id that saved: ", allSavedPostId)
@@ -39,21 +36,15 @@ export default function SavedPost() {
                 <ProfileHeader />
                 <div className='flex flex-col space-y-1.5 lg:space-y-0 lg:flex-row lg:justify-between'>
                     <div className='lg:w-[42%]'>
-                        {/* <ProfileIntro  /> */}
                         <MenuListLeftBar/>
                     </div>
                     <div className='lg:w-[56%]'>
-                        {/* <TestPost01
-                            posts={mySavedPosts} 
-                            isLoading={isLoadingSavedPosts} 
-                            error={errorSavedPosts}
-                            savedPostIds={allSavedPostId}
-                        /> */}
                         <Posts
                             posts={mySavedPosts} 
                             isLoading={isLoadingSavedPosts} 
                             error={errorSavedPosts}
                             savedPostIds={allSavedPostId}
+                            userId={userId}
                         />
                     </div>
                 </div>

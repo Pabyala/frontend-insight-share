@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import ProfileIntro from '../components/user/profile/ProfileIntro'
-import { useSelector } from 'react-redux'
-import { selectCurrentId } from '../features/auth/authSlice'
-import { useGetUserPostsQuery } from '../features/auth/authApiSlice'
 import Posts from '../components/post/Posts'
 import { useGetUserFollowersQuery, useGetUserQuery } from '../features/users/usersApiSlice'
 import BdayPost from '../components/post/BdayPost'
@@ -13,13 +10,13 @@ import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts
 export default function Profile() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: followersData, error: followersError } = useGetUserFollowersQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
 
     const posts = yourPosts ? yourPosts.dataPost : [];
+    const userId = userInfo?._id
     console.log("My posts", yourPosts)
 
-    const myBirthday = userInfo?.dateOfBirth; // 1990-11-01
+    const myBirthday = userInfo?.dateOfBirth;
     const isTodayBirthday = () => {
         if (!myBirthday) return false;
 
@@ -68,6 +65,7 @@ export default function Profile() {
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
                             savedPostIds={allSavedPostId}
+                            userId={userId}
                         />
                     </div>
                 </div>

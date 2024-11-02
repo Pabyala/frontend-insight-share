@@ -1,30 +1,31 @@
 import { Avatar, IconButton, Tooltip } from '@mui/material'
 import { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { FlatColorIconsFolder, FluentCommentEdit16Filled, MingcuteSaveLine, PhFolderFill, PhFolderLight } from '../others/CustomIcons';
+import { FlatColorIconsFolder, FluentCommentEdit16Filled, PhFolderFill } from '../others/CustomIcons';
 import AllReactions from './AllReactions';
 import PostModal from './PostModal';
 import SelectOneReaction from './SelectOneReaction';
 import { Post } from '../../interface/your-posts';
 import PostTextArea from './PostTextarea';
-import { useGetUserQuery } from '../../features/users/usersApiSlice';
 import UpdatePostModal from './UpdatePostModal';
 import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
 import TimeAgoPost from './TimeAgoPost';
+import { useFollowUserMutation } from '../../features/FollowersFollowing/followersApiSlice';
 
 interface PostsProps {
     posts: Post[]; 
     isLoading: boolean;
     error: any;
     savedPostIds: string[];
+    userId: string | undefined;
 }
 
-export default function Posts({ posts, isLoading, error, savedPostIds }: PostsProps) {
+export default function Posts({ posts, isLoading, error, savedPostIds, userId }: PostsProps) {
 
-    const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
     const [deletePost] = useDeletePostMutation();
     const [savedPost] = useSavedPostMutation();
     const [unsavedPost] = useUnsavedPostMutation();
+    const [followUser] = useFollowUserMutation();
 
     const [openPostModal, setOpenPostModal] = useState<boolean>(false);
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
@@ -32,11 +33,9 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
     const [selectedPost, setSelectedPost] = useState<string>('');
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     const [selectedPostData, setSelectedPostData] = useState<Post>()
-    const userId = userInfo?._id;
 
     const [savedPostStatus, setSavedPostStatus] = useState<{ [key: string]: boolean }>({});
     useEffect(() => {
-        // check if each post is saved on component mount or when posts change
         const postStatus = posts.reduce((acc, post) => {
             acc[post._id] = savedPostIds.includes(post._id);
             return acc;
@@ -118,6 +117,15 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
             console.log(error)
         }
     }
+    const handleFollowedUser = async (userIdToFollow: string) => {
+        // console.log("Author id: ", userIdToFollow)
+        // if(!userIdToFollow) return
+        // try {
+        //     await followUser(userIdToFollow).unwrap();
+        // } catch (error) {
+        //     console.log(error)
+        // }
+    }   
 
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
@@ -136,9 +144,7 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
                                         <div className='flex flex-col'>
                                             <div className='flex space-x-2'>
                                                 <p className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</p>
-                                                <p className='text-sm font-semibold text-blue-500'>Follow</p>
                                             </div>
-                                            {/* <p className='text-xs text-slate-600'>{post.createdAt} ago</p> */}
                                             <p className='text-xs text-slate-600'>
                                                 <TimeAgoPost timeStamp={post.createdAt}/>
                                             </p>
@@ -186,20 +192,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
                                                             Save post
                                                         </div>
                                                     )}
-                                                    
-                                                    {/* <div 
-                                                        onClick={() => handleSavePost(post._id)}
-                                                        className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'
-                                                    >
-                                                        Save post
-                                                    </div>
-                                                    <div 
-                                                        onClick={() => handleUnsavedPost(post._id)}
-                                                        className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'
-                                                    >
-                                                        Unsave post
-                                                    </div> */}
-                                                    
                                                 </div>
                                             </div>
                                         )}

@@ -50,5 +50,5 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: builder => ({}),  
-    tagTypes: ['UserInfo', 'UserPosts', 'TimelinePosts', 'UserBday', 'SavedPost'],
+    tagTypes: ['UserInfo', 'UserPosts', 'TimelinePosts', 'UserBday', 'SavedPost', 'Followers', 'Following'],
 });

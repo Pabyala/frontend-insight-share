@@ -1,11 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { followerRequest } from '../../../data/dummy-data';
 import { useGetUserFollowersQuery } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg';
 
 export default function ProfileFollowers() {
-    // const setFollowers = followerRequest.slice(0, 9);
 
     const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
     console.log("Your followers", followersData?.yourFollowers)
@@ -37,7 +35,7 @@ export default function ProfileFollowers() {
                     <div key={followers.follower._id} className="cursor-pointer">
                         <div className='w-full h-[112px] rounded mb-1 md:h-[140px] lg:h-[100px] xl:h-[130px]'>
                             <img 
-                                src={followers.follower.avatarUrl === '' ? DefaultImg : followers.follower.avatarUrl}
+                                src={followers.follower.avatarUrl || DefaultImg}
                                 alt={followers.follower.username}
                                 className='w-full h-full object-cover rounded'
                             />
