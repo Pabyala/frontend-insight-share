@@ -1,7 +1,8 @@
+import React from 'react'
 import { Avatar, IconButton, Tooltip } from '@mui/material'
 import { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { FlatColorIconsFolder, FluentCommentEdit16Filled, MingcuteSaveLine, PhFolderFill, PhFolderLight } from '../others/CustomIcons';
+import { FluentCommentEdit16Filled, MingcuteSaveLine } from '../others/CustomIcons';
 import AllReactions from './AllReactions';
 import PostModal from './PostModal';
 import SelectOneReaction from './SelectOneReaction';
@@ -18,7 +19,7 @@ interface PostsProps {
     savedPostIds: string[];
 }
 
-export default function Posts({ posts, isLoading, error, savedPostIds }: PostsProps) {
+export default function TestPost01({ posts, isLoading, error, savedPostIds }: PostsProps) {
 
     const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
     const [deletePost] = useDeletePostMutation();
@@ -30,19 +31,9 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
     const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<string>('');
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-    const [selectedPostData, setSelectedPostData] = useState<Post>()
+    const [selectedPostData, setSelectedPostData] = useState<Post>() // for update the post
     const userId = userInfo?._id;
-    // console.log("All id that saved: ", postIds)
-    const [savedPostStatus, setSavedPostStatus] = useState<{ [key: string]: boolean }>({});
-    useEffect(() => {
-        // Check if each post is saved on component mount or when posts change
-        const postStatus = posts.reduce((acc, post) => {
-            acc[post._id] = savedPostIds.includes(post._id);
-            return acc;
-        }, {} as { [key: string]: boolean });
-
-        setSavedPostStatus(postStatus);
-    }, [posts, savedPostIds]);
+    console.log("All ids that saved: ", savedPostIds)
     
     const [isSavedPost, setIsSavedPost] = useState<boolean>(false)
     const handleOption = (postId: string) => {
@@ -52,7 +43,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
         } else {
             setIsSavedPost(false)
         }
-        // setSelectedPostId((prevId) => (prevId === postId ? null : postId));
     }
 
     useEffect(() => {
@@ -60,7 +50,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
             if ( selectedPostId &&
                 !document.getElementById(`options-${selectedPostId}`)?.contains(event.target as Node)) {
                 setSelectedPostId(null);
-                setIsSavedPost(false)
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -85,7 +74,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
     const handleShowModalUpdate = (post: Post) => {
         setSelectedPostData(post)
         setOpenUpdateModal(true)
-        setSelectedPostId(null);
     }
 
     const handleDeletePost = async (postId: string) => {
@@ -103,7 +91,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
         if(!postId) return
         try {
             await savedPost(postId).unwrap();
-            setSelectedPostId(null);
         } catch (error) {
             console.log(error)
         }
@@ -113,7 +100,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
         if(!postId) return
         try {
             await unsavedPost(postId).unwrap();
-            setSelectedPostId(null);
         } catch (error) {
             console.log(error)
         }
@@ -183,20 +169,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
                                                             Save post
                                                         </div>
                                                     )}
-                                                    
-                                                    {/* <div 
-                                                        onClick={() => handleSavePost(post._id)}
-                                                        className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'
-                                                    >
-                                                        Save post
-                                                    </div>
-                                                    <div 
-                                                        onClick={() => handleUnsavedPost(post._id)}
-                                                        className='text-sm hover:bg-gray-300 p-1.5 w-full rounded-sm cursor-pointer'
-                                                    >
-                                                        Unsave post
-                                                    </div> */}
-                                                    
                                                 </div>
                                             </div>
                                         )}
@@ -256,16 +228,8 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
                                             onClose={() => handlePostModal('')} 
                                         />}
                                     <div className='w-1/3 flex items-center justify-center space-x-1 cursor-pointer p-1.5 rounded-full hover:bg-slate-200'>
-                                        {/* {isSavedPost ? (<FlatColorIconsFolder className='text-lg'/>) : (<PhFolderLight className='text-lg'/>)} */}
-                                        {savedPostStatus[post._id] ? (
-                                            <span className='text-[25px]'>
-                                                <FlatColorIconsFolder />
-                                            </span>
-                                        ) : (
-                                            <span className='text-[25px]'>
-                                                <PhFolderFill />
-                                            </span>
-                                        )}
+                                        <MingcuteSaveLine className='text-lg'/>
+                                        <span className='text-sm font-medium text-slate-500'>Save</span>
                                     </div>
                                     
                                 </div>

@@ -1,5 +1,5 @@
 import { apiSlice } from '../../app/api/apiSlice';
-import { GetAllPostsByUserResponse } from '../../interface/posts-type';
+import { GetAllPostsByUserResponse, SavedPosts } from '../../interface/posts-type';
 import { AddPost, Post, TimelinePosts } from '../../interface/your-posts';
 
 // add post
@@ -56,7 +56,29 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: ['UserPosts', 'TimelinePosts'],
-        })
+        }),
+        getSavedPost: builder.query<SavedPosts, void>({
+            query: () => '/post/get-saved-posts', 
+            transformResponse: (response: SavedPosts) => {
+                console.log("API Response your timeline posts:", response);
+                return response
+            },
+            providesTags: ['SavedPost'],
+        }),
+        savedPost: builder.mutation({
+            query: (postId) => ({
+                url: `/post/save-post/${postId}`,
+                method: 'POST',
+            }),
+            invalidatesTags: ['SavedPost'],
+        }),
+        unsavedPost: builder.mutation({
+            query: (postId) => ({
+                url: `/post/unsaved-post/${postId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['SavedPost'],
+        }),
     }),
 });
 
@@ -68,4 +90,7 @@ export const {
     useAddPostMutation,
     useUpdatePostMutation,
     useDeletePostMutation,
+    useSavedPostMutation,
+    useUnsavedPostMutation,
+    useGetSavedPostQuery,
 } = usersApiSlice;

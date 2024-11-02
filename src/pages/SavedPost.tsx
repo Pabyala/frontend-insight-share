@@ -2,33 +2,16 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import ProfileIntro from '../components/user/profile/ProfileIntro'
-import { useSelector } from 'react-redux'
-import { selectCurrentId } from '../features/auth/authSlice'
-import { useGetUserPostsQuery } from '../features/auth/authApiSlice'
 import Posts from '../components/post/Posts'
 import { useGetUserFollowersQuery, useGetUserQuery } from '../features/users/usersApiSlice'
-import BdayPost from '../components/post/BdayPost'
 import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
+import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
+import TestPost01 from '../components/post/TestPost01'
 
-export default function Profile() {
+export default function SavedPost() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: followersData, error: followersError } = useGetUserFollowersQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
-
-    const posts = yourPosts ? yourPosts.dataPost : [];
-    console.log("My posts", yourPosts)
-
-    const myBirthday = userInfo?.dateOfBirth; // 1990-11-01
-    const isTodayBirthday = () => {
-        if (!myBirthday) return false;
-
-        const today = new Date();
-        const birthDate = new Date(myBirthday);
-        
-        return today.getDate() === birthDate.getDate() && today.getMonth() === birthDate.getMonth();
-    };
-
     const { data: savedPosts, error: errorSavedPosts, isLoading: isLoadingSavedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery()
 
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
@@ -36,19 +19,18 @@ export default function Profile() {
     console.log("All id that saved: ", allSavedPostId)
 
     useEffect(() => {
-        if (mySavedPosts.length > 0) {
+        if (mySavedPosts) {
             const allPostIds = mySavedPosts.map(post => post._id);
             setAllSavedPostId(allPostIds);
         }
-    }, [mySavedPosts]); 
+    }, [mySavedPosts]);
 
-    useEffect(() => {
-        refetchYourPosts();
-    }, [refetchYourPosts]);
-
-    if (isUserInfoLoading) return <div>Loading...</div>;
-    if (userInfoError) return <div>Error fetching posts</div>;
-    console.log(userInfoError)
+    if (isLoadingSavedPosts) return <div>Loading...</div>;
+    if (errorSavedPosts) return <div>Error fetching posts</div>;
+    // if (errorSavedPosts) {
+    //     return <div>Error fetching saved posts: {errorSavedPosts.message}</div>;
+    // }
+    console.log(errorSavedPosts)
 
     return (
         <div className='flex flex-col pb-5'>
@@ -57,16 +39,20 @@ export default function Profile() {
                 <ProfileHeader />
                 <div className='flex flex-col space-y-1.5 lg:space-y-0 lg:flex-row lg:justify-between'>
                     <div className='lg:w-[42%]'>
-                        <ProfileIntro  />
+                        {/* <ProfileIntro  /> */}
+                        <MenuListLeftBar/>
                     </div>
                     <div className='lg:w-[56%]'>
-                        {isTodayBirthday() && (
-                            <BdayPost myName={userInfo?.firstName} />
-                        )}
-                        <Posts 
-                            posts={posts} 
-                            isLoading={isLoadingYourPosts} 
-                            error={errorYourPosts}
+                        {/* <TestPost01
+                            posts={mySavedPosts} 
+                            isLoading={isLoadingSavedPosts} 
+                            error={errorSavedPosts}
+                            savedPostIds={allSavedPostId}
+                        /> */}
+                        <Posts
+                            posts={mySavedPosts} 
+                            isLoading={isLoadingSavedPosts} 
+                            error={errorSavedPosts}
                             savedPostIds={allSavedPostId}
                         />
                     </div>

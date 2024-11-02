@@ -15,6 +15,7 @@ import Settings from "./pages/Settings";
 import Followers from "./pages/Followers";
 import Following from "./pages/Following";
 import UploadProfileImg from "./components/user/profile/UploadProfileImg";
+import SavedPost from "./pages/SavedPost";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 {/* <Route path="/my-post" element={< />} /> */}
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/saved-post" element={<SavedPost />} />
 
 
                 {/* for demo */}

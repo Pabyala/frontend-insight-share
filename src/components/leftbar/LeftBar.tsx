@@ -80,7 +80,7 @@ export default function LeftBar() {
                             <span className="font-semibold text-sm">(100)</span>
                         </div>
                     </Link>
-                    <Link to='/my-post' className="profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded">
+                    <Link to='/saved-post' className="profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded">
                         <div className="flex">
                             <span className="text-3xl">
                                 <FlatColorIconsFolder />

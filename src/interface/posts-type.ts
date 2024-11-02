@@ -54,3 +54,26 @@ export interface GetAllPostsByUserResponse {
     yourAllPost: Post[];
 }
 
+/// saved post
+export interface userSaved {
+    _id: string;
+    username: string;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    avatarUrl: string;
+}
+export interface SavedPost {
+    _id: string;
+    postId: string;
+    userSaved: userSaved;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export interface SavedPosts {
+    message: string;
+    savedPostCount: number,
+    savedPosts: Post[];
+}
