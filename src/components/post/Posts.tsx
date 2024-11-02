@@ -10,6 +10,7 @@ import PostTextArea from './PostTextarea';
 import { useGetUserQuery } from '../../features/users/usersApiSlice';
 import UpdatePostModal from './UpdatePostModal';
 import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
+import TimeAgoPost from './TimeAgoPost';
 
 interface PostsProps {
     posts: Post[]; 
@@ -32,10 +33,10 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     const [selectedPostData, setSelectedPostData] = useState<Post>()
     const userId = userInfo?._id;
-    // console.log("All id that saved: ", postIds)
+
     const [savedPostStatus, setSavedPostStatus] = useState<{ [key: string]: boolean }>({});
     useEffect(() => {
-        // Check if each post is saved on component mount or when posts change
+        // check if each post is saved on component mount or when posts change
         const postStatus = posts.reduce((acc, post) => {
             acc[post._id] = savedPostIds.includes(post._id);
             return acc;
@@ -52,7 +53,6 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
         } else {
             setIsSavedPost(false)
         }
-        // setSelectedPostId((prevId) => (prevId === postId ? null : postId));
     }
 
     useEffect(() => {
@@ -138,7 +138,10 @@ export default function Posts({ posts, isLoading, error, savedPostIds }: PostsPr
                                                 <p className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</p>
                                                 <p className='text-sm font-semibold text-blue-500'>Follow</p>
                                             </div>
-                                            <p className='text-xs text-slate-600'>9m ago</p>
+                                            {/* <p className='text-xs text-slate-600'>{post.createdAt} ago</p> */}
+                                            <p className='text-xs text-slate-600'>
+                                                <TimeAgoPost timeStamp={post.createdAt}/>
+                                            </p>
                                         </div>
                                     </div>
                                     <div id={`options-${post._id}`} >
