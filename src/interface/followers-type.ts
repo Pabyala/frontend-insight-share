@@ -51,3 +51,25 @@ export interface FollowedUser {
     message: string;
     followedUser: FollowedUserData;
 }
+
+// Followers
+export interface UserData {
+    _id: string;
+    username: string;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    avatarUrl?: string;
+    coverPhotoUrl?: string;
+}
+
+export interface MyFollowers {
+    message: string;
+    totalOfMutualFollowers: number;
+    mutualFollowers: UserData[];
+    totalOfFollowersYouDontFollowingBack: number;
+    followersYouDontFollowingBack: UserData[];
+    totalFollowers: number;
+    allFollowers: UserData[];
+
+}

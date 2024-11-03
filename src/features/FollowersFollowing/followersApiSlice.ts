@@ -1,11 +1,11 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { FollowedUser, YourFollowers, YourFollowing } from "../../interface/followers-type";
+import { FollowedUser, MyFollowers, YourFollowers, YourFollowing } from "../../interface/followers-type";
 
 export const followersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getFollowers: builder.query<YourFollowers, void>({
+        getFollowers: builder.query<MyFollowers, void>({
             query: () => '/user/followers',
-            transformResponse: (response: YourFollowers) => response,
+            transformResponse: (response: MyFollowers) => response,
             providesTags: ['Followers'],
         }),
         getFollowing: builder.query<YourFollowing, void>({
@@ -18,7 +18,7 @@ export const followersApiSlice = apiSlice.injectEndpoints({
                 url: `user/${userIdToFollow}/follow`, 
                 method: 'POST',
             }),
-            invalidatesTags: ['Following'],
+            invalidatesTags: ['Following', 'Followers'],
         }),
     }),
 });

@@ -1,6 +1,5 @@
 import React from 'react'
 import { StreamlineEmojisWrappedGift2 } from '../others/CustomIcons'
-import { toDaysBday } from '../../data/todays-bday-list'
 import { useGetUserTodayBirthdayQuery } from '../../features/birthday/birthdayApiSlice';
 
 export default function TodaysBdayList() {
@@ -9,7 +8,7 @@ export default function TodaysBdayList() {
 
     if (isLoadingTodaysBirthday) return <div>Loading posts...</div>;
     if (errorTodaysBirthday) return <div>Error loading posts</div>;
-    if (!todaysBirthday || todaysBirthday.countBirthday === 0) return <div>No posts available</div>;
+    if (!todaysBirthday || todaysBirthday.countBirthday === 0) return <div>No birthday today.</div>;
 
     return (
         <div className="bg-white p-1 rounded">

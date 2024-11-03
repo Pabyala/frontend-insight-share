@@ -2,25 +2,28 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useGetUserFollowersQuery } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg';
+import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 
 export default function ProfileFollowers() {
 
     const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
     console.log("Your followers", followersData?.yourFollowers)
+
+    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery()
     
-    if (isLoading) {
+    if (isLoadingGetFollowers) {
         return <p>Loading followers...</p>;
     }
 
-    if (isError) {
+    if (errorGetFollowers) {
         return <p>Error loading followers.</p>;
     }
 
-    if (!followersData || followersData.yourFollowers.length === 0) {
-        return null;
+    if (getFollowers?.totalFollowers === 0) {
+        return <p>No followers.</p>
     }
 
-    const displayedFollowers = followersData.yourFollowers.slice(0, 9);
+    const displayedFollowers = getFollowers?.allFollowers.slice(0, 9);
 
     return (
         <div className='bg-white rounded p-3 space-y-2'>
@@ -31,16 +34,16 @@ export default function ProfileFollowers() {
                 </p>
             </div>
             <div className="grid grid-cols-3 gap-4 md:grid-cols-4 md:gap-6 lg:gap-3 lg:grid-cols-3">
-                {displayedFollowers.map((followers) => (
-                    <div key={followers.follower._id} className="cursor-pointer">
+                {displayedFollowers?.map((followers) => (
+                    <div key={followers._id} className="cursor-pointer">
                         <div className='w-full h-[112px] rounded mb-1 md:h-[140px] lg:h-[100px] xl:h-[130px]'>
                             <img 
-                                src={followers.follower.avatarUrl || DefaultImg}
-                                alt={followers.follower.username}
+                                src={followers?.avatarUrl || DefaultImg}
+                                alt={followers.username}
                                 className='w-full h-full object-cover rounded'
                             />
                         </div>
-                        <p className='text-xs font-medium md:text-sm'>{followers.follower.firstName} {followers.follower.middleName} {followers.follower.lastName}</p>
+                        <p className='text-xs font-medium md:text-sm'>{followers.firstName} {followers?.middleName} {followers.lastName}</p>
                     </div>
                 ))}
             </div>

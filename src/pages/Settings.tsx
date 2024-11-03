@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/navbar/Navbar';
 import ProfileHeader from '../components/user/profile/ProfileHeader';
-import { Link, useLocation } from 'react-router-dom';
-import SettingsProfile from '../components/user/settings/SettingsProfileDetails';
 import SettingsPasswordAndSecurity from '../components/user/settings/SettingsPasswordAndSecurity';
 import SettingsPersonalDetails from '../components/user/settings/SettingsPersonalDetails';
 import SettingsProfileDetails from '../components/user/settings/SettingsProfileDetails';
 
 export default function Settings() {
 
-    const [openTab, setOpenTab] = React.useState(1);
+    const [openTab, setOpenTab] = useState<number>(1);
 
     return (
         <div className='flex flex-col pb-5'>
@@ -39,7 +37,6 @@ export default function Settings() {
                                         Profile Details
                                         
                                     </a>
-                                    {/* FullName, userName, profile, bgPhoto, dateStarted, */}
                                 </li>
 
                                 <li className=''>
@@ -55,7 +52,6 @@ export default function Settings() {
                                     >
                                         Password & Security
                                     </a>
-                                    {/* password, change password, email, change email */}
                                 </li>
                                 <li className=''>
                                     <a 

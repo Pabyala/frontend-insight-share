@@ -3,16 +3,21 @@ import { useGetFollowingQuery } from '../../features/FollowersFollowing/follower
 import DefaultImg from '../../asset/DefaultImg.jpg';
 
 export default function FollowingList() {
-    const { data: getFollowing, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowingQuery()
+    const { data: getFollowing, error: errorGtFollowing, isLoading: isLoadingGtFollowing, refetch: refetchGetFollowers } = useGetFollowingQuery()
     console.log("My following", getFollowing)
 
     const myFollowing = getFollowing?.youFollowed
     const totalFollowing = getFollowing?.totalFollowing
+
+    if (isLoadingGtFollowing) return <p>Loading following...</p>;
+    if (errorGtFollowing) return <p>Failed to load following.</p>;
+    if (totalFollowing === 0) return <p>No following.</p>;
+    
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
             <div className='w-full'>
-                <div className='bg-lightWhite p-3 rounded'>
-                    <p>Following</p>
+                <div className='bg-lightWhite p-3 rounded space-y-2'>
+                    <p className='text-sm font-medium lg:text-base'>Following</p>
                     <div className="grid grid-cols-3 gap-4 md:grid-cols-4 md:gap-6 lg:gap-4 lg:grid-cols-3 xl:grid-cols-4">
                         {myFollowing?.map((fol) => (
                             <div key={fol._id} className="cursor-pointer bg-white rounded-md overflow-hidden drop-shadow-md border">
