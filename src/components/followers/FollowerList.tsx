@@ -77,11 +77,15 @@ export default function FollowerList() {
                                 <div className='w-full flex flex-col space-y-1 px-1 pb-1 md:px-1.5 md:pb-1.5 lg:px-2 lg:pb-2'>
                                     <p className='text-xs font-medium overflow-hidden whitespace-nowrap text-ellipsis max-w-xs md:text-sm'>{fol.firstName} {fol?.middleName} {fol.lastName}</p>
                                     <button 
-                                        className='p-1 bg-blue-600 text-xs font-normal text-white rounded lg:text-sm'
+                                        className='p-1 bg-blue-500 text-xs font-normal text-white rounded md:text-sm hover:bg-blue-600'
                                     >
                                         Follow back
                                     </button>
-                                    <button className='p-1 bg-slate-300 text-xs font-normal text-black rounded lg:text-sm'>Delete</button>
+                                    <button 
+                                        className='p-1 bg-gray-300 text-xs font-normal rounded md:text-sm hover:bg-gray-400 text-black'
+                                    >
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
                         ))}

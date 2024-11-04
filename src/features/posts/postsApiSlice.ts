@@ -57,9 +57,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['UserPosts', 'TimelinePosts'],
         }),
-        getSavedPost: builder.query<SavedPosts, void>({
+        getSavedPost: builder.query<TimelinePosts, void>({
             query: () => '/post/get-saved-posts', 
-            transformResponse: (response: SavedPosts) => {
+            transformResponse: (response: TimelinePosts) => {
                 console.log("API Response your timeline posts:", response);
                 return response
             },

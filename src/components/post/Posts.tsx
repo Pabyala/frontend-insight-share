@@ -11,6 +11,8 @@ import UpdatePostModal from './UpdatePostModal';
 import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
 import TimeAgoPost from './TimeAgoPost';
 import { useFollowUserMutation } from '../../features/FollowersFollowing/followersApiSlice';
+import { Link } from 'react-router-dom';
+import ReactCommentShare from './ReactCommentShare';
 
 interface PostsProps {
     posts: Post[]; 
@@ -127,6 +129,10 @@ export default function Posts({ posts, isLoading, error, savedPostIds, userId }:
         // }
     }   
 
+    posts.map((post) => {
+        console.log("Posttt", post);
+    });
+
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
                 {posts?.map(post => (
@@ -136,14 +142,16 @@ export default function Posts({ posts, isLoading, error, savedPostIds, userId }:
                             <div className='mb-1'>
                                 <div className="flex justify-between">
                                     <div className='flex items-center space-x-3'>
-                                        <Avatar
-                                            sx={{ width: 38, height: 38 }}
-                                            alt="Remy Sharp"
-                                            src={post?.authorId?.avatarUrl}
-                                        />
+                                        <Link to={'/'}>
+                                            <Avatar
+                                                sx={{ width: 38, height: 38 }}
+                                                alt="Remy Sharp"
+                                                src={post?.authorId?.avatarUrl}
+                                            />
+                                        </Link>
                                         <div className='flex flex-col'>
                                             <div className='flex space-x-2'>
-                                                <p className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</p>
+                                                <Link to={'/'} className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</Link>
                                             </div>
                                             <p className='text-xs text-slate-600'>
                                                 <TimeAgoPost timeStamp={post.createdAt}/>
@@ -211,11 +219,9 @@ export default function Posts({ posts, isLoading, error, savedPostIds, userId }:
                                     </div>
                                 </div>
                             </div>
-                            {/* <ReactCommentShare 
-                                // totalCommets={totalCommets} 
-                                // totolReplies={totolReplies} 
+                            <ReactCommentShare 
                                 post={post}
-                            /> */}
+                            />
                             <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
                             {/* react, comment */}
                             <div className='pt-1'>

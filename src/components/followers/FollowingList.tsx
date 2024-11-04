@@ -30,7 +30,11 @@ export default function FollowingList() {
                                 </div>
                                 <div className='w-full flex flex-col space-y-1 px-1 pb-1 md:px-1.5 md:pb-1.5 lg:px-2 lg:pb-2'>
                                     <p className='text-xs font-medium overflow-hidden whitespace-nowrap text-ellipsis max-w-xs md:text-sm'>{fol.following.firstName} {fol.following?.middleName} {fol.following.lastName}</p>
-                                    <button className='p-1 bg-slate-300 text-xs font-normal text-black rounded lg:text-sm'>Unfollow</button>
+                                    <button 
+                                        className='p-1 bg-gray-300 text-xs font-normal rounded md:text-sm hover:bg-gray-400 text-black'
+                                    >
+                                        Unfollow
+                                    </button>
                                 </div>
                             </div>
                         ))}

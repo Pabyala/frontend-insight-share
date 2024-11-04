@@ -72,8 +72,19 @@ export interface SavedPost {
     __v: number;
 }
 
+export interface mySavedPost {
+    _id: string;
+    authorId: string;
+    captionPost: string;
+    comments: any[];
+    reactions: Reactions;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
 export interface SavedPosts {
     message: string;
     savedPostCount: number,
-    savedPosts: Post[];
+    savedPosts: mySavedPost[];
 }

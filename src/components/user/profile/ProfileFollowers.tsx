@@ -34,7 +34,7 @@ export default function ProfileFollowers() {
                 </p>
             </div>
             <div className="grid grid-cols-3 gap-4 md:grid-cols-4 md:gap-6 lg:gap-3 lg:grid-cols-3">
-                {displayedFollowers?.map((followers) => (
+                {/* {displayedFollowers?.map((followers) => (
                     <div key={followers._id} className="cursor-pointer">
                         <div className='w-full h-[112px] rounded mb-1 md:h-[140px] lg:h-[100px] xl:h-[130px]'>
                             <img 
@@ -43,9 +43,31 @@ export default function ProfileFollowers() {
                                 className='w-full h-full object-cover rounded'
                             />
                         </div>
-                        <p className='text-xs font-medium md:text-sm'>{followers.firstName} {followers?.middleName} {followers.lastName}</p>
+                        <div className='w-full flex flex-col space-y-1 px-1 pb-1 md:px-1.5 md:pb-1.5 lg:px-2 lg:pb-2'>
+                            <p className='text-xs font-medium md:text-sm'>{followers.firstName} {followers?.middleName} {followers.lastName}</p>
+                            <button className='p-1 bg-slate-300 text-xs font-normal text-black rounded lg:text-sm'>View</button>
+                        </div>
                     </div>
-                ))}
+                ))} */}
+                {displayedFollowers?.map((fol) => (
+                            <div key={fol._id} className="cursor-pointer bg-white rounded-md overflow-hidden drop-shadow-md border">
+                                <div className='w-full h-[100px] mb-1 md:h-[130px] lg:h-[110px] xl:h-[140px] overflow-hidden'>
+                                    <img 
+                                        src={fol?.avatarUrl || DefaultImg}
+                                        alt={fol.username}
+                                        className='w-full h-full object-cover'
+                                    />
+                                </div>
+                                <div className='w-full flex flex-col space-y-1 px-1 pb-1 md:px-1.5 md:pb-1.5 lg:px-2 lg:pb-2'>
+                                    <p className='text-xs font-medium overflow-hidden whitespace-nowrap text-ellipsis max-w-xs md:text-sm'>{fol.firstName} {fol?.middleName} {fol.lastName}</p>
+                                    <button 
+                                        className='p-1 bg-blue-500 text-xs font-normal text-white rounded md:text-sm hover:bg-blue-600'
+                                    >
+                                        View
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
             </div>
         </div>
     );

@@ -1,9 +1,19 @@
 // types/PostTypes.ts
+export interface UserReact {
+    _id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string;
+    coverPhotoUrl?: string;
+}
+
+
 export interface Reactions {
-    like: string[];
-    heart: string[];
-    wow: string[];
-    angry: string[];
+    like?: UserReact[];
+    heart?: UserReact[];
+    wow?: UserReact[];
+    angry?: UserReact[];
 }
 
 export interface Author {
@@ -33,7 +43,9 @@ export interface Post {
 export interface TimelinePosts {
     message: string;    
     postCount: number;  
-    dataPost: Post[];     
+    dataPost: Post[];    
+    savedPostCount: number,
+    savedPosts: Post[]; 
 }
 
 /// added post

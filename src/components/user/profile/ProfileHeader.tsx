@@ -9,8 +9,7 @@ import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
 
 interface ProfileHeaderProps {
-    // followersData: Followers | undefined; // Replace `any` with the correct type for followersData if available
-    // userInfo?: UserInfo; // Replace `any` with the correct type for userInfo if available
+    
 }
 
 export default function ProfileHeader() {
@@ -68,6 +67,7 @@ export default function ProfileHeader() {
                             <span>{userInfo?.middleName} </span> 
                             <span> {userInfo?.lastName}</span>
                         </p>
+                        <p className='text-sm text-black lg:text-base italic'>@{userInfo?.username}</p>
                         <p className='text-sm text-gray-600 lg:text-base'>{followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'}</p>
                         <ProfileListOfFollowers/>
                     </div>
