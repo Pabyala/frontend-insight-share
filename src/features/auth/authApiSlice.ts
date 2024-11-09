@@ -1,8 +1,16 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import { store } from "../../app/store";
 import { Post } from "../../interface/posts-type";
+import { setCredentials } from "./authSlice";
 
 export interface GetUserPostsResponse {
     yourAllPost: Post[]; 
+}
+
+export interface RefreshResponse {
+    accessToken: string;
+    id: string;
+    username: string;
 }
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -38,6 +46,17 @@ export const authApiSlice = apiSlice.injectEndpoints({
         //         method: 'GET',
         //     }),
         // }),
+        refreshToken: builder.query<RefreshResponse, void>({
+            query: () => ({
+                url: '/refresh',
+                method: 'GET',
+            }),
+            transformResponse: (response: { accessToken: string; id: string; username: string }) => {
+                console.log("Refresh token response: ", response)
+                store.dispatch(setCredentials(response));
+                return response; 
+            },
+        }),
     }),
 });
 
@@ -46,5 +65,6 @@ export const {
     useLogoutMutation, 
     // useGetUserDataQuery, 
     useGetUserPostsQuery, 
-    // useGetPostsQuery 
+    // useGetPostsQuery,
+    useRefreshTokenQuery,
 } = authApiSlice; 

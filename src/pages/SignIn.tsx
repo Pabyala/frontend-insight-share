@@ -4,6 +4,7 @@ import { MdiEye, MdiEyeOff } from '../components/others/CustomIcons';
 import { useLoginMutation } from '../features/auth/authApiSlice';
 import { useDispatch } from 'react-redux';
 import { setCredentials, setUserDetails } from '../features/auth/authSlice';
+import usePersist from '../hooks/usePersist';
 
 export default function SignIn() {
 
@@ -15,8 +16,10 @@ export default function SignIn() {
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
     const location = useLocation();
+    const [persist, setPersist] = usePersist();
+    
+    const handleToggleCheck = () => setPersist(prev => !prev)
 
-    // const from = location.state?.from?.pathname || '/welcome'; 
     const from = location.state?.from?.pathname || '/'; 
     const handleSubmit = async () => {
 
@@ -31,9 +34,6 @@ export default function SignIn() {
                 id: userData._id
             }));
 
-            // Refetch user data after login
-            // refetch();
-
             // Store the full user data in Redux once available
             if (userData) {
                 console.log('Full user details:', userData);
@@ -42,7 +42,6 @@ export default function SignIn() {
 
             setUsername('');
             setPassword('')
-            // navigate('/welcome')
             navigate(from, { replace: true });
         } catch (error) {
             console.log(error)
@@ -99,14 +98,25 @@ export default function SignIn() {
                 <button 
                     onClick={handleSubmit}
                     disabled={disableBtn}
-                    className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
-                    Log In
+                    // className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
+                    // Log In
+                    className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn || isLoading ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
+                    {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
 
                 <div className="text-center mt-4">
                     <a className="text-blue-600 cursor-pointer text-sm">Forgot Password?</a>
                     {/* <Link to='/'>Page</Link> */}
                 </div>
+                <label htmlFor="persist">
+                    <input 
+                        type="checkbox" 
+                        className='form_checkbox'
+                        id='persist'
+                        onChange={handleToggleCheck}
+                        checked={persist}
+                    />
+                </label>
 
                 <hr className="my-6" />
 

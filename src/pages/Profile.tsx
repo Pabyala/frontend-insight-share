@@ -11,9 +11,11 @@ export default function Profile() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
+    // const myId = useSelector(selectCurrentId);
 
     const posts = yourPosts ? yourPosts.dataPost : [];
     const userId = userInfo?._id
+    // const userId: string | undefined = myId ?? undefined;
     console.log("My posts", yourPosts)
 
     const myBirthday = userInfo?.dateOfBirth;
@@ -33,11 +35,11 @@ export default function Profile() {
     console.log("All id that saved: ", allSavedPostId)
 
     useEffect(() => {
-        if (mySavedPosts.length > 0) {
+        if (mySavedPosts && mySavedPosts.length > 0) {
             const allPostIds = mySavedPosts.map(post => post._id);
             setAllSavedPostId(allPostIds);
         }
-    }, [mySavedPosts]); 
+    }, [mySavedPosts]);
 
     useEffect(() => {
         refetchYourPosts();

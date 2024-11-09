@@ -46,23 +46,3 @@ export const selectCurrentUserData = (state: { auth: AuthState }) => state.auth.
 export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.username
 export const selectCurrentToken = (state: { auth: AuthState }) => state.auth.token
 export const selectCurrentId = (state: { auth: AuthState }) => state.auth.id
-
-
-// Logout function to use on the front-end
-// export const useHandleLogout = () => {
-//     const [logout] = useLogoutMutation();
-//     const dispatch = useAppDispatch();
-
-//     const handleLogout = async () => {
-//         try {
-//             await logout().unwrap();
-//         } catch (err) {
-//             console.error('Failed to log out:', err);
-//         } finally {
-//             // Clear Redux state
-//             dispatch(logOut());
-//         }
-//     };
-
-//     return handleLogout;
-// };

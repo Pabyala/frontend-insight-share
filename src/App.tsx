@@ -1,5 +1,4 @@
 import "./App.css";
-import MainContainer from "./components/timeline/MainContainer";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -10,13 +9,13 @@ import Welcome from "./components/Welcome";
 import RequiredAuth from "./components/RequiredAuth";
 import Welcomeuser from "./components/Welcomeuser";
 import Logout from "./components/loguot/Logout";
-import Prefetch from "./features/auth/Prefetch";
 import Settings from "./pages/Settings";
 import Followers from "./pages/Followers";
 import Following from "./pages/Following";
 import UploadProfileImg from "./components/user/profile/UploadProfileImg";
 import SavedPost from "./pages/SavedPost";
 import MyPosts from "./pages/MyPosts";
+import PersistLogin from "./components/PersistLogin";
 
 function App() {
   return (
@@ -28,9 +27,8 @@ function App() {
             <Route path="/login" element={<SignIn />} />
             <Route path="/register" element={<SignUp />} />
             
-
             {/* Protected routes */}
-            {/* <Route element={<Prefetch/>}> */}
+            <Route element={<PersistLogin/>}>
               <Route element={<RequiredAuth/>}>
                 <Route path="/" element={<Home />} />
                 <Route path="/followers" element={<Followers />} />
@@ -40,14 +38,13 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
 
-
                 {/* for demo */}
                 <Route path="/upload-img" element={<UploadProfileImg />} />
                 <Route path="/welcome" element={<Welcome />} />
                 <Route path="/userlist" element={<Welcomeuser />} />
                 <Route path="/logout" element={<Logout />} />
               </Route>
-            {/* </Route> */}
+            </Route>
           </Route>
         </Routes>
       {/* </div> */}
