@@ -3,14 +3,13 @@ import { Avatar, IconButton, Tooltip } from '@mui/material'
 import { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FluentCommentEdit16Filled, MingcuteSaveLine } from '../others/CustomIcons';
-import AllReactions from './AllReactions';
-import PostModal from './PostModal';
 import SelectOneReaction from './SelectOneReaction';
 import { Post } from '../../interface/your-posts';
 import PostTextArea from './PostTextarea';
 import { useGetUserQuery } from '../../features/users/usersApiSlice';
 import UpdatePostModal from './UpdatePostModal';
 import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
+import PostModal from './PostModal';
 
 interface PostsProps {
     posts: Post[]; 
@@ -205,10 +204,10 @@ export default function TestPost01({ posts, isLoading, error, savedPostIds }: Po
                                             {/* <NotoOrangeHeart className='text-lg'/>
                                             <span className='text-sm font-medium text-slate-500'>Heart</span> */}
 
-                                            <AllReactions/>
+                                            {/* <AllReactions/> */}
                                         </div>
                                         <div className="absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1">
-                                            <SelectOneReaction/>
+                                            {/* <SelectOneReaction/> */}
                                         </div>
                                     </div>
                                     <div >

@@ -40,7 +40,7 @@ export default function MyPosts() {
                             posts={posts} 
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
-                            savedPostIds={allSavedPostId}
+                            // savedPostIds={allSavedPostId}
                             userId={userId}
                         />
                     </div>

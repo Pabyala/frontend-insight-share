@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MdiCloseThick } from '../others/CustomIcons'
 import { Avatar } from '@mui/material';
-import { useGetUserQuery } from '../../features/users/usersApiSlice';
 import DefaultImg from '../../asset/DefaultImg.jpg'
 import { Post } from '../../interface/your-posts';
 import { useUpdatePostMutation } from '../../features/posts/postsApiSlice';
-
-interface PostData {
-    postId: string;
-    captionPost: string;
-}
-
 
 interface UpdatePostPropsInterface {
     onClose: () => void;
@@ -25,12 +18,19 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(true);
 
     useEffect(() => {
+        // prevent scrolling when the modal is open
+        document.body.style.overflow = 'hidden';
+        return () => {
+            // restore body scroll behavior when modal is closed
+            document.body.style.overflow = '';
+        };
+    }, []);
+
+    useEffect(() => {
         setIsBtnDisable(setCaption.length === 0);
     }, [caption]);
 
     const handleUpdatePost = async () => {
-        console.log(isBtnDisable)
-        console.log("Updated post")
         try {
             await updatePost({ postId: _id, updatedPost: { captionPost: caption } }).unwrap();
             onClose();
@@ -50,10 +50,24 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                         <div className='flex justify-end items-center'>
                             <button
                                 type="button"
-                                className="text-[22px] bg-gray-200 text-gray-500 border-0 hover:border-0 focus:outline-none bg-transparent hover:bg-transparent hover:outline-none hover:text-gray-600 ml-auto inline-flex items-center popup-close"
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                 onClick={onClose}
                             >
-                                <MdiCloseThick/>
+                                <svg
+                                    className="w-3 h-3"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 14 14"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                    />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -62,7 +76,7 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                             <Avatar
                                 sx={{ width: 40, height: 40 }}
                                 alt={authorId?.username}
-                                src={authorId?.avatarUrl}
+                                src={authorId?.avatarUrl === '' ? DefaultImg : authorId?.avatarUrl}
                             />
                             <div className='flex items-center font-semibold  '>
                                 <p className='text-sm'>
@@ -77,14 +91,14 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                                 name="" 
                                 id=""
                                 onChange={(e) => setCaption(e.target.value)}
-                                className="w-full text-base p-2 rounded-md bg-gray-50 border outline-none resize-none max-h-32 overflow-y-auto min-h-28"
+                                className="w-full text-base p-2 rounded-md border outline-none resize-none max-h-32 overflow-y-auto h-[150px] bg-gray-200 dark:bg-gray-700"
                                 placeholder={`What's on your mind, ${authorId?.firstName}?`}
                                 value={caption}
                             />
                             <button 
                                 onClick={handleUpdatePost}
                                 disabled={isBtnDisable}
-                                className={`bg-blue-500 w-full p-2 text-sm font-medium rounded text-white  ${isBtnDisable ? 'cursor-not-allowed' : 'hover:bg-gray-300'}`}
+                                className={`bg-blue-500 w-full p-2.5 text-sm font-medium rounded text-white  ${isBtnDisable ? 'cursor-not-allowed' : 'hover:bg-blue-600'}`}
                             >
                                 Post
                             </button>

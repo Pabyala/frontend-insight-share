@@ -10,10 +10,13 @@ export interface UserReact {
 
 
 export interface Reactions {
-    like?: UserReact[];
+    // like?: UserReact[];
     heart?: UserReact[];
-    wow?: UserReact[];
-    angry?: UserReact[];
+    // wow?: UserReact[];
+    // angry?: UserReact[];
+    fire?: UserReact[];
+    handsUp?: UserReact[];
+    disLike?: UserReact[];
 }
 
 export interface Author {

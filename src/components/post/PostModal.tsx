@@ -1,63 +1,18 @@
 import { Avatar, IconButton, Tooltip } from "@mui/material";
 import React, { useEffect } from "react";
-import AllReactions from "./AllReactions";
+// import AllReactions from "./AllReactions";
 import { FluentCommentEdit16Filled, FluentShare28Filled } from "../others/CustomIcons";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { dummyPosts } from "../../data/dummy-post";
 import SelectOneReaction from "./SelectOneReaction";
 
-interface Reaction {
-    userId: string;
-}
-
-interface Comment {
-    commentId: string;
-    userId: string;
-    text: string;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    avatarUrl: string;
-    timestamp: string;
-    replies?: Reply[]; 
-}
-
-interface Reply {
-    replyId: string;
-    userId: string;
-    text: string;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    avatarUrl: string;
-    timestamp: string;
-}
-
-interface Post {
-    postId: string;    
-    authorId: string;       
-    captionPost: string;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    authorAvatarUrl: string;  
-    reactions: {
-        like: Reaction[];    
-        heart: Reaction[];   
-    };
-    comments: Comment[];    
-    createdAt?: string;    
-    updatedAt?: string;     
-}
-
-interface ClosePostTextArea {
+interface PostModalInterface {
     onClose: () => void;
     selectedPost: string;
 }
 
+export default function PostModal({ onClose, selectedPost }: PostModalInterface) {
 
-
-export default function PostModal({ onClose, selectedPost }: ClosePostTextArea) {
     const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.currentTarget === event.target) {
         onClose();
@@ -70,9 +25,19 @@ export default function PostModal({ onClose, selectedPost }: ClosePostTextArea) 
             console.log("Post: ", selectedPostData);
         }
     }, [selectedPost]);
+
+    useEffect(() => {
+      // prevent scrolling when the modal is open
+      document.body.style.overflow = 'hidden';
+      return () => {
+          // restore body scroll behavior when modal is closed
+          document.body.style.overflow = '';
+      };
+    }, []);
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto"
       onClick={handleOverlayClick}
     >
       <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -162,10 +127,10 @@ export default function PostModal({ onClose, selectedPost }: ClosePostTextArea) 
                   <div className="flex items-center justify-center space-x-2">
                     {/* <NotoOrangeHeart className='text-lg'/>
                                         <span className='text-sm font-medium text-slate-500'>Heart</span> */}
-                    <AllReactions />
+                    {/* <AllReactions /> */}
                   </div>
                   <div className="absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1">
-                    <SelectOneReaction />
+                    {/* <SelectOneReaction /> */}
                   </div>
                 </div>
                 <div

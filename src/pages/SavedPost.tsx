@@ -43,7 +43,7 @@ export default function SavedPost() {
                             posts={mySavedPosts} 
                             isLoading={isLoadingSavedPosts} 
                             error={errorSavedPosts}
-                            savedPostIds={allSavedPostId}
+                            // savedPostIds={allSavedPostId}
                             userId={userId}
                         />
                     </div>

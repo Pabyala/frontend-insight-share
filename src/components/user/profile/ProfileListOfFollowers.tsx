@@ -1,5 +1,4 @@
 import React from 'react'
-import AllReactions from '../../post/AllReactions'
 import { followerRequest } from '../../../data/dummy-data'
 
 export default function ProfileListOfFollowers() {

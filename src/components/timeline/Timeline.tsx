@@ -9,21 +9,19 @@ export default function Timeline() {
     const { data: timelinePosts, error: errorTimelinePosts, isLoading: isLoadingTimelinePosts, refetch: refetchTimelinePosts } = useGetPostsForTimelineQuery();
     const { data: userInfo } = useGetUserQuery();
     const { data: savedPosts } = useGetSavedPostQuery()
-    console.log("Myy timeline posts", timelinePosts)
 
     const posts = timelinePosts ? timelinePosts.dataPost : []
     const userId = userInfo?._id
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
     
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
-    console.log("All id that saved: ", allSavedPostId)
 
-    useEffect(() => {
-        if (Array.isArray(mySavedPosts)) {
-            const allPostIds = mySavedPosts.map(post => post._id);
-            setAllSavedPostId(allPostIds);
-        }
-    }, [mySavedPosts]); 
+    // useEffect(() => {
+    //     if (Array.isArray(mySavedPosts)) {
+    //         const allPostIds = mySavedPosts.map(post => post._id);
+    //         setAllSavedPostId(allPostIds);
+    //     }
+    // }, [mySavedPosts]); 
 
     if (isLoadingTimelinePosts) return <div>Loading...</div>;
     if (errorTimelinePosts) return <div>Error fetching posts</div>;
@@ -35,7 +33,7 @@ export default function Timeline() {
                 posts={posts}
                 isLoading={isLoadingTimelinePosts}
                 error={errorTimelinePosts}
-                savedPostIds={allSavedPostId}
+                // savedPostIds={allSavedPostId}
                 userId={userId}
             />
             

@@ -19,7 +19,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         //     transformResponse: (response: GetAllPostsByUserResponse) => response.yourAllPost,
         // }),
         getUserAllPosts: builder.query<TimelinePosts, void>({
-            query: () => '/post/your-post', 
+            query: () => '/post/my-post', 
             transformResponse: (response: TimelinePosts) => {
                 console.log("API Response your all posts:", response);
                 return response}
@@ -27,7 +27,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             providesTags: ['UserPosts'],
         }),
         getPostsForTimeline: builder.query<TimelinePosts, void>({
-            query: () => '/post/get-posts', 
+            query: () => '/post/timeline', 
             transformResponse: (response: TimelinePosts) => {
                 console.log("API Response your timeline posts:", response);
                 return response
@@ -58,7 +58,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['UserPosts', 'TimelinePosts'],
         }),
         getSavedPost: builder.query<TimelinePosts, void>({
-            query: () => '/post/get-saved-posts', 
+            query: () => '/post/saved', 
             transformResponse: (response: TimelinePosts) => {
                 console.log("API Response your timeline posts:", response);
                 return response
@@ -67,18 +67,32 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         savedPost: builder.mutation({
             query: (postId) => ({
-                url: `/post/save-post/${postId}`,
+                url: `/post/${postId}/save`,
                 method: 'POST',
             }),
-            invalidatesTags: ['SavedPost'],
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
         }),
         unsavedPost: builder.mutation({
             query: (postId) => ({
-                url: `/post/unsaved-post/${postId}`,
+                url: `/post/${postId}/unsave`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['SavedPost'],
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
         }),
+        reactPost: builder.mutation({
+            query: ({ postId, userId, reactionType }) => ({
+                url: `/post/${postId}/reaction`,
+                method: 'POST',
+                body: { userId, reactionType },
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
+        // getReactionOfPost: builder.query({
+        //     query: (postId: string) => ({
+        //         url: `/post/${postId}/reactions`,
+        //         method: 'GET'
+        //     })
+        // }),
     }),
 });
 
@@ -93,4 +107,6 @@ export const {
     useSavedPostMutation,
     useUnsavedPostMutation,
     useGetSavedPostQuery,
+    useReactPostMutation,
+    // useGetReactionOfPostQuery,
 } = usersApiSlice;

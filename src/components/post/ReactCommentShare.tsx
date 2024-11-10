@@ -10,7 +10,7 @@ interface PropsPost {
     post: Post;
 }
 
-export default function ReactCommentShare({post}: PropsPost) {
+export default function ReactCommentShare({ post }: PropsPost) {
 
     // const totalComments = post.comments.length; 
     // const totalReplies = post.comments.reduce((acc, comment) => acc + (comment.replies?.length || 0), 0);
@@ -20,10 +20,10 @@ export default function ReactCommentShare({post}: PropsPost) {
         let totalReactions = 0;
         if (post.reactions) {
             // sum up the reactions for each type
-            totalReactions += post.reactions.like ? post.reactions.like.length : 0;
+            totalReactions += post.reactions.fire ? post.reactions.fire.length : 0;
+            totalReactions += post.reactions.handsUp ? post.reactions.handsUp.length : 0;
+            totalReactions += post.reactions.disLike ? post.reactions.disLike.length : 0;
             totalReactions += post.reactions.heart ? post.reactions.heart.length : 0;
-            totalReactions += post.reactions.wow ? post.reactions.wow.length : 0;
-            totalReactions += post.reactions.angry ? post.reactions.angry.length : 0;
         }
 
         return totalReactions;
@@ -34,9 +34,9 @@ export default function ReactCommentShare({post}: PropsPost) {
         <div className='flex'>
             <div className='pt-1 flex justify-between w-full'>
                 {/* reaction */}
-                <div className='w-1/3 flex items-center justify-start'>
+                <div className='w-1/3 flex items-center justify-center'>
                     <span className='text-sm text-slate-500 cursor-pointer'>
-                        {totalReactions === 0 ? '' : `${totalReactions} react`}
+                        {totalReactions === 0 ? '' : `${totalReactions} reacted`}
                     </span>
                 </div>
                 {/* comment */}
@@ -47,12 +47,8 @@ export default function ReactCommentShare({post}: PropsPost) {
                         ? `${allComments} comment` 
                         : `${allComments} comments`)
                     } */}
-                    1.1K
+                    1.1K comments
                     </span>
-                </div>
-                {/* share */}
-                <div className='w-1/3 flex items-center justify-end'>
-                    <span className='text-sm text-slate-500 cursor-pointer'>1K shares</span>
                 </div>
             </div>
         </div>
