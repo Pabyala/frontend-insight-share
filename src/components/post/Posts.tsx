@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import ReactCommentShare from './ReactCommentShare';
 import Reactions from './Reactions';
 import PostOptions from './PostOptions';
+import ModalPost from './ModalPost';
 
 interface PostsProps {
     posts: Post[]; 
@@ -25,17 +26,10 @@ interface PostsProps {
 
 export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
 
-    const [deletePost] = useDeletePostMutation();
-    const [savedPost] = useSavedPostMutation();
-    const [unsavedPost] = useUnsavedPostMutation();
-    const [followUser] = useFollowUserMutation();
-
-    const [openPostModal, setOpenPostModal] = useState<boolean>(false);
+    const [openPostModal, setOpenPostModal] = useState<boolean>(false); 
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
-    const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
-    const [selectedPost, setSelectedPost] = useState<string>('');
+    const [selectedPost, setSelectedPost] = useState<string | null>(null);
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-    const [selectedPostData, setSelectedPostData] = useState<Post>()
     const [isSavedPost, setIsSavedPost] = useState<boolean>(false)
     const [savedPostStatus, setSavedPostStatus] = useState<{ [key: string]: boolean }>({});
 
@@ -99,45 +93,11 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
         setOpenPostModal(!openPostModal)
     }
 
-    // handle to show the modal for update of post
-    const handleShowModalUpdate = (post: Post) => {
-        setSelectedPostData(post)
-        setOpenUpdateModal(true)
-        setSelectedPostId(null);
-    }
-
-    // handle to delete the post
-    const handleDeletePost = async (postId: string) => {
-        if(!postId) return
-        try {
-            await deletePost(postId).unwrap();
-            setSelectedPostId(null);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    // handle to save the post
-    const handleSavePost = async (postId: string) => {
-        if(!postId) return
-        try {
-            await savedPost(postId).unwrap();
-            setSelectedPostId(null);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    // handle to unsaved the post
-    const handleUnsavedPost = async (postId: string) => {
-        if(!postId) return
-        try {
-            await unsavedPost(postId).unwrap();
-            setSelectedPostId(null);
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const handleClosePostModal = () => {
+        setSelectedPost(null)
+        setOpenPostModal(false);
+        // setSelectedPostData(undefined); 
+    };
 
     const handleFollowedUser = async (userIdToFollow: string) => {
         // console.log("Author id: ", userIdToFollow)
@@ -185,11 +145,9 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                                         {selectedPostId === post._id && (
                                             <PostOptions
                                                 post={post}
-                                                userId={userId}
+                                                userId={userId} 
                                                 isSavedPost={isSavedPost}
                                                 setSelectedPostId={setSelectedPostId}
-                                                setSelectedPostData={setSelectedPostData}
-                                                setOpenUpdateModal={setOpenUpdateModal}
                                             />
                                         )}
                                         {/* {selectedPostId === post._id && (
@@ -277,6 +235,7 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                                         <div 
                                             data-dropdown-toggle="mega-menu-dropdown"
                                             className='w-full flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200'
+                                            // onClick={() => handlePostModal(post)}
                                             onClick={() => handlePostModal(post._id)}
                                         >
                                             <span className='text-sm font-medium text-slate-500'>
@@ -308,22 +267,22 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                 ))}
 
                 { openPostModal && 
-                    (<PostModal 
+                    // (<PostModal 
+                    //     selectedPost={selectedPost} 
+                    //     // onClose={() => setOpenPostModal(false)} 
+                    //     onClose={handleClosePostModal} 
+                    //     selectedPostData={selectedPostData}
+                    // />
+                    (<ModalPost
                         selectedPost={selectedPost} 
-                        onClose={() => handlePostModal('')} 
+                        onClose={handleClosePostModal} 
+                        // selectedPostData={selectedPostData}
                     />
                 )}
 
                 {openPostTextAre && 
                     (<PostTextArea 
                         onClose={() => setOpenPostTextArea(!openPostTextAre)}
-                    />
-                )}
-
-                {openUpdateModal &&  (
-                    <UpdatePostModal
-                        onClose={() => setOpenUpdateModal(false)}
-                        selectedPostData={selectedPostData}
                     />
                 )}
         </div>

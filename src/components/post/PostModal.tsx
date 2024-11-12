@@ -5,13 +5,24 @@ import { FluentCommentEdit16Filled, FluentShare28Filled } from "../others/Custom
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { dummyPosts } from "../../data/dummy-post";
 import SelectOneReaction from "./SelectOneReaction";
+import { Post } from "../../interface/your-posts";
+import TimeAgoPost from "./TimeAgoPost";
+import { useGetPostByIdQuery } from "../../features/posts/postsApiSlice";
 
 interface PostModalInterface {
     onClose: () => void;
     selectedPost: string;
+    selectedPostData: Post | undefined;
 }
 
-export default function PostModal({ onClose, selectedPost }: PostModalInterface) {
+export default function PostModal({ onClose, selectedPost, selectedPostData }: PostModalInterface) {
+
+  console.log("SELECTED POST: ", selectedPostData)
+  const postId = selectedPostData?._id
+  const { data: post, error, isLoading } = useGetPostByIdQuery(postId!, {
+    skip: !postId, // skip the query if postId is falsy (undefined/null).
+  });
+  console.log("MY SELECTED POST: ", post)
 
     const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.currentTarget === event.target) {
@@ -45,7 +56,7 @@ export default function PostModal({ onClose, selectedPost }: PostModalInterface)
           {/* header: name of post and close btn */}
           <div className="flex items-center justify-between px-3 py-2.5 md:p-5 border-b rounded-t dark:border-gray-600">
             <h4 className="text-base font-semibold text-center text-black dark:text-white">
-              Eleomar Fajutnao's Post
+              {selectedPostData?.authorId.firstName} {selectedPostData?.authorId.middleName} {selectedPostData?.authorId.lastName}'s Post
             </h4>
             <button
               type="button"
@@ -77,14 +88,18 @@ export default function PostModal({ onClose, selectedPost }: PostModalInterface)
                 <div className="flex items-center space-x-3">
                   <Avatar
                     sx={{ width: 38, height: 38 }}
-                    alt="Remy Sharp"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    // alt="Remy Sharp"
+                    // src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt={selectedPostData?.authorId.username}
+                    src={selectedPostData?.authorId.avatarUrl}
                   />
                   <div className="flex flex-col">
                     <span className="text-sm font-semibold text-black">
-                      Eleomar F. Fajutnao
+                      {selectedPostData?.authorId.firstName} {selectedPostData?.authorId.middleName} {selectedPostData?.authorId.lastName}
                     </span>
-                    <span className="text-xs text-slate-600">9m ago</span>
+                    <span className="text-xs text-slate-600">
+                      <TimeAgoPost timeStamp={selectedPostData?.createdAt}/>
+                    </span>
                   </div>
                 </div>
                 <div>
@@ -102,11 +117,12 @@ export default function PostModal({ onClose, selectedPost }: PostModalInterface)
               <div className="flex">
                 <div className="my-2">
                   <span className="text-sm">
-                    In publishing and graphic design, Lorem ipsum is a
-                    placeholder text commonly used to demonstrate the visual
-                    form of a document or a typeface without relying on
-                    meaningful content. Lorem ipsum may be used as a placeholder
-                    before the final copy is available.
+                    {selectedPostData?.captionPost.split('\n').map((line, index) => (
+                        <span key={index}>
+                            {line}
+                            {index < selectedPostData?.captionPost.split('\n').length - 1 && <br />}
+                        </span>
+                    ))}
                   </span>
                 </div>
               </div>
@@ -155,8 +171,82 @@ export default function PostModal({ onClose, selectedPost }: PostModalInterface)
             {/* all comment */}
             <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <div>
-                <div className="w-full flex space-x-1 py-1">
+              <div className="flex flex-col">
+                {selectedPostData?.comments.map(comment => (
+                  <div key={comment._id} className="w-full flex space-x-1 py-1">
+                    <div className="flex py-1">
+                      <Avatar
+                        sx={{ width: 38, height: 38 }}
+                        alt={comment.from.username}
+                        src={comment.from.avatarUrl}
+                      />
+                    </div>
+                    <div>
+                      <div>
+                        <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg p-1.5">
+                          <span className="text-sm font-semibold text-black">
+                            {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
+                          </span>
+                          <span className="w-full flex text-sm text-black xl:text-sm">
+                            {comment.comment.split('\n').map((line, index) => (
+                                <span key={index}>
+                                    {line}
+                                    {index < comment.comment.split('\n').length - 1 && <br />}
+                                </span>
+                            ))}
+                          </span>
+                        </div>
+                        <div className="flex space-x-5">
+                          <div className="text-xs">
+                            <span>1h ago</span>
+                            <span>
+                              <TimeAgoPost timeStamp={comment.createdAt}/>
+                            </span>
+                          </div>
+                          <div className="text-xs">
+                            <span>Like</span>
+                          </div>
+                          <div className="text-xs">
+                            <span>Reply</span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* reply comment */}
+                      <div className="w-full flex space-x-1 py-1">
+                        <div className="flex py-1">
+                          <Avatar
+                            sx={{ width: 38, height: 38 }}
+                            alt="Remy Sharp"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          />
+                        </div>
+                        <div>
+                          <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg p-1.5">
+                            <span className="text-sm font-semibold text-black">
+                              Eleomar F. Fajutnao
+                            </span>
+                            <span className="w-full flex text-sm text-black xl:text-sm">
+                              Hindi ko gets Parang code ko Hindi ko gets pano
+                              gumana Moral lesson "Paano"
+                            </span>
+                          </div>
+                          <div className="flex space-x-5">
+                            <div className="text-xs">
+                              <span>1h ago</span>
+                            </div>
+                            <div className="text-xs">
+                              <span>Like</span>
+                            </div>
+                            <div className="text-xs">
+                              <span>Reply</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {/* <div className="w-full flex space-x-1 py-1">
                   <div className="flex py-1">
                     <Avatar
                       sx={{ width: 38, height: 38 }}
@@ -187,7 +277,6 @@ export default function PostModal({ onClose, selectedPost }: PostModalInterface)
                         </div>
                       </div>
                     </div>
-                    {/* reply comment */}
                     <div className="w-full flex space-x-1 py-1">
                       <div className="flex py-1">
                         <Avatar
@@ -220,7 +309,76 @@ export default function PostModal({ onClose, selectedPost }: PostModalInterface)
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
+
+
+
+                {/* <div className="w-full flex space-x-1 py-1">
+                  <div className="flex py-1">
+                    <Avatar
+                      sx={{ width: 38, height: 38 }}
+                      alt="Remy Sharp"
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    />
+                  </div>
+                  <div>
+                    <div>
+                      <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg p-1.5">
+                        <span className="text-sm font-semibold text-black">
+                          Eleomar F. Fajutnao
+                        </span>
+                        <span className="w-full flex text-sm text-black xl:text-sm">
+                          Hindi ko gets Parang code ko Hindi ko gets pano gumana
+                          Moral lesson "Paano"
+                        </span>
+                      </div>
+                      <div className="flex space-x-5">
+                        <div className="text-xs">
+                          <span>1h ago</span>
+                        </div>
+                        <div className="text-xs">
+                          <span>Like</span>
+                        </div>
+                        <div className="text-xs">
+                          <span>Reply</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="w-full flex space-x-1 py-1">
+                      <div className="flex py-1">
+                        <Avatar
+                          sx={{ width: 38, height: 38 }}
+                          alt="Remy Sharp"
+                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        />
+                      </div>
+                      <div>
+                        <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg p-1.5">
+                          <span className="text-sm font-semibold text-black">
+                            Eleomar F. Fajutnao
+                          </span>
+                          <span className="w-full flex text-sm text-black xl:text-sm">
+                            Hindi ko gets Parang code ko Hindi ko gets pano
+                            gumana Moral lesson "Paano"
+                          </span>
+                        </div>
+                        <div className="flex space-x-5">
+                          <div className="text-xs">
+                            <span>1h ago</span>
+                          </div>
+                          <div className="text-xs">
+                            <span>Like</span>
+                          </div>
+                          <div className="text-xs">
+                            <span>Reply</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
+                
               </div>
             </div>
           </div>

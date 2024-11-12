@@ -93,6 +93,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         //         method: 'GET'
         //     })
         // }),
+        getPostById: builder.query<Post, string>({
+            query: (postId) => `/post/my-post/${postId}`, 
+            transformResponse: (response: Post) => {
+                console.log("API Response your timeline posts:", response);
+                return response;
+            },
+        }),
     }),
 });
 
@@ -109,4 +116,5 @@ export const {
     useGetSavedPostQuery,
     useReactPostMutation,
     // useGetReactionOfPostQuery,
+    useGetPostByIdQuery,
 } = usersApiSlice;

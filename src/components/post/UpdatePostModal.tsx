@@ -3,19 +3,39 @@ import { MdiCloseThick } from '../others/CustomIcons'
 import { Avatar } from '@mui/material';
 import DefaultImg from '../../asset/DefaultImg.jpg'
 import { Post } from '../../interface/your-posts';
-import { useUpdatePostMutation } from '../../features/posts/postsApiSlice';
+import { useGetPostByIdQuery, useUpdatePostMutation } from '../../features/posts/postsApiSlice';
 
 interface UpdatePostPropsInterface {
     onClose: () => void;
-    selectedPostData: Post | undefined;
+    // selectedPostData: Post | undefined;
+    selectedPostId: string | null;
 }
 
-export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePostPropsInterface) {
+export default function UpdatePostModal({ onClose, selectedPostId }: UpdatePostPropsInterface) {
 
-    const { _id, captionPost, authorId } = selectedPostData || {}
+    const { data: post, error: errorPost, isLoading: isLoadingPost } = useGetPostByIdQuery(selectedPostId!, {
+        skip: !selectedPostId, // skip the query if postId is falsy (undefined/null).
+    });
+    console.log("SELECTED POST ID: ", selectedPostId)
+    console.log("SELECTED POST: ", post)
+
+    // const { _id, captionPost, authorId } = selectedPostData || {}
     const [updatePost] = useUpdatePostMutation();
-    const [caption, setCaption] = useState<string>(captionPost || '');
+    const myCaptionPost = post?.captionPost;
+    console.log(myCaptionPost) // has value
+    const [caption, setCaption] = useState<string | undefined>(myCaptionPost);
+    console.log("MY CAPTION POST: ", caption) // undefined
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (post?.captionPost !== undefined) {
+            setCaption(post.captionPost);
+        }
+    }, [post?.captionPost]);
+
+    useEffect(() => {
+        setIsBtnDisable(!caption || setCaption.length === 0);
+    }, [caption]);
 
     useEffect(() => {
         // prevent scrolling when the modal is open
@@ -26,18 +46,18 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
         };
     }, []);
 
-    useEffect(() => {
-        setIsBtnDisable(setCaption.length === 0);
-    }, [caption]);
-
     const handleUpdatePost = async () => {
         try {
-            await updatePost({ postId: _id, updatedPost: { captionPost: caption } }).unwrap();
+            await updatePost({ postId: post?._id, updatedPost: { captionPost: caption } }).unwrap();
             onClose();
         } catch (error) {
             console.error('Failed to update the post:', error);
         }
     }
+
+    if (isLoadingPost) return <div>Loading posts...</div>;
+    if (errorPost) return <div>Error loading posts</div>;
+    if (!post) return <div>No posts available</div>;
 
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50' >
@@ -75,14 +95,14 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                     <div className="flex space-x-4 mb-3">
                             <Avatar
                                 sx={{ width: 40, height: 40 }}
-                                alt={authorId?.username}
-                                src={authorId?.avatarUrl === '' ? DefaultImg : authorId?.avatarUrl}
+                                alt={post?.authorId.username}
+                                src={post?.authorId.avatarUrl === '' ? DefaultImg : post?.authorId.avatarUrl}
                             />
                             <div className='flex items-center font-semibold  '>
                                 <p className='text-sm'>
-                                    <span>{authorId?.firstName} </span>
-                                    <span>{authorId?.middleName} </span>
-                                    <span>{authorId?.lastName}</span>
+                                    <span>{post?.authorId.firstName} </span>
+                                    <span>{post?.authorId.middleName} </span>
+                                    <span>{post?.authorId.lastName}</span>
                                 </p>
                             </div>
                         </div>
@@ -92,7 +112,7 @@ export default function UpdatePostModal({ onClose, selectedPostData }: UpdatePos
                                 id=""
                                 onChange={(e) => setCaption(e.target.value)}
                                 className="w-full text-base p-2 rounded-md border outline-none resize-none max-h-32 overflow-y-auto h-[150px] bg-gray-200 dark:bg-gray-700"
-                                placeholder={`What's on your mind, ${authorId?.firstName}?`}
+                                placeholder={`What's on your mind, ${post?.authorId.firstName}?`}
                                 value={caption}
                             />
                             <button 

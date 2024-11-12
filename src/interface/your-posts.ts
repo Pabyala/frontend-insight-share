@@ -29,6 +29,27 @@ export interface Author {
     coverPhotoUrl?: string;
 }
 
+export interface CommentFrom {
+    _id: string;
+    username: string;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    avatarUrl?: string;
+    coverPhotoUrl?: string;
+}
+
+export interface PostComment {
+    _id: string;
+    comment: string;
+    from: CommentFrom;
+    heart: any[];
+    replies: any[];
+    createdAt: string;
+    updatedAt: string;
+    __v: string;
+}
+
 // export interface author
 
 export interface Post {
@@ -36,7 +57,7 @@ export interface Post {
     reactions: Reactions;
     authorId: Author;
     captionPost: string;
-    comments: any[]; 
+    comments: PostComment[]; 
     createdAt: string;
     updatedAt: string;
     __v: number;
