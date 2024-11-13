@@ -1,23 +1,43 @@
-import React, { useEffect } from 'react'
-import { useGetPostByIdQuery } from '../../features/posts/postsApiSlice';
+import React, { useEffect, useState } from 'react'
+import { useAddCommentToPostMutation, useAddReplyToCommentMutation, useGetPostByIdQuery } from '../../features/posts/postsApiSlice';
 import { Avatar, IconButton, Tooltip } from '@mui/material';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TimeAgoPost from './TimeAgoPost';
-import { FluentCommentEdit16Filled, FluentShare28Filled } from '../others/CustomIcons';
-import { dummyPosts } from '../../data/dummy-post';
-import { Post } from '../../interface/your-posts';
+import { FluentSend28Filled, MiOptionsVertical } from '../others/CustomIcons';
+import ReactCommentShare from './ReactCommentShare';
+import Reactions from './Reactions';
+import SelectOneReaction from './SelectOneReaction';
 
 interface PostModalInterface {
     onClose: () => void;
     selectedPost: string | null;
     // selectedPostData: Post | undefined;
+    userId: string | undefined;
 }
 
-export default function ModalPost({ onClose, selectedPost }: PostModalInterface) {
+interface CommentDetails {
+    commentId: string;
+    firstName: string;
+    middleName: string | undefined;
+    lastName: string;
+}
 
-    const { data: post, error: errorPost, isLoading: isLoadingPost } = useGetPostByIdQuery(selectedPost!, {
+export default function ModalPost({ onClose, selectedPost, userId }: PostModalInterface) {
+
+    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
         skip: !selectedPost, // skip the query if postId is falsy (undefined/null).
     });
+    const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
+    const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment, error: errorAddReplyToComment }] = useAddReplyToCommentMutation()
+
+    const [replyComment, setReplyComment] = useState<string>('')
+    const [isReplyToComment, setIsReplyToComment] = useState<boolean>(false)
+    const [commentDetails, setCommentDetails] = useState<CommentDetails>({
+        commentId: '',
+        firstName: '',
+        middleName: '',
+        lastName: ''
+    })
 
     const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.currentTarget === event.target) {
@@ -33,6 +53,48 @@ export default function ModalPost({ onClose, selectedPost }: PostModalInterface)
             document.body.style.overflow = '';
         };
     }, []);
+
+    const postId = post?._id
+    const handleComment = async () => {
+        if(replyComment.length == 0) return
+        if(isReplyToComment) {
+            try {
+                await addReplyToComment({commentId: commentDetails.commentId, userId, reply: replyComment})
+                refreshPost()
+                setReplyComment('');
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            try {
+                await addCommentToPost({postId, commenterId: userId, comment: replyComment})
+                refreshPost()
+                setReplyComment('');
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+
+    const handleReply = async (commentId: string, firstName: string, middleName: string | undefined, lastName: string) => {
+        setIsReplyToComment(true)
+        setCommentDetails({
+            commentId,
+            firstName,
+            middleName: middleName ?? '',
+            lastName
+        });
+    }
+
+    const handelCloseReply = () => {
+        setIsReplyToComment(false)
+        setCommentDetails({
+            commentId: '',
+            firstName: '',
+            middleName: '',
+            lastName: ''
+        });
+    }
 
     if (isLoadingPost) return <div>Loading posts...</div>;
     if (errorPost) return <div>Error loading posts</div>;
@@ -80,8 +142,6 @@ export default function ModalPost({ onClose, selectedPost }: PostModalInterface)
                                 <div className="flex items-center space-x-3">
                                     <Avatar
                                         sx={{ width: 38, height: 38 }}
-                                        // alt="Remy Sharp"
-                                        // src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                         alt={post?.authorId.username}
                                         src={post?.authorId.avatarUrl}
                                     />
@@ -99,7 +159,7 @@ export default function ModalPost({ onClose, selectedPost }: PostModalInterface)
                                 <div>
                                     <Tooltip title="Show more">
                                         <IconButton>
-                                        <MoreVertIcon />
+                                            <MoreVertIcon />
                                         </IconButton>
                                     </Tooltip>
                                 </div>
@@ -123,125 +183,157 @@ export default function ModalPost({ onClose, selectedPost }: PostModalInterface)
                         </div>
 
                         {/* numbers of react, comment, and share */}
-                        {/* <ReactCommentShare /> */}
-
+                        <ReactCommentShare 
+                                post={post}
+                        />
                         <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
-
                         {/* react, comment, share */}
-                        <div className="pt-1">
-                            <div className="w-full flex justify-between">
-                                <div
-                                    className="w-1/3 flex items-center justify-center space-x-1 relative group p-1.5 rounded-full hover:bg-slate-200 cursor-pointer"
-                                    style={{ minWidth: "100px", minHeight: "24px" }}
+                        <div className='pt-1'>
+                            <div  className='w-full flex justify-between'>
+                                <div 
+                                    className='w-1/3 flex items-center justify-center space-x-1 relative group rounded-full hover:bg-slate-200 cursor-pointer'
                                 >
-                                    <div className="flex items-center justify-center space-x-2">
-                                        {/* <NotoOrangeHeart className='text-lg'/>
-                                                            <span className='text-sm font-medium text-slate-500'>Heart</span> */}
-                                        {/* <AllReactions /> */}
-                                    </div>
-                                    <div 
-                                        className="absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1">
-                                        {/* <SelectOneReaction /> */}
-                                    </div>
-                                </div>
-                                <div
-                                    className="w-1/3 flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200"
-                                // onClick={handlePostModal}
-                                >
-                                    <FluentCommentEdit16Filled className="text-lg" />
-                                    <span className="text-sm font-medium text-slate-500">
-                                        Comment
-                                    </span>
-                                </div>
-
-                            <div 
-                                className="w-1/3 flex items-center justify-center space-x-1 cursor-pointer p-1.5   rounded-full hover:bg-slate-200"
-                            >
-                                <FluentShare28Filled className="text-lg" />
-                                <span className="text-sm font-medium text-slate-500">
-                                    Share
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* all comment */}
-                    <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
-                    <div>
-                        <div className="flex flex-col">
-                            {post?.comments.map(comment => (
-                                <div key={comment._id} className="w-full flex space-x-1 py-1">
-                                    <div className="flex py-1">
-                                        <Avatar
-                                            sx={{ width: 38, height: 38 }}
-                                            alt={comment.from.username}
-                                            src={comment.from.avatarUrl}
+                                    <div className='space-x-2 block h-[26px]'>
+                                        <Reactions
+                                            post={post}
                                         />
                                     </div>
-                                    <div>
-                                        <div>
-                                            <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg p-1.5">
-                                                <span className="text-sm font-semibold text-black">
-                                                    {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
-                                                </span>
-                                                <span className="w-full flex text-sm text-black xl:text-sm">
-                                                    {comment.comment.split('\n').map((line, index) => (
-                                                        <span key={index}>
-                                                            {line}
-                                                            {index < comment.comment.split('\n').length - 1 && <br />}
-                                                        </span>
-                                                    ))}
-                                                </span>
-                                            </div>
-                                            <div className="flex space-x-5">
-                                                <div className="text-xs">
-                                                    <span>1h ago</span>
-                                                    <span>
-                                                    <TimeAgoPost timeStamp={comment.createdAt}/>
-                                                    </span>
-                                                </div>
-                                                <div className="text-xs">
-                                                    <span>Like</span>
-                                                </div>
-                                                <div className="text-xs">
-                                                    <span>Reply</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {/* reply comment */}
-                                        <div className="w-full flex space-x-1 py-1">
+                                    <div 
+                                        className={`absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1`}
+                                    >
+                                        <SelectOneReaction 
+                                            postId={post._id}
+                                        />
+                                    </div>
+                                </div>
+                                <div className='w-1/3 flex items-center justify-center'>
+                                    <div 
+                                        data-dropdown-toggle="mega-menu-dropdown"
+                                        className='w-full flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200'
+                                    >
+                                        <span className='text-sm font-medium text-slate-500'>
+                                            Comment
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+                        <div className='py-1.5'>
+                            <div className="flex flex-col">
+                                <div className='overflow-y-auto max-h-[300px]'>
+                                    {/* comments */}
+                                    {post?.comments.map(comment => (
+                                        <div key={comment._id} className="w-full flex space-x-1 py-1">
                                             <div className="flex py-1">
                                                 <Avatar
                                                     sx={{ width: 38, height: 38 }}
-                                                    alt="Remy Sharp"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                    alt={comment.from.username}
+                                                    src={comment.from.avatarUrl}
                                                 />
                                             </div>
                                             <div>
-                                                <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg p-1.5">
-                                                    <span className="text-sm font-semibold text-black">
-                                                        Eleomar F. Fajutnao
-                                                    </span>
-                                                    <span className="w-full flex text-sm text-black xl:text-sm">
-                                                        Hindi ko gets Parang code ko Hindi ko gets pano gumana Moral lesson "Paano"
-                                                    </span>
+                                                <div className='flex justify-between'>
+                                                    <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
+                                                        <span className="text-sm font-semibold text-black">
+                                                            {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
+                                                        </span>
+                                                        <span className="w-full flex text-sm text-black xl:text-sm">
+                                                            {comment.comment.split('\n').map((line, index) => (
+                                                                <span key={index}>
+                                                                    {line}
+                                                                    {index < comment.comment.split('\n').length - 1 && <br />}
+                                                                </span>
+                                                            ))}
+                                                        </span>
+                                                    </div>
+                                                    <div className='flex items-center p-1.5'>
+                                                        <MiOptionsVertical className='text-sm'/>
+                                                    </div>
                                                 </div>
-                                                <div className="flex space-x-5">
+                                                <div className="flex space-x-5 px-2.5">
                                                     <div className="text-xs">
-                                                        <span>1h ago</span>
+                                                        <span>
+                                                            <TimeAgoPost 
+                                                                timeStamp={comment.createdAt}
+                                                            />
+                                                        </span>
                                                     </div>
                                                     <div className="text-xs">
                                                         <span>Like</span>
                                                     </div>
                                                     <div className="text-xs">
-                                                        <span>Reply</span>
+                                                        <span onClick={() => handleReply(comment._id, comment.from.firstName, comment.from.middleName, comment.from.lastName)}>Reply</span>
                                                     </div>
+                                                </div>
+                                                {/* replies comment */}
+                                                <div className=''>
+                                                    {comment.replies.map(reply => (
+                                                        <div key={reply._id} className="w-full flex space-x-1 py-1">
+                                                            <div className="flex py-1">
+                                                                <Avatar
+                                                                    sx={{ width: 38, height: 38 }}
+                                                                    alt={reply.userId.username}
+                                                                    src={reply.userId.avatarUrl}
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <div className='flex justify-between'>
+                                                                    <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
+                                                                        <span className="text-sm font-semibold text-black">
+                                                                            {reply.userId.firstName} {reply.userId.middleName} {reply.userId.lastName}
+                                                                        </span>
+                                                                        <span className="w-full flex text-sm text-black xl:text-sm">
+                                                                            {reply.comment}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className='flex items-center p-1.5'>
+                                                                        <MiOptionsVertical className='text-sm'/>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex space-x-5 px-2.5">
+                                                                    <div className="text-xs">
+                                                                        <TimeAgoPost 
+                                                                            timeStamp={reply.createdAt}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="text-xs">
+                                                                        <span>Like</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
+                                    ))}
+                                </div>
+                            </div>
+                            {/* textarea for comment and reply */}
+                            <div className='flex flex-col space-y-1.5 pt-2.5'>
+                                {isReplyToComment && (
+                                    <div className='flex space-x-2'>
+                                        <p className='text-xs'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
+                                    </div>
+                                )}
+                                <div className="relative flex items-center">
+                                    <textarea 
+                                        rows={1}
+                                        cols={30}
+                                        onChange={(e) => setReplyComment(e.target.value)}
+                                        placeholder="Write a comment..."
+                                        value={replyComment}
+                                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
+                                    />
+                                    <div className="absolute right-0 pr-3 flex items-center h-full">
+                                        <FluentSend28Filled 
+                                            className="text-base" 
+                                            onClick={handleComment}
+                                        />
                                     </div>
                                 </div>
-                            ))}
                             </div>
                         </div>
                     </div>

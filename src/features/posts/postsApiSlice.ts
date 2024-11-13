@@ -100,6 +100,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 return response;
             },
         }),
+        addCommentToPost: builder.mutation({
+            query: ({ postId, commenterId, comment }) => ({
+                url: `/post/${postId}/comment`,
+                method: 'POST',
+                body: { commenterId, comment },
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
+        addReplyToComment: builder.mutation({
+            query: ({ commentId, userId, reply }) => ({
+                url: `/post/comments/${commentId}/reply`,
+                method: 'POST',
+                body: { userId, reply },
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
     }),
 });
 
@@ -117,4 +133,6 @@ export const {
     useReactPostMutation,
     // useGetReactionOfPostQuery,
     useGetPostByIdQuery,
+    useAddCommentToPostMutation,
+    useAddReplyToCommentMutation,
 } = usersApiSlice;

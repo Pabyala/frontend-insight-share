@@ -39,12 +39,25 @@ export interface CommentFrom {
     coverPhotoUrl?: string;
 }
 
+export interface ReplytoComment {
+    _id: string;
+    rid: string;
+    userId: Author;
+    from: string;
+    replyAt: string;
+    comment: string;
+    createdAt: string;
+    updatedAt: string;
+    heart: any[];
+}
+
+
 export interface PostComment {
     _id: string;
     comment: string;
     from: CommentFrom;
     heart: any[];
-    replies: any[];
+    replies: ReplytoComment[];
     createdAt: string;
     updatedAt: string;
     __v: string;

@@ -150,48 +150,6 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                                                 setSelectedPostId={setSelectedPostId}
                                             />
                                         )}
-                                        {/* {selectedPostId === post._id && (
-                                            <div className='absolute top-[30px] right-[55px] z-[2]'>
-                                                <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start border-[1px] rounded'>
-                                                    {userId === post.authorId._id && (
-                                                        <>
-                                                            <div 
-                                                                onClick={() => handleShowModalUpdate(post)}
-                                                                className='text-sm hover:bg-gray-100 p-1.5 w-full rounded-sm cursor-pointer flex space-x-3 items-center'
-                                                            >
-                                                                <span className='text-[20px]'><MdiPenColored/></span>
-                                                                <span>Update post</span>
-                                                            </div>
-                                                            <div 
-                                                                onClick={() => handleDeletePost(post._id)}
-                                                                className='text-sm hover:bg-gray-100 p-1.5 w-full rounded-sm cursor-pointer flex space-x-3 items-center'
-                                                            >
-
-                                                                <span className='text-[20px]'><MingcuteDelete2Fill/></span>
-                                                                <span>Delete post</span>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                    {isSavedPost ? (
-                                                        <div 
-                                                            onClick={() => handleUnsavedPost(post._id)}
-                                                            className='text-sm hover:bg-gray-100 p-1.5 w-full rounded-sm cursor-pointer flex space-x-3 items-center'
-                                                        >
-                                                            <span className='text-[20px]'><FlatColorIconsFolder/></span>
-                                                            <span>Unsave post</span>
-                                                        </div>
-                                                    ) : (
-                                                        <div 
-                                                            onClick={() => handleSavePost(post._id)}
-                                                            className='text-sm hover:bg-gray-100 p-1.5 w-full rounded-sm cursor-pointer flex space-x-3 items-center'
-                                                        >
-                                                            <span className='text-[20px]'><FlatColorIconsFolder/></span>
-                                                            <span>Save post</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )} */}
                                     </div>
                                 </div>
                             </div>
@@ -276,6 +234,7 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                     (<ModalPost
                         selectedPost={selectedPost} 
                         onClose={handleClosePostModal} 
+                        userId={userId}
                         // selectedPostData={selectedPostData}
                     />
                 )}
