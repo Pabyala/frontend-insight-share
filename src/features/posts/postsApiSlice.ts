@@ -18,8 +18,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         //     query: () => '/post/your-post', // Update endpoint as needed
         //     transformResponse: (response: GetAllPostsByUserResponse) => response.yourAllPost,
         // }),
-        getUserAllPosts: builder.query<TimelinePosts, void>({
-            query: () => '/post/my-post', 
+        getUserAllPosts: builder.query<TimelinePosts, string | void>({
+            // query: () => '/post/my-post', 
+            query: (userId) => {
+                // If userId is not provided, use the current logged-in user's posts
+                const url = userId ? `/post/all-posts/${userId}` : '/post/all-posts';
+                return url;
+            },
             transformResponse: (response: TimelinePosts) => {
                 console.log("API Response your all posts:", response);
                 return response}
@@ -108,11 +113,44 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
         }),
+        updateCommentToPost: builder.mutation({
+            query: ({commentId, updatedComment, userId}) => ({
+                url: `/post/update-comment/${commentId}`,
+                method: 'PUT',
+                body: { updatedComment, userId }
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
+        deleteCommentToPost: builder.mutation({
+            query: ({ commentId, userId }) => ({
+                url: `/post/delete-comment/${commentId}`,
+                method: 'DELETE',
+                body: { userId }
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
+        // reply to the comment APISlice
         addReplyToComment: builder.mutation({
             query: ({ commentId, userId, reply }) => ({
                 url: `/post/comments/${commentId}/reply`,
                 method: 'POST',
                 body: { userId, reply },
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
+        updateAddReplyToComment: builder.mutation({
+            query: ({commentId, replyId,  newReplyComment, userId}) => ({
+                url: `/post/update-reply/${commentId}/${replyId}`,
+                method: 'PUT',
+                body: { newReplyComment, userId }
+            }),
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+        }),
+        deleteAddReplyToComment: builder.mutation({
+            query: ({ commentId, replyId, userId }) => ({
+                url: `/post/delete-reply/${commentId}/${replyId}`,
+                method: 'DELETE',
+                body: { userId }
             }),
             invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
         }),
@@ -122,8 +160,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const { 
     // useGetUserPostsQuery,
     // useLazyGetUserAllPostsQuery,
-    useGetPostsForTimelineQuery,
     useGetUserAllPostsQuery,
+    useGetPostsForTimelineQuery,
     useAddPostMutation,
     useUpdatePostMutation,
     useDeletePostMutation,

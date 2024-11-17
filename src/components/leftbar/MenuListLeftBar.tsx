@@ -7,6 +7,7 @@ import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../../features/po
 export default function MenuListLeftBar() {
 
     const { data: getFollowers } = useGetFollowersQuery()
+    console.log("GET FOLLOWERS", getFollowers)
     const { data: getFollowing } = useGetFollowingQuery()
     const { data: yourPosts } = useGetUserAllPostsQuery();
     const { data: savedPosts } = useGetSavedPostQuery()

@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { BxsUpArrow, FeArrowRight } from '../../others/CustomIcons'
-import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import BdayFormater from '../../helper/BdayFormater';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
+import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 
 export default function SettingsProfileDetails() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    const { data: getFollowers } = useGetFollowersQuery()
+    // const { data: getFollowing } = useGetFollowingQuery()
 
     const formattedDate = BdayFormater(userInfo?.dateOfBirth);
 
@@ -47,7 +50,7 @@ export default function SettingsProfileDetails() {
                                 type="text" 
                                 placeholder='First Name'
                                 name="" 
-                                value={userInfo?.firstName}
+                                value={userInfo?.firstName || ''}
                                 id=""
                             />
                         </div>
@@ -60,7 +63,7 @@ export default function SettingsProfileDetails() {
                                 type="text" 
                                 placeholder='Middle Name'
                                 name="" 
-                                value={userInfo?.middleName}
+                                value={userInfo?.middleName || ''}
                                 id=""
                             />
                         </div>
@@ -73,7 +76,7 @@ export default function SettingsProfileDetails() {
                                 type="text" 
                                 placeholder='Last Name'
                                 name="" 
-                                value={userInfo?.lastName}
+                                value={userInfo?.lastName || ''}
                                 id=""
                             />
                         </div>
@@ -107,7 +110,7 @@ export default function SettingsProfileDetails() {
                                 type="text" 
                                 placeholder='Username'
                                 name="" 
-                                value={userInfo?.username}
+                                value={userInfo?.username || ''}
                                 id=""
                             />
                         </div>

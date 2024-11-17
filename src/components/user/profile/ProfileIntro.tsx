@@ -4,24 +4,36 @@ import { Link } from 'react-router-dom'
 import { followerRequest } from '../../../data/dummy-data';
 import DetailsModal from './DetailsModal';
 import ProfileFollowers from './ProfileFollowers';
-import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import { Followers, UserDetails, UserInfo } from '../../../interface/user';
 import BdayFormater from '../../helper/BdayFormater';
+import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 
 // interface ProfileHeaderProps {
 //     followersData: Followers | undefined; // Replace `any` with the correct type for followersData if available
 //     userInfo?: UserInfo; // Replace `any` with the correct type for userInfo if available
 // }
-export default function ProfileIntro() {
+interface ProfileIntroProps {
+    userInfo: UserInfo | undefined;
+}
+
+export default function ProfileIntro({ userInfo }: ProfileIntroProps) {
 
     const setFollowers = followerRequest.slice(0, 9);
     const [showInputDetails, setShowInputDetails] = useState<boolean>(false)
     const [myBio, setMyBio] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.')
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    // const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+
+    const { data: getFollowers } = useGetFollowersQuery()
+    // const { data: getFollowing } = useGetFollowingQuery()
 
     const formattedDate = BdayFormater(userInfo?.dateOfBirth);
+
+    const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const authenticatedUserId = authenticatedUserInfo?._id
+    const currentUserId = userInfo?._id
 
     return (
         <div className='w-full flex flex-col space-y-1.5 lg:space-y-2.5'>
@@ -73,7 +85,12 @@ export default function ProfileIntro() {
                                     </span>
                                 </div>
                                 <div className='flex'>
-                                    <p className='text-sm'>Followed by <span className='font-semibold'>{followersData?.totalFollowers} </span>{followersData?.totalFollowers !== 1 ? 'people' : 'peoples'}</p>
+                                    <p className='text-sm'>Followed by 
+                                        <span className='font-semibold'>   
+                                            {/* {followersData?.totalFollowers}  */}
+                                        </span>
+                                        {/* {followersData?.totalFollowers !== 1 ? 'people' : 'peoples'} */}
+                                    </p>
                                 </div>
                             </div>
                         )}
@@ -148,23 +165,26 @@ export default function ProfileIntro() {
                             </div>
                         )}
                         
-
-                        <div className='w-full'>
-                            <button
-                                onClick={() => setShowInputDetails(true)}
-                                className='w-full p-2 bg-gray-200 rounded text-sm font-medium hover:bg-gray-300'
-                            >Edit Details</button>
-                            {showInputDetails && (
-                                <DetailsModal
-                                    onClose={() => setShowInputDetails(false)}
-                                />
-                            )}
-                        </div>
+                        {authenticatedUserId === currentUserId && (
+                            <div className='w-full'>
+                                <button
+                                    onClick={() => setShowInputDetails(true)}
+                                    className='w-full p-2 bg-gray-200 rounded text-sm font-medium hover:bg-gray-300'
+                                >Edit Details</button>
+                                {showInputDetails && (
+                                    <DetailsModal
+                                        onClose={() => setShowInputDetails(false)}
+                                    />
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
 
-            <ProfileFollowers/>
+            <ProfileFollowers
+                currentUserId={currentUserId}
+            />
         </div>
     )
 }

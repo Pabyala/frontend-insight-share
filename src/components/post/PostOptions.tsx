@@ -33,7 +33,7 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         if(!postId) return
         try {
             await deletePost(postId).unwrap();
-            // setSelectedPostId(null);
+            setSelectedPostId('');
         } catch (error) {
             console.log(error)
         }
@@ -44,7 +44,7 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         if(!postId) return
         try {
             await savedPost(postId).unwrap();
-            // setSelectedPostId(null);
+            setSelectedPostId('');
         } catch (error) {
             console.log(error)
         }
@@ -55,7 +55,7 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         if(!postId) return
         try {
             await unsavedPost(postId).unwrap();
-            // setSelectedPostId(null);
+            setSelectedPostId('');
         } catch (error) {
             console.log(error)
         }

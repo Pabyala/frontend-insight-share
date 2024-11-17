@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import ProfileListOfFollowers from './ProfileListOfFollowers';
 import { AntDesignSettingFilledWhite, GridiconsCamera, MdiPen } from '../../others/CustomIcons';
-import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
 import { FollowerData, Followers, UserInfo } from '../../../interface/user';
 import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
+import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 
 interface ProfileHeaderProps {
-    
+    userInfo: UserInfo | undefined;
 }
 
-export default function ProfileHeader() {
+export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
 
     const [showUpdateProfileModal, setShowUpdateProfileModal] = useState<boolean>(false);
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    const { data: getFollowers } = useGetFollowersQuery()
+    // const { data: getFollowing } = useGetFollowingQuery()
+    const authenticatedUserId = authenticatedUserInfo?._id
+    const currentUserId = userInfo?._id
 
     return (
         <div className='w-full mx-auto flex flex-col bg-white rounded'>
@@ -68,34 +73,54 @@ export default function ProfileHeader() {
                             <span> {userInfo?.lastName}</span>
                         </p>
                         <p className='text-sm text-black lg:text-base italic'>@{userInfo?.username}</p>
-                        <p className='text-sm text-gray-600 lg:text-base'>{followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'}</p>
+                        <p className='text-sm text-gray-600 lg:text-base'>
+                            {/* {followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'} */}
+
+                        </p>
+                        {/* <p className='text-sm text-gray-600 lg:text-base'>{followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'}</p> */}
                         <ProfileListOfFollowers/>
                     </div>
                 </div>
 
-                <div className='flex space-x-2'>
-                    <button 
-                        onClick={() => setShowUpdateProfileModal(true)}
-                        className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
-                    >
-                        <span className='text-[18px]'>
-                            <MdiPen/>
-                        </span>
-                        <span className='text-sm font-medium'>Edit Profile</span>
-                    </button>
-                    <Link 
-                        to={'/settings'}
-                        className='bg-blue-600 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-blue-700 lg:mb-[7px]'
-                    >
-                        <span className='text-[18px]'>
-                            <AntDesignSettingFilledWhite/>
-                        </span>
-                    </Link>
-                </div>
-                {showUpdateProfileModal && (
-                    <ProfileUpdateModal
-                        onClose={() => setShowUpdateProfileModal(false)}
-                    />
+                {authenticatedUserId === currentUserId ? (
+                    <>
+                        <div className='flex space-x-2'>
+                            <button 
+                                onClick={() => setShowUpdateProfileModal(true)}
+                                className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
+                            >
+                                <span className='text-[18px]'>
+                                    <MdiPen/>
+                                </span>
+                                <span className='text-sm font-medium'>Edit Profile</span>
+                            </button>
+                            <Link 
+                                to={'/settings'}
+                                className='bg-blue-600 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-blue-700 lg:mb-[7px]'
+                            >
+                                <span className='text-[18px]'>
+                                    <AntDesignSettingFilledWhite/>
+                                </span>
+                            </Link>
+                        </div>
+                        {showUpdateProfileModal && (
+                            <ProfileUpdateModal
+                                onClose={() => setShowUpdateProfileModal(false)}
+                            />
+                        )}
+                    </>
+                ) : (
+                    // <p>Follow</p>
+                    <div className='flex space-x-2'>
+                        <button
+                            className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
+                        >
+                            <span className='text-[18px]'>
+                                <MdiPen/>
+                            </span>
+                            <span className='text-sm font-medium'>Follow</span>
+                        </button>
+                    </div>
                 )}
             </div>
         </div>

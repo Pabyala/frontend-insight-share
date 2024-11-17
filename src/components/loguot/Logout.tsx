@@ -1,8 +1,8 @@
 import React from 'react'
-import { selectCurrentId, selectCurrentToken, selectCurrentUser } from '../../features/auth/authSlice';
+import { logOut, selectCurrentId, selectCurrentToken, selectCurrentUser } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useLogoutMutation } from '../../features/auth/authApiSlice';
+import { useLogoutUserMutation } from '../../features/auth/authApiSlice';
 
 export default function Logout() {
     const username = useSelector(selectCurrentUser)
@@ -12,14 +12,16 @@ export default function Logout() {
     console.log("Username:", username);
     console.log("Token:", token); 
     console.log("My Id:", id); 
-    const [logout, { isLoading }] = useLogoutMutation();
+    // const [logout, { isLoading }] = useLogoutMutation();
+    const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
             // dispatch the logOut action to clear the state
-            await logout({}).unwrap();
+            await logoutUser().unwrap();
+            dispatch(logOut());
 
             // Redirect to login page
             navigate('/login', { replace: true });

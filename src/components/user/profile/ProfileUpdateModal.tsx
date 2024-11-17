@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 import { MdiCloseThick } from '../../others/CustomIcons';
-import { useGetUserFollowersQuery, useGetUserQuery, useUpdateUserProfilePictureMutation, useUploadBgPhotoMutation, useUploadProfilePhotoMutation } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery, useUpdateUserProfilePictureMutation, useUploadBgPhotoMutation, useUploadProfilePhotoMutation } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
 import { UserInfo } from '../../../interface/user';
@@ -11,7 +11,7 @@ interface ProfilePropsInterface {
 
 export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refetchUserInfo  } = useGetUserQuery();
-    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
 
     const [updateUserProfilePicture, { isLoading: isUpdating, error: updateError }] = useUpdateUserProfilePictureMutation();
     const [uploadProfilePhoto, { isLoading: updateProfilePhotoLoading }] = useUploadProfilePhotoMutation();

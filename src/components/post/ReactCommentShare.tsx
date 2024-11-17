@@ -12,9 +12,9 @@ interface PropsPost {
 
 export default function ReactCommentShare({ post }: PropsPost) {
 
-    // const totalComments = post.comments.length; 
-    // const totalReplies = post.comments.reduce((acc, comment) => acc + (comment.replies?.length || 0), 0);
-    // const allComments = totalComments + totalReplies
+    const totalComments = post.comments.length; 
+    const totalReplies = post.comments.reduce((acc, comment) => acc + (comment.replies?.length || 0), 0);
+    const allComments = totalComments + totalReplies
 
     const getTotalReactions = () => {
         let totalReactions = 0;
@@ -42,12 +42,12 @@ export default function ReactCommentShare({ post }: PropsPost) {
                 {/* comment */}
                 <div className='w-1/3 flex items-center justify-center'>
                     <span className='text-sm text-slate-500 cursor-pointer'>
-                    {/* {allComments === 0  ? '' 
+                    {allComments === 0  ? '' 
                         : (allComments === 1 
                         ? `${allComments} comment` 
                         : `${allComments} comments`)
-                    } */}
-                    1.1K comments
+                    }
+                    {/* 1.1K comments */}
                     </span>
                 </div>
             </div>

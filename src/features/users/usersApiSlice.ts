@@ -15,6 +15,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             transformResponse: (response: { userInfo: UserInfo }) => response.userInfo,
             providesTags: ['UserInfo'],
         }),
+        getUserById: builder.query<UserInfo, string>({
+            query: (userId) => `/user/${userId}`,
+            transformResponse: (response: { userInfo: UserInfo }) => response.userInfo,
+            // providesTags: (result, error, userId) => [{ type: 'UserInfoById', id: userId }],
+            providesTags: ['UserInfoById'],
+        }),
         getUserFollowers: builder.query<Followers, void>({
             query: () => '/user/followers',
             transformResponse: (response: Followers ) => response,
@@ -54,7 +60,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const { 
     useGetUsersQuery, 
     useGetUserQuery, 
-    useGetUserFollowersQuery,
+    useGetUserByIdQuery,
+    // useGetUserFollowersQuery,
     useUpdateUserDetailsMutation,
     useUpdateUserProfilePictureMutation,  
     useUploadProfilePhotoMutation,  

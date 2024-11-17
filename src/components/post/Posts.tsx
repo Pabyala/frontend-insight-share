@@ -32,6 +32,8 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     const [isSavedPost, setIsSavedPost] = useState<boolean>(false)
     const [savedPostStatus, setSavedPostStatus] = useState<{ [key: string]: boolean }>({});
+    console.log("O: ", selectedPostId)
+    console.log("OPEN MODAL: ", isSavedPost)
 
     const { data: savedPosts } = useGetSavedPostQuery()
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
@@ -65,7 +67,6 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
             setIsSavedPost(false)
             console.log("No")
         }
-        
     }
 
     // to close the modal
@@ -91,12 +92,20 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
     const handlePostModal = (postId: string) => {
         setSelectedPost(postId)
         setOpenPostModal(!openPostModal)
+        // setSelectedPostId((prevId) => (prevId === postId ? null : postId));
+        // if(allSavedPostId.includes(postId)){
+        //     console.log("Yes")
+        //     setIsSavedPost(true)
+        // } else {
+        //     setIsSavedPost(false)
+        //     console.log("No")
+        // }
     }
 
     const handleClosePostModal = () => {
         setSelectedPost(null)
-        setOpenPostModal(false);
-        // setSelectedPostData(undefined); 
+        setOpenPostModal(false)
+        // setSelectedPostData(undefined);
     };
 
     const handleFollowedUser = async (userIdToFollow: string) => {
@@ -118,16 +127,20 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                             <div className='mb-1'>
                                 <div className="flex justify-between">
                                     <div className='flex items-center space-x-3'>
-                                        <Link to={'/'}>
+                                        {/* <Link to={`/profile/id/${post.authorId._id}`}> */}
+                                        <Link to={`/profile/${post.authorId.username}/${post.authorId._id}`}>
                                             <Avatar
                                                 sx={{ width: 38, height: 38 }}
-                                                alt="Remy Sharp"
+                                                alt={post.authorId.username}
                                                 src={post?.authorId?.avatarUrl}
                                             />
                                         </Link>
                                         <div className='flex flex-col'>
                                             <div className='flex space-x-2'>
-                                                <Link to={'/'} className='text-sm font-semibold text-black'>{post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}</Link>
+                                                {/* <Link to={`/profile/id/${post.authorId._id}`} className='text-sm font-semibold text-black'> */}
+                                                <Link to={`/profile/${post.authorId.username}/${post.authorId._id}`} className='text-sm font-semibold text-black'>
+                                                    {post?.authorId?.firstName} {post?.authorId?.middleName} {post?.authorId?.lastName}
+                                                </Link>
                                             </div>
                                             <p className='text-xs text-slate-600'>
                                                 <TimeAgoPost timeStamp={post.createdAt}/>
@@ -234,8 +247,17 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
                     (<ModalPost
                         selectedPost={selectedPost} 
                         onClose={handleClosePostModal} 
+                        // onClose={() => setOpenPostModal(false)} 
                         userId={userId}
                         // selectedPostData={selectedPostData}
+
+                        // post={post}
+                        // userId={userId} 
+                        // isSavedPost={isSavedPost}
+                        // setSelectedPostId={setSelectedPostId}
+                        // isSavedPost={isSavedPost}
+                        // setSelectedPostId={setSelectedPostId}
+                        // selectedPostId={selectedPostId}
                     />
                 )}
 

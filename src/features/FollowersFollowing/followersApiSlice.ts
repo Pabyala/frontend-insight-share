@@ -3,13 +3,17 @@ import { FollowedUser, MyFollowers, YourFollowers, YourFollowing } from "../../i
 
 export const followersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getFollowers: builder.query<MyFollowers, void>({
-            query: () => '/user/followers',
+        getFollowers: builder.query<MyFollowers, string | void>({
+            query: ( userId ) => {
+                return userId ? `/user/my-followers/${userId}/followers` : '/user/my-followers/followers';
+            },
             transformResponse: (response: MyFollowers) => response,
             providesTags: ['Followers'],
         }),
-        getFollowing: builder.query<YourFollowing, void>({
-            query: () => '/user/following',
+        getFollowing: builder.query<YourFollowing, string | void>({
+            query: ( userId ) => {
+                return userId ? `/user/my-following/${userId}/following` : '/user/my-following/following';
+            },
             transformResponse: (response: YourFollowing) => response,
             providesTags: ['Following'],
         }),

@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { FeArrowRight, MaterialSymbolsDelete, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons'
 import CustomDatePicker from '../../others/CustomDatePicker';
-import { useGetUserFollowersQuery, useGetUserQuery } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 
 export default function SettingsPersonalDetails() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    console.log("CURRENT USER INFO: ", userInfo)
 
     const [activeElement, setActiveElement] = useState<string | null>(null);
 
@@ -44,7 +45,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Bio'
                                 name="" 
-                                value={userInfo?.bio}
+                                value={userInfo?.bio || ''}
                                 id=""
                             />
                         </div>
@@ -77,7 +78,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Lives in'
                                 name="" 
-                                value={userInfo?.livesIn}
+                                value={userInfo?.livesIn || ''}
                                 id=""
                             />
                         </div>
@@ -110,7 +111,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='From'
                                 name="" 
-                                value={userInfo?.locFrom}
+                                value={userInfo?.locFrom || ''}
                                 id=""
                             />
                         </div>
@@ -143,7 +144,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Study'
                                 name="" 
-                                value={userInfo?.studyAt}
+                                value={userInfo?.studyAt || ''}
                                 id=""
                             />
                         </div>
@@ -175,7 +176,7 @@ export default function SettingsPersonalDetails() {
                                 className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="text" 
                                 placeholder='Company'
-                                value={userInfo?.workAt.companyName}
+                                value={userInfo?.workAt?.companyName || ''}
                                 name="" 
                                 id=""
                             />
@@ -186,7 +187,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Position'
                                 name="" 
-                                value={userInfo?.workAt.position}
+                                value={userInfo?.workAt?.position || ''}
                                 id=""
                             />
                         </div>
@@ -218,7 +219,7 @@ export default function SettingsPersonalDetails() {
                                 className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="date" 
                                 placeholder='Date'
-                                value={userInfo?.dateOfBirth}
+                                value={userInfo?.dateOfBirth || ''}
                                 name="" 
                                 id=""
                             />
@@ -285,7 +286,7 @@ export default function SettingsPersonalDetails() {
                                 type="text" 
                                 placeholder='Gender'
                                 name="" 
-                                value={userInfo?.gender}
+                                value={userInfo?.gender || ''}
                                 id=""
                             />
                         </div>
@@ -317,7 +318,7 @@ export default function SettingsPersonalDetails() {
                                 className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
                                 type="number" 
                                 placeholder='Number'
-                                value={userInfo?.phoneNumber}
+                                value={userInfo?.phoneNumber || ''}
                                 name="" 
                                 id=""
                             />
@@ -384,11 +385,11 @@ export default function SettingsPersonalDetails() {
                                         <div key={social.urlId} className='flex w-full justify-between'>
                                             <div className='w-[75%]'>
                                                 <a 
-                                                href={social.url}
+                                                href={social.url || ''}
                                                 className='w-full text-sm text-[#0866FF] '
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                >{social.url}</a>
+                                                >{social.url || ''}</a>
                                             </div>
                                             <div className='w-[20%] flex justify-between'>
                                                 <button 

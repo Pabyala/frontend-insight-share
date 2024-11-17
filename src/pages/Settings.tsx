@@ -4,16 +4,20 @@ import ProfileHeader from '../components/user/profile/ProfileHeader';
 import SettingsPasswordAndSecurity from '../components/user/settings/SettingsPasswordAndSecurity';
 import SettingsPersonalDetails from '../components/user/settings/SettingsPersonalDetails';
 import SettingsProfileDetails from '../components/user/settings/SettingsProfileDetails';
+import { useGetUserQuery } from '../features/users/usersApiSlice';
 
 export default function Settings() {
 
     const [openTab, setOpenTab] = useState<number>(1);
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
 
     return (
         <div className='flex flex-col pb-5'>
             <Navbar />
             <div className='container mx-auto flex flex-col justify-between pt-[63px] lg:pt-[65px] xl:pt-[68px] relative overflow-hidden space-y-1.5 lg:space-y-3'>
-                <ProfileHeader />
+                <ProfileHeader 
+                    userInfo={userInfo}
+                />
                 <div className='space-y-1.5 lg:space-y-3 lg:flex-row lg:justify-between'>
                     <p className='text-base font-medium pt-1.5 lg:text-lg'>Account Setting</p>
                     <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />

@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useAddCommentToPostMutation, useAddReplyToCommentMutation, useGetPostByIdQuery } from '../../features/posts/postsApiSlice';
 import { Avatar, IconButton, Tooltip } from '@mui/material';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TimeAgoPost from './TimeAgoPost';
-import { FluentSend28Filled, MiOptionsVertical } from '../others/CustomIcons';
+import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical } from '../others/CustomIcons';
 import ReactCommentShare from './ReactCommentShare';
 import Reactions from './Reactions';
 import SelectOneReaction from './SelectOneReaction';
+import PostOptions from './PostOptions';
+import CommentOptions from './CommentOptions';
 
 interface PostModalInterface {
     onClose: () => void;
     selectedPost: string | null;
     // selectedPostData: Post | undefined;
     userId: string | undefined;
+    
+    // setSelectedPostId: string | undefined;
+    // isSavedPost: boolean;
+    // setSelectedPostId: (postId: string) => void;
+    // selectedPostId: string | null;
+    
 }
 
 interface CommentDetails {
@@ -22,7 +30,7 @@ interface CommentDetails {
     lastName: string;
 }
 
-export default function ModalPost({ onClose, selectedPost, userId }: PostModalInterface) {
+export default function ModalPost({ onClose, selectedPost, userId,  }: PostModalInterface) {
 
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
         skip: !selectedPost, // skip the query if postId is falsy (undefined/null).
@@ -38,12 +46,26 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
         middleName: '',
         lastName: ''
     })
+    // const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+    // const [openOption, setOpenOption] = useState<boolean>(false);
+    const [isOpenCommentOptions, setIsOpenCommentOptions] = useState<boolean>(false);
+    const [isUpdate, setIsUpdate] = useState<boolean>(false);
+    console.log("MY ID:", userId)
+    console.log("IS UPDATE: ", isUpdate)
+
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.currentTarget === event.target) {
-        onClose();
+            onClose();
         }
     };
+
+    useEffect(() => {
+        if (selectedPost) {
+            refreshPost();
+        }
+    }, [selectedPost, refreshPost]);
 
     useEffect(() => {
       // prevent scrolling when the modal is open
@@ -74,6 +96,7 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                 console.log(error)
             }
         }
+        setIsReplyToComment(false)
     }
 
     const handleReply = async (commentId: string, firstName: string, middleName: string | undefined, lastName: string) => {
@@ -84,6 +107,8 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
             middleName: middleName ?? '',
             lastName
         });
+        
+        textareaRef.current?.focus();
     }
 
     const handelCloseReply = () => {
@@ -94,6 +119,23 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
             middleName: '',
             lastName: ''
         });
+        setReplyComment('')
+    }
+
+    const handleOption = (postId: string) => {
+        console.log("POST ID: ", postId)
+        // setOpenOption(true)
+    }
+
+    const handleCommentOptions = (commentId: string, authorCommentId: string) => {
+        setIsOpenCommentOptions(true)
+        console.log("COMMENT ID: ", commentId)
+        console.log("AUTHOR OF THE COMMENT ID: ", authorCommentId)
+        if(authorCommentId === userId) {
+            setIsUpdate(true)
+        } else { 
+            setIsUpdate(false)
+        }
     }
 
     if (isLoadingPost) return <div>Loading posts...</div>;
@@ -103,7 +145,8 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
     return (
         <div
             className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto"
-            onClick={handleOverlayClick}
+            // onClick={handleOverlayClick}
+            // onClick={onClose}
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -138,7 +181,7 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                     <div className="px-3 py-2 md:p-5">
                         {/* user avatar and name */}
                         <div className="mb-1">
-                            <div className="flex justify-between">
+                            <div className="flex justify-between ">
                                 <div className="flex items-center space-x-3">
                                     <Avatar
                                         sx={{ width: 38, height: 38 }}
@@ -156,13 +199,26 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                         </span>
                                     </div>
                                 </div>
-                                <div>
-                                    <Tooltip title="Show more">
-                                        <IconButton>
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </div>
+                                <Tooltip title="Show more">
+                                    <IconButton
+                                        onClick={() => handleOption(post._id)}
+                                        // onClick={handleOption}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                {/* {selectedPostId === post._id && (
+                                    <PostOptions
+                                        post={post}
+                                        userId={userId} 
+                                        isSavedPost={isSavedPost}
+                                        setSelectedPostId={setSelectedPostId}
+                                    />
+                                )} */}
+                                {/* {isOpenCommentOptions && (
+                                    <CommentOptions
+                                    />
+                                )} */}
                             </div>
                         </div>
 
@@ -172,7 +228,7 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                 <div className="my-2">
                                 <span className="text-sm">
                                     {post?.captionPost.split('\n').map((line, index) => (
-                                        <span key={index}>
+                                        <span key={index} className='text-base'>
                                             {line}
                                             {index < post?.captionPost.split('\n').length - 1 && <br />}
                                         </span>
@@ -234,7 +290,7 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                                 />
                                             </div>
                                             <div>
-                                                <div className='flex justify-between'>
+                                                <div className='flex justify-between relative'>
                                                     <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
                                                         <span className="text-sm font-semibold text-black">
                                                             {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
@@ -248,9 +304,16 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                                             ))}
                                                         </span>
                                                     </div>
-                                                    <div className='flex items-center p-1.5'>
-                                                        <MiOptionsVertical className='text-sm'/>
-                                                    </div>
+                                                    {/* <div className='relative'> */}
+                                                        <div className='flex items-center p-1.5'>
+                                                            <MiOptionsVertical className='text-sm cursor-pointer' onClick={() => handleCommentOptions(comment._id, comment.from._id)}/>
+                                                        </div>
+                                                        {isOpenCommentOptions && (
+                                                            <CommentOptions
+                                                                isUpdate={isUpdate}
+                                                            />
+                                                        )}
+                                                    {/* </div> */}
                                                 </div>
                                                 <div className="flex space-x-5 px-2.5">
                                                     <div className="text-xs">
@@ -261,10 +324,10 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                                         </span>
                                                     </div>
                                                     <div className="text-xs">
-                                                        <span>Like</span>
+                                                        <span className='cursor-pointer'>Like</span>
                                                     </div>
                                                     <div className="text-xs">
-                                                        <span onClick={() => handleReply(comment._id, comment.from.firstName, comment.from.middleName, comment.from.lastName)}>Reply</span>
+                                                        <span className='cursor-pointer' onClick={() => handleReply(comment._id, comment.from.firstName, comment.from.middleName, comment.from.lastName)}>Reply</span>
                                                     </div>
                                                 </div>
                                                 {/* replies comment */}
@@ -289,7 +352,7 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                                                         </span>
                                                                     </div>
                                                                     <div className='flex items-center p-1.5'>
-                                                                        <MiOptionsVertical className='text-sm'/>
+                                                                        <MiOptionsVertical className='text-sm' onClick={() => handleCommentOptions(reply._id, reply.userId._id)}/>
                                                                     </div>
                                                                 </div>
                                                                 <div className="flex space-x-5 px-2.5">
@@ -299,7 +362,7 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                                                         />
                                                                     </div>
                                                                     <div className="text-xs">
-                                                                        <span>Like</span>
+                                                                        <span className='cursor-pointer'>Like</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -315,11 +378,12 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                             <div className='flex flex-col space-y-1.5 pt-2.5'>
                                 {isReplyToComment && (
                                     <div className='flex space-x-2'>
-                                        <p className='text-xs'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
+                                        <p className='text-xs cursor-pointer'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
                                     </div>
                                 )}
                                 <div className="relative flex items-center">
                                     <textarea 
+                                        ref={textareaRef}
                                         rows={1}
                                         cols={30}
                                         onChange={(e) => setReplyComment(e.target.value)}
@@ -328,10 +392,17 @@ export default function ModalPost({ onClose, selectedPost, userId }: PostModalIn
                                         className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
                                     />
                                     <div className="absolute right-0 pr-3 flex items-center h-full">
-                                        <FluentSend28Filled 
-                                            className="text-base" 
-                                            onClick={handleComment}
-                                        />
+                                        {replyComment.length !== 0 ? (
+                                            <FluentSend28FilledColored 
+                                                className="text-base cursor-pointer" 
+                                                onClick={handleComment}
+                                            />
+                                        ) : (
+                                            <FluentSend28Filled
+                                                className="text-base cursor-pointer" 
+                                                onClick={handleComment}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             </div>

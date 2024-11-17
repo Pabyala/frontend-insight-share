@@ -16,6 +16,7 @@ import UploadProfileImg from "./components/user/profile/UploadProfileImg";
 import SavedPost from "./pages/SavedPost";
 import MyPosts from "./pages/MyPosts";
 import PersistLogin from "./components/PersistLogin";
+import ViewUserProfile from "./pages/ViewUserProfile";
 
 function App() {
   return (
@@ -35,7 +36,9 @@ function App() {
                 <Route path="/following" element={<Following />} />
                 <Route path="/my-post" element={<MyPosts />} />
                 <Route path="/saved-post" element={<SavedPost />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/id/:userId" element={<Profile />} />
+                {/* <Route path="/profile/view" element={<ViewUserProfile />} /> */}
+                <Route path="/profile/:username/:userId" element={<ViewUserProfile />} />
                 <Route path="/settings" element={<Settings />} />
 
                 {/* for demo */}

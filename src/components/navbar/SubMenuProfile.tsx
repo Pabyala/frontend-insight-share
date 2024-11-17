@@ -1,15 +1,36 @@
 import { Avatar } from '@mui/material'
 import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled, IconoirPostSolid, IonLogOut, MdiGift, MingcuteUserFollow2Fill } from '../others/CustomIcons'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectCurrentToken } from '../../features/auth/authSlice'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logOut, selectCurrentToken } from '../../features/auth/authSlice'
 // import { useGetUserDataQuery } from '../../features/auth/authApiSlice'
 import { useGetUserQuery } from '../../features/users/usersApiSlice'
+import { useLogoutUserMutation } from '../../features/auth/authApiSlice'
 
 export default function SubmenuProfile() {
 
+    const navigate = useNavigate()
     const token = useSelector(selectCurrentToken)
     const { data: userInfo, error, isLoading } = useGetUserQuery();
+    const dispatch = useDispatch();
+    const userId = userInfo?._id
+
+    const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
+
+    const handleLogout = async () => {
+        if (!token) {
+            console.error("Token is missing. Cannot log out.");
+            return;
+        }
+        try {
+            await logoutUser().unwrap();
+            dispatch(logOut());
+            console.log("Successfully logged out");
+            navigate('/login', { replace: true });
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    }
 
     // const notificationCount = userInfo?.followers.length
 
@@ -25,7 +46,7 @@ export default function SubmenuProfile() {
                     <div className='flex flex-col ml-2.5'>
                         {/* <span className='text-sm font-semibold'>Eleomar F. Fajutnao</span> */}
                         <p className="text-sm font-semibold">
-                            <span>{userInfo?.firstName} </span>  
+                            <span>{userInfo?.firstName} </span>
                             {/* <span>{userInfo?.middleName} </span>   */}
                             <span>{userInfo?.lastName}</span>
                         </p>
@@ -36,8 +57,8 @@ export default function SubmenuProfile() {
             <div className="block px-4">
                 <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
             </div>
-
-            <Link to='/profile' className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            
+            <Link to={`/profile/id/${userId}`} className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <ClarityUserSolid className='text-2xl' />
@@ -101,14 +122,14 @@ export default function SubmenuProfile() {
                     <span>Settings</span>
                 </div>
             </a>
-            <Link to='/login' className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <div className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <IonLogOut className='text-2xl' />
                     </div>
-                    <span>Logout</span>
+                    <span onClick={handleLogout}>Logout</span>
                 </div>
-            </Link>
+            </div>
         </div>
     )
 }

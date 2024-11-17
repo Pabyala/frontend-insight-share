@@ -1,12 +1,13 @@
 import { Avatar } from "@mui/material";
 import Sponsored from "./Sponsored";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import MenuListLeftBar from "./MenuListLeftBar";
 
 export default function LeftBar() {
 
     const { data: userInfo } =  useGetUserQuery();
+    const userId = userInfo?._id
 
     return (
         <div className="hidden xl:w-[26%] xl:block">
@@ -15,7 +16,7 @@ export default function LeftBar() {
                 style={{ zIndex: "1" }}
             >
                 <div className="w-full flex bg-white p-1.5">
-                    <Link to='/profile' className="w-full profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded cursor-pointer">
+                    <Link to={`/profile/id/${userId}`} className="w-full profileandName flex items-center space-x-3 hover:bg-gray-300 p-1.5 rounded cursor-pointer">
                         <div className="flex">
                             <Avatar
                                 sx={{ width: 33, height: 33 }}

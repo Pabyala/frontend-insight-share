@@ -2,7 +2,7 @@ export interface UserInfo {
     _id: string;                     
     username: string;                
     firstName: string;
-    middleName: string;             
+    middleName?: string;             
     lastName: string;                
     password: string;               
     email: string;                   
@@ -19,11 +19,11 @@ export interface UserInfo {
     socials: socialsData[];     
     studyAt: string;
     workAt: {
-        companyName: string;
-        position: string;
+        companyName?: string;
+        position?: string;
     }
-    livesIn: string;
-    locFrom: string;
+    livesIn?: string;
+    locFrom?: string;
 
     createdAt: string;               
     updatedAt: string;               

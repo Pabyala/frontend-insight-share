@@ -1,15 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useGetUserFollowersQuery } from '../../../features/users/usersApiSlice';
+// import { useGetUserFollowersQuery } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg';
 import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 
-export default function ProfileFollowers() {
+interface ProfileFollowersProps {
+    currentUserId: string | undefined;
+}
 
-    const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
-    console.log("Your followers", followersData?.yourFollowers)
+export default function ProfileFollowers({ currentUserId }: ProfileFollowersProps) {
 
-    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery()
+    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    // console.log("Your followers", followersData?.yourFollowers)
+
+    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery(currentUserId)
     
     if (isLoadingGetFollowers) {
         return <p>Loading followers...</p>;
