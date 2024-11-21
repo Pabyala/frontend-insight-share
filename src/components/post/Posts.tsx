@@ -22,9 +22,10 @@ interface PostsProps {
     error: any;
     // savedPostIds: string[];
     userId: string | undefined;
+    refetch: () => Promise<any>;
 }
 
-export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
+export default function Posts({ posts, isLoading, error, userId, refetch }: PostsProps) {
 
     const [openPostModal, setOpenPostModal] = useState<boolean>(false); 
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
@@ -105,6 +106,7 @@ export default function Posts({ posts, isLoading, error, userId }: PostsProps) {
     const handleClosePostModal = () => {
         setSelectedPost(null)
         setOpenPostModal(false)
+        refetch()
         // setSelectedPostData(undefined);
     };
 

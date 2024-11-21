@@ -35,6 +35,7 @@ export default function Timeline() {
                 error={errorTimelinePosts}
                 // savedPostIds={allSavedPostId}
                 userId={userId}
+                refetch={refetchTimelinePosts}
             />
             
         </div>

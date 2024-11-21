@@ -44,6 +44,7 @@ export default function MyPosts() {
                             error={errorYourPosts}
                             // savedPostIds={allSavedPostId}
                             userId={userId}
+                            refetch={refetchYourPosts}
                         />
                     </div>
                 </div>

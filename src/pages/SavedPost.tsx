@@ -46,6 +46,7 @@ export default function SavedPost() {
                             error={errorSavedPosts}
                             // savedPostIds={allSavedPostId}
                             userId={userId}
+                            refetch={refetchSavedPosts}
                         />
                     </div>
                 </div>

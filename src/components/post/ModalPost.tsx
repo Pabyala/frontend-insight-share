@@ -9,6 +9,7 @@ import Reactions from './Reactions';
 import SelectOneReaction from './SelectOneReaction';
 import PostOptions from './PostOptions';
 import CommentOptions from './CommentOptions';
+import CommentsAndReplies from './CommentsAndReplies';
 
 interface PostModalInterface {
     onClose: () => void;
@@ -35,31 +36,6 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
         skip: !selectedPost, // skip the query if postId is falsy (undefined/null).
     });
-    const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
-    const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment, error: errorAddReplyToComment }] = useAddReplyToCommentMutation()
-
-    const [replyComment, setReplyComment] = useState<string>('')
-    const [isReplyToComment, setIsReplyToComment] = useState<boolean>(false)
-    const [commentDetails, setCommentDetails] = useState<CommentDetails>({
-        commentId: '',
-        firstName: '',
-        middleName: '',
-        lastName: ''
-    })
-    // const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-    // const [openOption, setOpenOption] = useState<boolean>(false);
-    const [isOpenCommentOptions, setIsOpenCommentOptions] = useState<boolean>(false);
-    const [isUpdate, setIsUpdate] = useState<boolean>(false);
-    console.log("MY ID:", userId)
-    console.log("IS UPDATE: ", isUpdate)
-
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-    const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        if (event.currentTarget === event.target) {
-            onClose();
-        }
-    };
 
     useEffect(() => {
         if (selectedPost) {
@@ -76,66 +52,9 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
         };
     }, []);
 
-    const postId = post?._id
-    const handleComment = async () => {
-        if(replyComment.length == 0) return
-        if(isReplyToComment) {
-            try {
-                await addReplyToComment({commentId: commentDetails.commentId, userId, reply: replyComment})
-                refreshPost()
-                setReplyComment('');
-            } catch (error) {
-                console.log(error)
-            }
-        } else {
-            try {
-                await addCommentToPost({postId, commenterId: userId, comment: replyComment})
-                refreshPost()
-                setReplyComment('');
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        setIsReplyToComment(false)
-    }
-
-    const handleReply = async (commentId: string, firstName: string, middleName: string | undefined, lastName: string) => {
-        setIsReplyToComment(true)
-        setCommentDetails({
-            commentId,
-            firstName,
-            middleName: middleName ?? '',
-            lastName
-        });
-        
-        textareaRef.current?.focus();
-    }
-
-    const handelCloseReply = () => {
-        setIsReplyToComment(false)
-        setCommentDetails({
-            commentId: '',
-            firstName: '',
-            middleName: '',
-            lastName: ''
-        });
-        setReplyComment('')
-    }
-
     const handleOption = (postId: string) => {
         console.log("POST ID: ", postId)
         // setOpenOption(true)
-    }
-
-    const handleCommentOptions = (commentId: string, authorCommentId: string) => {
-        setIsOpenCommentOptions(true)
-        console.log("COMMENT ID: ", commentId)
-        console.log("AUTHOR OF THE COMMENT ID: ", authorCommentId)
-        if(authorCommentId === userId) {
-            setIsUpdate(true)
-        } else { 
-            setIsUpdate(false)
-        }
     }
 
     if (isLoadingPost) return <div>Loading posts...</div>;
@@ -240,7 +159,7 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
 
                         {/* numbers of react, comment, and share */}
                         <ReactCommentShare 
-                                post={post}
+                            post={post}
                         />
                         <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
                         {/* react, comment, share */}
@@ -277,105 +196,15 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
 
                         <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
                         <div className='py-1.5'>
-                            <div className="flex flex-col">
-                                <div className='overflow-y-auto max-h-[300px]'>
-                                    {/* comments */}
-                                    {post?.comments.map(comment => (
-                                        <div key={comment._id} className="w-full flex space-x-1 py-1">
-                                            <div className="flex py-1">
-                                                <Avatar
-                                                    sx={{ width: 38, height: 38 }}
-                                                    alt={comment.from.username}
-                                                    src={comment.from.avatarUrl}
-                                                />
-                                            </div>
-                                            <div>
-                                                <div className='flex justify-between relative'>
-                                                    <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
-                                                        <span className="text-sm font-semibold text-black">
-                                                            {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
-                                                        </span>
-                                                        <span className="w-full flex text-sm text-black xl:text-sm">
-                                                            {comment.comment.split('\n').map((line, index) => (
-                                                                <span key={index}>
-                                                                    {line}
-                                                                    {index < comment.comment.split('\n').length - 1 && <br />}
-                                                                </span>
-                                                            ))}
-                                                        </span>
-                                                    </div>
-                                                    {/* <div className='relative'> */}
-                                                        <div className='flex items-center p-1.5'>
-                                                            <MiOptionsVertical className='text-sm cursor-pointer' onClick={() => handleCommentOptions(comment._id, comment.from._id)}/>
-                                                        </div>
-                                                        {isOpenCommentOptions && (
-                                                            <CommentOptions
-                                                                isUpdate={isUpdate}
-                                                            />
-                                                        )}
-                                                    {/* </div> */}
-                                                </div>
-                                                <div className="flex space-x-5 px-2.5">
-                                                    <div className="text-xs">
-                                                        <span>
-                                                            <TimeAgoPost 
-                                                                timeStamp={comment.createdAt}
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                    <div className="text-xs">
-                                                        <span className='cursor-pointer'>Like</span>
-                                                    </div>
-                                                    <div className="text-xs">
-                                                        <span className='cursor-pointer' onClick={() => handleReply(comment._id, comment.from.firstName, comment.from.middleName, comment.from.lastName)}>Reply</span>
-                                                    </div>
-                                                </div>
-                                                {/* replies comment */}
-                                                <div className=''>
-                                                    {comment.replies.map(reply => (
-                                                        <div key={reply._id} className="w-full flex space-x-1 py-1">
-                                                            <div className="flex py-1">
-                                                                <Avatar
-                                                                    sx={{ width: 38, height: 38 }}
-                                                                    alt={reply.userId.username}
-                                                                    src={reply.userId.avatarUrl}
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <div className='flex justify-between'>
-                                                                    <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
-                                                                        <span className="text-sm font-semibold text-black">
-                                                                            {reply.userId.firstName} {reply.userId.middleName} {reply.userId.lastName}
-                                                                        </span>
-                                                                        <span className="w-full flex text-sm text-black xl:text-sm">
-                                                                            {reply.comment}
-                                                                        </span>
-                                                                    </div>
-                                                                    <div className='flex items-center p-1.5'>
-                                                                        <MiOptionsVertical className='text-sm' onClick={() => handleCommentOptions(reply._id, reply.userId._id)}/>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex space-x-5 px-2.5">
-                                                                    <div className="text-xs">
-                                                                        <TimeAgoPost 
-                                                                            timeStamp={reply.createdAt}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="text-xs">
-                                                                        <span className='cursor-pointer'>Like</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                            <CommentsAndReplies
+                                userId={userId}
+                                selectedPost={selectedPost}
+                                postId={post._id}
+                                post={post}
+                                refetch={refreshPost}
+                            />
                             {/* textarea for comment and reply */}
-                            <div className='flex flex-col space-y-1.5 pt-2.5'>
+                            {/* <div className='flex flex-col space-y-1.5 pt-2.5'>
                                 {isReplyToComment && (
                                     <div className='flex space-x-2'>
                                         <p className='text-xs cursor-pointer'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
@@ -405,7 +234,7 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
                                         )}
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -72,6 +72,7 @@ export default function Profile() {
                             error={errorYourPosts}
                             // savedPostIds={allSavedPostId}
                             userId={userId}
+                            refetch={refetchYourPosts}
                         />
                     </div>
                 </div>
