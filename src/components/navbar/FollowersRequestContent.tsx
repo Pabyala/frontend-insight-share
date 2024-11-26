@@ -3,8 +3,11 @@ import { Avatar } from "@mui/material";
 import { FluentPersonArrowBack24Filled, MingcuteUserRemove2Fill } from "../others/CustomIcons";
 import { useEffect, useRef, useState } from "react";
 import '../style/Style.css'
+import { useGetFollowersQuery } from "../../features/FollowersFollowing/followersApiSlice";
 
 export default function FollowersRequestContent() {
+
+  const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery();
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const dropdownRef = useRef(null);
   const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
@@ -23,9 +26,15 @@ export default function FollowersRequestContent() {
     setShowAllNotification(true);
   };
 
-  const setFollowersDisplay = showAllNotification
-    ? followerRequest
-    : followerRequest.slice(0, 7);
+  // const setFollowersDisplay = showAllNotification
+  //   ? followerRequest
+  //   : followerRequest.slice(0, 7);
+
+  const setFollowersDisplay = showAllNotification 
+  ? getFollowers?.followersYouDontFollowingBack : getFollowers?.followersYouDontFollowingBack?.slice(0, 7);
+
+if (isLoadingGetFollowers) return <div>Loading...</div>;
+if (errorGetFollowers) return <div>Error fetching posts</div>;
     
   return (
     <div
@@ -37,8 +46,8 @@ export default function FollowersRequestContent() {
         <span className="text-sm font-semibold">Followed you</span>
         <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
       </div>
-      {setFollowersDisplay.map((follower) => (
-        <div key={follower.followerUserId} className="block cursor-pointer text-xs text-gray-800  lg:text-sm">
+      {setFollowersDisplay?.map((follower) => (
+        <div key={follower._id} className="block cursor-pointer text-xs text-gray-800  lg:text-sm">
           <div className="flex justify-between space-x-2 hover:bg-gray-100 px-2 py-1.5 rounded">
             <div className="profileandName flex items-center space-x-4">
               <div className="flex" style={{ margin: "auto" }}>
