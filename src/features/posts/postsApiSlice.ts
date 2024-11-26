@@ -107,7 +107,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         addCommentToPost: builder.mutation({
             query: ({ postId, commenterId, comment }) => ({
-                url: `/post/${postId}/comment`,
+                // url: `/post/${postId}/comment`,
+                url: `/comment/${postId}`,
                 method: 'POST',
                 body: { commenterId, comment },
             }),
@@ -115,7 +116,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         updateCommentToPost: builder.mutation({
             query: ({commentId, updatedComment, userId}) => ({
-                url: `/post/update-comment/${commentId}`,
+                url: `/comment/update/${commentId}`,
                 method: 'PUT',
                 body: { updatedComment, userId }
             }),
@@ -123,7 +124,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         deleteCommentToPost: builder.mutation({
             query: ({ commentId, userId }) => ({
-                url: `/post/delete-comment/${commentId}`,
+                url: `/comment/delete/${commentId}`,
                 method: 'DELETE',
                 body: { userId }
             }),
@@ -132,7 +133,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         // reply to the comment APISlice
         addReplyToComment: builder.mutation({
             query: ({ commentId, userId, reply }) => ({
-                url: `/post/comments/${commentId}/reply`,
+                url: `/comment/${commentId}/reply`,
                 method: 'POST',
                 body: { userId, reply },
             }),
@@ -140,7 +141,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         updateAddReplyToComment: builder.mutation({
             query: ({commentId, replyId,  newReplyComment, userId}) => ({
-                url: `/post/update-reply/${commentId}/${replyId}`,
+                url: `/comment/update-reply/${commentId}/${replyId}`,
                 method: 'PUT',
                 body: { newReplyComment, userId }
             }),
@@ -148,7 +149,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         deleteAddReplyToComment: builder.mutation({
             query: ({ commentId, replyId, userId }) => ({
-                url: `/post/delete-reply/${commentId}/${replyId}`,
+                url: `/comment/delete-reply/${commentId}/${replyId}`,
                 method: 'DELETE',
                 body: { userId }
             }),
@@ -172,5 +173,8 @@ export const {
     // useGetReactionOfPostQuery,
     useGetPostByIdQuery,
     useAddCommentToPostMutation,
+    useDeleteCommentToPostMutation,
+    useUpdateCommentToPostMutation,
+
     useAddReplyToCommentMutation,
 } = usersApiSlice;

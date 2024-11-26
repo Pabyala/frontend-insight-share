@@ -1,14 +1,21 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
+import { useAddCommentToPostMutation, useDeleteCommentToPostMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 
 interface PropsCommentOptions {
     isUpdate: boolean;
     // parentRef: RefObject<HTMLDivElement>;
+    postId: string;
+    setIsUpdatingComment: (value: boolean) => void;
 }
 
-export default function CommentOptions({ isUpdate }: PropsCommentOptions) {
+export default function CommentOptions({ isUpdate, postId, setIsUpdatingComment }: PropsCommentOptions) {
 
     const [position, setPosition] = useState({ top: 0, left: 0 });
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
+    const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
+    const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, error: errorDeleteComment }] = useDeleteCommentToPostMutation();
 
     // useEffect(() => {
     //     if (parentRef.current && dropdownRef.current) {
@@ -30,6 +37,10 @@ export default function CommentOptions({ isUpdate }: PropsCommentOptions) {
     //     }
     // }, [parentRef]);
 
+    const handleUpdateComment = () => {
+        setIsUpdatingComment(true)
+    }
+
     return (
         // <div className='absolute top-[45px] right-[-60px] z-[2]'>
         <div 
@@ -44,7 +55,7 @@ export default function CommentOptions({ isUpdate }: PropsCommentOptions) {
         >
             {/* <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start border-[1px] rounded'> */}
                 <div className='flex flex-col w-[130px]'>
-                    {isUpdate && (<span className='text-sm p-1 hover:bg-gray-200 rounded'>Edit comment</span>)}
+                    {isUpdate && (<span className='text-sm p-1 hover:bg-gray-200 rounded' onClick={handleUpdateComment}>Edit comment</span>)}
                     <span className='text-sm p-1 hover:bg-gray-200 rounded'>Delete comment</span>
                     <span className='text-sm p-1 hover:bg-gray-200 rounded'>Report comment</span>
                 </div>
