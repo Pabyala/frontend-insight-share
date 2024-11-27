@@ -1,14 +1,17 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
 import { useAddCommentToPostMutation, useDeleteCommentToPostMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { PostComment } from '../../interface/your-posts';
 
 interface PropsCommentOptions {
     isUpdate: boolean;
     // parentRef: RefObject<HTMLDivElement>;
     postId: string;
     setIsUpdatingComment: (value: boolean) => void;
+    setCommentIdUpdating: (value: string) => void;
+    comment: PostComment;
 }
 
-export default function CommentOptions({ isUpdate, postId, setIsUpdatingComment }: PropsCommentOptions) {
+export default function CommentOptions({ isUpdate, postId, setIsUpdatingComment, setCommentIdUpdating, comment }: PropsCommentOptions) {
 
     const [position, setPosition] = useState({ top: 0, left: 0 });
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -39,6 +42,7 @@ export default function CommentOptions({ isUpdate, postId, setIsUpdatingComment 
 
     const handleUpdateComment = () => {
         setIsUpdatingComment(true)
+        setCommentIdUpdating(comment._id)
     }
 
     return (

@@ -5,6 +5,7 @@ import { Avatar } from '@mui/material';
 import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical } from '../others/CustomIcons';
 import CommentOptions from './CommentOptions';
 import TimeAgoPost from './TimeAgoPost';
+import UpdateCommentTextArea from './UpdateCommentTextArea';
 
 interface CommentDetails {
     commentId: string;
@@ -44,9 +45,12 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
 
 
     const [isOpenCommentOptionsId, setIsOpenCommentOptionsId] = useState<string | null>(null);
+    const [isOpenCommentOption, setIsOpenCommentOption] = useState<boolean>(false);
     const [isUpdate, setIsUpdate] = useState<boolean>(false);
     const [isUpdatingComment, setIsUpdatingComment] = useState<boolean>(false);
+    const [commentIdUpdating, setCommentIdUpdating] = useState<string | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    console.log("IS UPDATING COMMENT: ", isUpdatingComment)
 
 
     // const postId = post?._id
@@ -127,8 +131,9 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
     }
 
     const handleCommentOptions = (commentId: string, authorCommentId: string, commentText: string) => {
-        // setIsOpenCommentOptions(true)
+        setIsOpenCommentOption(true)
         setIsOpenCommentOptionsId(commentId === isOpenCommentOptionsId ? null : commentId);
+        
         console.log("COMMENT ID: ", commentId)
         console.log("AUTHOR OF THE COMMENT ID: ", authorCommentId)
         if(authorCommentId === userId) {
@@ -153,62 +158,76 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                             />
                         </div>
                         <div className='w-full'>
-                            <div className='flex justify-between relative w-fit'>
-                                <div className=" flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
-                                    <span className="text-sm font-semibold text-black">
-                                        {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
-                                    </span>
-                                    <span className=" flex text-sm text-black xl:text-sm">
-                                        {comment.comment.split('\n').map((line, index) => (
-                                            <span key={index}>
-                                                {line}
-                                                {index < comment.comment.split('\n').length - 1 && <br />}
+                            {isUpdatingComment && commentIdUpdating === comment._id ? (
+                                <UpdateCommentTextArea
+                                    comment={comment}
+                                    userId={userId}
+                                    setIsUpdatingComment={setIsUpdatingComment}
+                                    setIsOpenCommentOption={setIsOpenCommentOption}
+                                />
+                            ) : (
+                                <>
+                                    <div className='flex justify-between relative w-fit'>
+                                        <div className="flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
+                                            <span className="text-sm font-semibold text-black">
+                                                {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
                                             </span>
-                                        ))}
-                                    </span>
-                                </div>
-                                {/* <div className='relative'> */}
-                                    <div className='flex items-center p-1.5'>
-                                        <MiOptionsVertical 
-                                            className='text-sm cursor-pointer' 
-                                            onClick={() => handleCommentOptions(comment._id, comment.from._id, comment.comment)}
+                                            <div className=" flex text-sm text-black xl:text-sm">
+                                                <div>
+                                                    {comment.comment.split('\n').map((line, index) => (
+                                                        <span key={index}>
+                                                            {line}
+                                                            {index < comment.comment.split('\n').length - 1 && <br />}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='flex items-center p-1.5'>
+                                            <MiOptionsVertical 
+                                                className='text-sm cursor-pointer' 
+                                                onClick={() => handleCommentOptions(comment._id, comment.from._id, comment.comment)}
+                                                />
+                                        </div>
+                                        {isOpenCommentOption && isOpenCommentOptionsId === comment._id && (
+                                            <CommentOptions
+                                                isUpdate={isUpdate}
+                                                postId={postId}
+                                                setIsUpdatingComment={setIsUpdatingComment}
+                                                setCommentIdUpdating={setCommentIdUpdating}
+                                                comment={comment}
+                                                // parentRef={commentRef}
                                             />
+                                        )}
                                     </div>
-                                    {isOpenCommentOptionsId === comment._id && (
-                                        <CommentOptions
-                                            isUpdate={isUpdate}
-                                            postId={postId}
-                                            setIsUpdatingComment={setIsUpdatingComment}
-                                            // parentRef={commentRef}
-                                        />
-                                    )}
-                                {/* </div> */}
-                            </div>
-                            <div className="flex space-x-5 px-2.5">
-                                <div className="text-xs">
-                                    <span>
-                                        <TimeAgoPost 
-                                            timeStamp={comment.createdAt}
-                                        />
-                                    </span>
-                                </div>
-                                <div className="text-xs">
-                                    <span className='cursor-pointer'>Like</span>
-                                </div>
-                                <div className="text-xs">
-                                    <span 
-                                        className='cursor-pointer' 
-                                        onClick={() => handleReply(comment._id, comment.from.firstName, comment.from.middleName, comment.from.lastName)}
-                                    >
-                                        Reply
-                                    </span>
-                                </div>
-                            </div>
+                                    <div className="flex space-x-5 px-2.5">
+                                        <div className="text-xs">
+                                            <span>
+                                                <TimeAgoPost 
+                                                    timeStamp={comment.createdAt}
+                                                />
+                                            </span>
+                                        </div>
+                                        <div className="text-xs">
+                                            <span className='cursor-pointer'>Like</span>
+                                        </div>
+                                        <div className="text-xs">
+                                            <span 
+                                                className='cursor-pointer' 
+                                                onClick={() => handleReply(comment._id, comment.from.firstName, comment.from.middleName, comment.from.lastName)}
+                                            >
+                                                Reply
+                                            </span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
                             {/* replies comment */}
                             <div className='w-full'>
                                 {comment.replies.map(reply => (
                                     <div key={reply._id} className="w-full flex space-x-1 py-1">
-                                        <div className="flex py-1">
+                                        <div className="flex py-1 w-fit">
                                             <Avatar
                                                 sx={{ width: 38, height: 38 }}
                                                 alt={reply.userId.username}
@@ -216,15 +235,23 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                             />
                                         </div>
                                         {/* <div className='w-full'> */}
-                                        <div className='w-fit'>
-                                            <div className='flex justify-between'>
+                                        <div className='w-full'>
+                                            <div className='w-fit flex justify-between'>
                                                 <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
                                                     <span className="text-sm font-semibold text-black">
                                                         {reply.userId.firstName} {reply.userId.middleName} {reply.userId.lastName}
                                                     </span>
-                                                    <span className="w-full flex text-sm text-black xl:text-sm">
-                                                        {reply.comment}
-                                                    </span>
+                                                    <div className="w-full flex text-sm text-black xl:text-sm">
+                                                        {/* {reply.comment} */}
+                                                        <div>
+                                                            {reply.comment.split('\n').map((line, index) => (
+                                                                <span key={index}>
+                                                                    {line}
+                                                                    {index < reply.comment.split('\n').length - 1 && <br />}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className='flex items-center p-1.5'>
                                                     <MiOptionsVertical 
@@ -247,7 +274,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                             </div>
 
 
-                                            {/* <div className='flex justify-between relative'>
+                                            {/* <div className='relative flex justify-between'>
                                                 <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
                                                     <textarea 
                                                         ref={textareaRef}
@@ -280,7 +307,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                             </div>
                                             <div className="flex space-x-5 px-2.5">
                                                 <div className="text-xs">
-                                                    <p className='cursor-pointer'>Pess Ecs to <span className='font-semibold'>cancel</span></p>
+                                                    <p className='cursor-pointer'>Press Ecs to <span className='font-semibold'>cancel</span></p>
                                                 </div>
                                             </div> */}
                                             
