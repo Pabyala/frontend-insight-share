@@ -164,6 +164,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                     userId={userId}
                                     setIsUpdatingComment={setIsUpdatingComment}
                                     setIsOpenCommentOption={setIsOpenCommentOption}
+                                    postId={postId}
                                 />
                             ) : (
                                 <>
@@ -196,11 +197,13 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 setIsUpdatingComment={setIsUpdatingComment}
                                                 setCommentIdUpdating={setCommentIdUpdating}
                                                 comment={comment}
+                                                userId={userId}
+                                                setIsOpenCommentOption={setIsOpenCommentOption}
                                                 // parentRef={commentRef}
                                             />
                                         )}
                                     </div>
-                                    <div className="flex space-x-5 px-2.5">
+                                    <div className="flex space-x-3 px-2.5">
                                         <div className="text-xs">
                                             <span>
                                                 <TimeAgoPost 
@@ -219,6 +222,13 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 Reply
                                             </span>
                                         </div>
+                                        {comment.createdAt != comment.updatedAt &&
+                                            (<div className='text-xs'>
+                                                <span>
+                                                    Edited
+                                                </span>
+                                            </div>)
+                                        }
                                     </div>
                                 </>
                             )}

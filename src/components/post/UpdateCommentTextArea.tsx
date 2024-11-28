@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CommentFrom, PostComment } from '../../interface/your-posts';
 import { FluentSend28Filled, FluentSend28FilledColored } from '../others/CustomIcons';
-import { useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 
 interface PropsUpdateCommentTextArea {
     comment: PostComment;
     userId?: string
     setIsUpdatingComment: (isUpdatingComment: boolean) => void;
     setIsOpenCommentOption: (value: boolean) => void;
+    postId: string
 }
 
-export default function UpdateCommentTextArea({ comment, userId, setIsUpdatingComment, setIsOpenCommentOption }: PropsUpdateCommentTextArea) {
+export default function UpdateCommentTextArea({ comment, userId, setIsUpdatingComment, setIsOpenCommentOption, postId }: PropsUpdateCommentTextArea) {
 
     const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
+        skip: !postId, // skip the query if postId is falsy (undefined/null).
+    });
 
     const [commentContext, setCommentContext] = useState<string>(comment.comment);
 
@@ -25,6 +29,9 @@ export default function UpdateCommentTextArea({ comment, userId, setIsUpdatingCo
                 updatedComment: commentContext,
                 userId,
             });
+            refreshPost()
+            setIsUpdatingComment(false)
+            setIsOpenCommentOption(false)
         } catch (error) {
             console.error(error);
         }
@@ -63,7 +70,8 @@ export default function UpdateCommentTextArea({ comment, userId, setIsUpdatingCo
 
     return (
         <div className='w-full'>
-            <div className='relative flex justify-between'>
+            {/* <div className='flex justify-between'> */}
+            <div className='flex justify-between flex-col bg-gray-200 dark:bg-gray-700 rounded-lg'>
                 <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg">
                     <textarea 
                         ref={textareaRef}
@@ -81,7 +89,7 @@ export default function UpdateCommentTextArea({ comment, userId, setIsUpdatingCo
                         className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
                     />
                 </div>
-                <div className="absolute right-0 pr-3 flex items-center h-full">
+                <div className="p-2 w-full flex justify-end">
                     {commentContext.length !== 0 ? (
                         <FluentSend28FilledColored 
                             className="text-base cursor-pointer" 
