@@ -1,39 +1,63 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CommentFrom, PostComment } from '../../interface/your-posts';
 import { FluentSend28Filled, FluentSend28FilledColored } from '../others/CustomIcons';
-import { useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { useGetPostByIdQuery, useUpdateAddReplyToCommentMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 
 interface PropsUpdateCommentTextArea {
-    comment: PostComment;
+    typeOfUpdate: string
+    // comment: PostComment;
+    comment: string
+    commentId: string
+    replyId: string
     userId?: string
     setIsUpdatingComment: (isUpdatingComment: boolean) => void;
     setIsOpenCommentOption: (value: boolean) => void;
     postId: string
 }
 
-export default function UpdateCommentTextArea({ comment, userId, setIsUpdatingComment, setIsOpenCommentOption, postId }: PropsUpdateCommentTextArea) {
+export default function UpdateCommentTextArea({ comment, commentId, replyId, userId, setIsUpdatingComment, setIsOpenCommentOption, postId, typeOfUpdate }: PropsUpdateCommentTextArea) {
 
     const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const [updateAddReplyToComment, { isLoading: isLoadingUpdateReply, isError: isErrorUpdateReply, error: errorUpdateReply }] = useUpdateAddReplyToCommentMutation();
+
+
+
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
         skip: !postId, // skip the query if postId is falsy (undefined/null).
     });
 
-    const [commentContext, setCommentContext] = useState<string>(comment.comment);
+    const [commentContext, setCommentContext] = useState<string>(comment);
 
     const handleCommentUpdate = async () => {
+        if(!typeOfUpdate) return
+        
         try {
-            // await updateCommentToPost
-            await updateCommentToPost({
-                commentId: comment._id,
-                updatedComment: commentContext,
-                userId,
-            });
-            refreshPost()
-            setIsUpdatingComment(false)
-            setIsOpenCommentOption(false)
+            if (typeOfUpdate === 'comment') {
+                await updateCommentToPost({
+                    commentId,
+                    updatedComment: commentContext,
+                    userId,
+                });
+                refreshPost();
+                setIsUpdatingComment(false);
+                setIsOpenCommentOption(false);
+            } else if (typeOfUpdate === 'reply') {
+                await updateAddReplyToComment({
+                    commentId,
+                    replyId,
+                    newReplyComment: commentContext,
+                    userId,
+                })
+                refreshPost();
+                setIsUpdatingComment(false);
+                setIsOpenCommentOption(false);
+            } else {
+                console.log("Unknown typeOfUpdate:", typeOfUpdate);
+            }
         } catch (error) {
-            console.error(error);
+            console.log("Error updating:", error);
         }
     }
 

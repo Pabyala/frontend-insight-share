@@ -27,13 +27,8 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
     const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
     const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
     const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, error: errorDeleteComment }] = useDeleteCommentToPostMutation();
-
-
-
     const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment, error: errorAddReplyToComment }] = useAddReplyToCommentMutation()
     
-
-
     const [replyComment, setReplyComment] = useState<string>('')
     const [isReplyToComment, setIsReplyToComment] = useState<boolean>(false)
     const [commentDetails, setCommentDetails] = useState<CommentDetails>({
@@ -42,16 +37,14 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
         middleName: '',
         lastName: ''
     })
-
-
     const [isOpenCommentOptionsId, setIsOpenCommentOptionsId] = useState<string | null>(null);
     const [isOpenCommentOption, setIsOpenCommentOption] = useState<boolean>(false);
     const [isUpdate, setIsUpdate] = useState<boolean>(false);
+    const [isDelete, setIsDelete] = useState<boolean>(false);
     const [isUpdatingComment, setIsUpdatingComment] = useState<boolean>(false);
     const [commentIdUpdating, setCommentIdUpdating] = useState<string | null>(null);
+    const [replyCommentId, setReplyCommentId] = useState<string | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    console.log("IS UPDATING COMMENT: ", isUpdatingComment)
-
 
     // const postId = post?._id
     const handleComment = async () => {
@@ -130,19 +123,39 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
         setReplyComment('')
     }
 
-    const handleCommentOptions = (commentId: string, authorCommentId: string, commentText: string) => {
-        setIsOpenCommentOption(true)
-        setIsOpenCommentOptionsId(commentId === isOpenCommentOptionsId ? null : commentId);
-        
-        console.log("COMMENT ID: ", commentId)
-        console.log("AUTHOR OF THE COMMENT ID: ", authorCommentId)
-        if(authorCommentId === userId) {
-            setIsUpdate(true)
-        } else { 
-            setIsUpdate(false)
-        }
-    }
+    const handleCommentOptions = (typeOfOption: string, postAuthorId: string, commentId: string, authorCommentId: string, commentText: string) => {
 
+        if(!commentId || !authorCommentId) return
+
+        if(typeOfOption === 'comment') {
+            setIsOpenCommentOption(true)
+            setIsOpenCommentOptionsId(commentId === isOpenCommentOptionsId ? null : commentId);
+            setReplyCommentId('')
+            if(authorCommentId === userId) {
+                setIsUpdate(true)
+                setIsDelete(true)
+            } 
+            if(postAuthorId ===  userId) { 
+                setIsDelete(true)
+            }
+        } else if(typeOfOption === 'reply') {
+            setIsOpenCommentOption(true)
+            setReplyCommentId(commentId)
+            setIsOpenCommentOptionsId('')
+            if(authorCommentId === userId){
+                setIsUpdate(true)
+                setIsDelete(true)
+            } 
+            if(postAuthorId ===  userId) { 
+                setIsDelete(true)
+            }
+        } else {
+            setIsUpdate(false)
+            setIsDelete(false)
+            console.log("Unknown type of option")
+        }
+        
+    }
     return (
         <>
         <div className="flex flex-col">
@@ -160,7 +173,11 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                         <div className='w-full'>
                             {isUpdatingComment && commentIdUpdating === comment._id ? (
                                 <UpdateCommentTextArea
-                                    comment={comment}
+                                    typeOfUpdate={'comment'}
+                                    // comment={comment}
+                                    commentId={comment._id}
+                                    replyId={''}
+                                    comment={comment.comment}
                                     userId={userId}
                                     setIsUpdatingComment={setIsUpdatingComment}
                                     setIsOpenCommentOption={setIsOpenCommentOption}
@@ -187,19 +204,22 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                         <div className='flex items-center p-1.5'>
                                             <MiOptionsVertical 
                                                 className='text-sm cursor-pointer' 
-                                                onClick={() => handleCommentOptions(comment._id, comment.from._id, comment.comment)}
+                                                onClick={() => handleCommentOptions('comment', post.authorId._id, comment._id, comment.from._id, comment.comment)}
                                                 />
                                         </div>
                                         {isOpenCommentOption && isOpenCommentOptionsId === comment._id && (
                                             <CommentOptions
                                                 isUpdate={isUpdate}
+                                                isDelete={isDelete}
                                                 postId={postId}
                                                 setIsUpdatingComment={setIsUpdatingComment}
                                                 setCommentIdUpdating={setCommentIdUpdating}
-                                                comment={comment}
+                                                commentId={comment._id}
+                                                replyId={''}
                                                 userId={userId}
                                                 setIsOpenCommentOption={setIsOpenCommentOption}
                                                 // parentRef={commentRef}
+                                                typeOfUpdate={'comment'}
                                             />
                                         )}
                                     </div>
@@ -244,15 +264,27 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 src={reply.userId.avatarUrl}
                                             />
                                         </div>
-                                        {/* <div className='w-full'> */}
                                         <div className='w-full'>
+                                        {isUpdatingComment && replyCommentId === reply._id ? (
+                                                <UpdateCommentTextArea
+                                                    typeOfUpdate={'reply'}
+                                                    // comment={comment}
+                                                    commentId={comment._id}
+                                                    replyId={reply._id}
+                                                    comment={reply.comment}
+                                                    userId={userId}
+                                                    setIsUpdatingComment={setIsUpdatingComment}
+                                                    setIsOpenCommentOption={setIsOpenCommentOption}
+                                                    postId={postId}
+                                                />
+                                            ) : (
+                                            <>
                                             <div className='w-fit flex justify-between'>
                                                 <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
                                                     <span className="text-sm font-semibold text-black">
                                                         {reply.userId.firstName} {reply.userId.middleName} {reply.userId.lastName}
                                                     </span>
                                                     <div className="w-full flex text-sm text-black xl:text-sm">
-                                                        {/* {reply.comment} */}
                                                         <div>
                                                             {reply.comment.split('\n').map((line, index) => (
                                                                 <span key={index}>
@@ -265,10 +297,25 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 </div>
                                                 <div className='flex items-center p-1.5'>
                                                     <MiOptionsVertical 
-                                                        className='text-sm' 
-                                                        onClick={() => handleCommentOptions(reply._id, reply.userId._id, comment.comment)}
+                                                        className='text-sm cursor-pointer'
+                                                        onClick={() => handleCommentOptions('reply', post.authorId._id, reply._id, reply.userId._id, comment.comment)}
                                                     />
                                                 </div>
+                                                {isOpenCommentOption && replyCommentId === reply._id && (
+                                                    <CommentOptions
+                                                        isUpdate={isUpdate}
+                                                        isDelete={isDelete}
+                                                        postId={postId}
+                                                        setIsUpdatingComment={setIsUpdatingComment}
+                                                        setCommentIdUpdating={setCommentIdUpdating}
+                                                        commentId={comment._id}
+                                                        replyId={reply._id}
+                                                        userId={userId}
+                                                        setIsOpenCommentOption={setIsOpenCommentOption}
+                                                        // parentRef={commentRef}
+                                                        typeOfUpdate={'reply'}
+                                                    />
+                                                )}
                                             </div>
                                             <div className="flex space-x-5 px-2.5">
                                                 <div className="text-xs">
@@ -281,8 +328,15 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 <div className="text-xs">
                                                     <span className='cursor-pointer'>Like</span>
                                                 </div>
+                                                {reply.createdAt != reply.updatedAt &&
+                                                    (<div className='text-xs'>
+                                                        <span>
+                                                            Edited
+                                                        </span>
+                                                    </div>)
+                                                }
                                             </div>
-
+                                            </>)}
 
                                             {/* <div className='relative flex justify-between'>
                                                 <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">

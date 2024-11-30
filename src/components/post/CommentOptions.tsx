@@ -1,19 +1,22 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
-import { useAddCommentToPostMutation, useDeleteCommentToPostMutation, useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { useAddCommentToPostMutation, useDeleteAddReplyToCommentMutation, useDeleteCommentToPostMutation, useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 import { PostComment } from '../../interface/your-posts';
 
 interface PropsCommentOptions {
     isUpdate: boolean;
+    isDelete: boolean;
     // parentRef: RefObject<HTMLDivElement>;
     postId: string;
     setIsUpdatingComment: (value: boolean) => void;
     setCommentIdUpdating: (value: string) => void;
-    comment: PostComment;
+    commentId: string;
+    replyId: string;
     userId?: string;
     setIsOpenCommentOption: (value: boolean) => void;
+    typeOfUpdate: string
 }
 
-export default function CommentOptions({ userId, isUpdate, postId, setIsUpdatingComment, setCommentIdUpdating, comment, setIsOpenCommentOption }: PropsCommentOptions) {
+export default function CommentOptions({ userId, isUpdate, isDelete, postId, setIsUpdatingComment, setCommentIdUpdating, commentId, replyId, setIsOpenCommentOption, typeOfUpdate }: PropsCommentOptions) {
 
     const [position, setPosition] = useState({ top: 0, left: 0 });
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -21,25 +24,40 @@ export default function CommentOptions({ userId, isUpdate, postId, setIsUpdating
     const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
     const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
     const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, error: errorDeleteComment }] = useDeleteCommentToPostMutation();
+
+    const [deleteAddReplyToComment, { isLoading: isLoadingDeleteReply, isError: isErrorDeleteReply, error: errorDeleteReply }] = useDeleteAddReplyToCommentMutation();
+
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
         skip: !postId, // skip the query if postId is falsy (undefined/null).
     });
 
     const handleUpdateComment = () => {
-        setIsUpdatingComment(true)
-        setCommentIdUpdating(comment._id)
+        if(typeOfUpdate === 'comment') {
+            setIsUpdatingComment(true)
+            setCommentIdUpdating(commentId)
+        } else if (typeOfUpdate === 'reply') {
+            setIsUpdatingComment(true)
+            setCommentIdUpdating(commentId)
+        }
     }
 
     const handleDeleteComment = async (commentId: string) => {
+        console.log("REPLY ID: ", replyId)
         if (!commentId || !userId) {
-            console.log("Missing required parameters.");
+            alert('Missing required parameters.')
             return;
         }
     
         try {
-            await deleteCommentToPost({ commentId, userId }).unwrap(); // Unwrap to handle errors directly
-            refreshPost()
-            setIsOpenCommentOption(false)
+            if(typeOfUpdate === 'comment'){
+                await deleteCommentToPost({ commentId, userId }).unwrap(); 
+                refreshPost()
+                setIsOpenCommentOption(false)
+            } else if (typeOfUpdate === 'reply'){
+                await deleteAddReplyToComment({ commentId, replyId, userId }).unwrap();
+                refreshPost()
+                setIsOpenCommentOption(false)
+            }
         } catch (error) {
             console.error("Error deleting comment:", error);
         }
@@ -87,12 +105,22 @@ export default function CommentOptions({ userId, isUpdate, postId, setIsUpdating
                             Edit comment
                         </span>
                     )}
+
+                    {isDelete && (
                         <span 
-                            className='text-sm p-1 hover:bg-gray-200 rounded'
-                            onClick={() => handleDeleteComment(comment._id)}
+                            className='text-sm p-1 hover:bg-gray-200 rounded' 
+                            onClick={() => handleDeleteComment(commentId)}
                         >
                             Delete comment
                         </span>
+                    )}
+                    
+                        {/* <span 
+                            className='text-sm p-1 hover:bg-gray-200 rounded'
+                            onClick={() => handleDeleteComment(commentId)}
+                        >
+                            Delete comment
+                        </span> */}
                         <span 
                             className='text-sm p-1 hover:bg-gray-200 rounded'
                         >

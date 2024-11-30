@@ -177,4 +177,6 @@ export const {
     useUpdateCommentToPostMutation,
 
     useAddReplyToCommentMutation,
+    useUpdateAddReplyToCommentMutation,
+    useDeleteAddReplyToCommentMutation
 } = usersApiSlice;
