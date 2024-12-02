@@ -4,6 +4,7 @@ import { FluentPersonArrowBack24Filled, MingcuteUserRemove2Fill } from "../other
 import { useEffect, useRef, useState } from "react";
 import '../style/Style.css'
 import { useGetFollowersQuery } from "../../features/FollowersFollowing/followersApiSlice";
+import { Link } from "react-router-dom";
 
 export default function FollowersRequestContent() {
 
@@ -48,36 +49,40 @@ if (errorGetFollowers) return <div>Error fetching posts</div>;
       </div>
       {setFollowersDisplay?.map((follower) => (
         <div key={follower._id} className="block cursor-pointer text-xs text-gray-800  lg:text-sm">
-          <div className="flex justify-between space-x-2 hover:bg-gray-100 px-2 py-1.5 rounded">
-            <div className="profileandName flex items-center space-x-4">
-              <div className="flex" style={{ margin: "auto" }}>
-                <Avatar
-                  sx={{ width: 38, height: 38 }}
-                  alt="Remy Sharp"
-                  src={follower.avatarUrl}
-                />
-              </div>
-              <div>
-                <div>
-                  <span className="font-semibold text-sm">
-                    {follower?.firstName} {follower?.middleName}{" "}
-                    {follower.lastName}
-                  </span>
+          <Link
+            to={`/profile/${follower.username}/${follower._id}`}
+          >
+            <div className="flex justify-between space-x-2 hover:bg-gray-100 px-2 py-1.5 rounded">
+              <div className="profileandName flex items-center space-x-4">
+                <div className="flex" style={{ margin: "auto" }}>
+                  <Avatar
+                    sx={{ width: 38, height: 38 }}
+                    alt="Remy Sharp"
+                    src={follower.avatarUrl}
+                  />
                 </div>
                 <div>
-                  <span className="text-sm">{follower.username}</span>
+                  <div>
+                    <span className="font-semibold text-sm">
+                      {follower?.firstName} {follower?.middleName}{" "}
+                      {follower.lastName}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-sm">{follower.username}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between space-x-2">
+                <div>
+                  <MingcuteUserRemove2Fill className="text-3xl cursor-pointer" />
+                </div>
+                <div>
+                  <FluentPersonArrowBack24Filled className="text-3xl cursor-pointer" />
                 </div>
               </div>
             </div>
-            <div className="flex justify-between space-x-2">
-              <div>
-                <MingcuteUserRemove2Fill className="text-3xl cursor-pointer" />
-              </div>
-              <div>
-                <FluentPersonArrowBack24Filled className="text-3xl cursor-pointer" />
-              </div>
-            </div>
-          </div>
+          </Link>
         </div>
       ))}
 

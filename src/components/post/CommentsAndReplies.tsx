@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Post } from '../../interface/your-posts';
 import { useAddCommentToPostMutation, useAddReplyToCommentMutation, useDeleteCommentToPostMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
@@ -6,6 +6,7 @@ import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical } from
 import CommentOptions from './CommentOptions';
 import TimeAgoPost from './TimeAgoPost';
 import UpdateCommentTextArea from './UpdateCommentTextArea';
+import { Link } from 'react-router-dom';
 
 interface CommentDetails {
     commentId: string;
@@ -156,6 +157,22 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
         }
         
     }
+
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            const textarea = textareaRef.current;
+            textarea.style.height = 'auto'; // Reset height to auto to shrink when text is deleted
+            const maxHeight = 200;
+            const minHeight = 70;
+            
+            textarea.style.height = 'auto'; // Reset height to auto to shrink when text is deleted
+            // textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`; // Set height, respecting maxHeight
+
+            textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, minHeight), maxHeight)}px`; // Set height, respecting min and max height
+        }
+    }, [replyComment]);
+
     return (
         <>
         <div className="flex flex-col">
@@ -164,11 +181,15 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                 {post?.comments.map(comment => (
                     <div key={comment._id} className="w-full flex space-x-1 py-1">
                         <div className="flex py-1">
-                            <Avatar
-                                sx={{ width: 38, height: 38 }}
-                                alt={comment.from.username}
-                                src={comment.from.avatarUrl}
-                            />
+                            <Link 
+                                to={`/profile/${comment.from.username}/${comment.from._id}`}
+                            >
+                                <Avatar
+                                    sx={{ width: 38, height: 38 }}
+                                    alt={comment.from.username}
+                                    src={comment.from.avatarUrl}
+                                />
+                            </Link>
                         </div>
                         <div className='w-full'>
                             {isUpdatingComment && commentIdUpdating === comment._id ? (
@@ -187,9 +208,13 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                 <>
                                     <div className='flex justify-between relative w-fit'>
                                         <div className="flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
-                                            <span className="text-sm font-semibold text-black">
-                                                {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
-                                            </span>
+                                            <Link
+                                                to={`/profile/${comment.from.username}/${comment.from._id}`}
+                                            >
+                                                <span className="text-sm font-semibold text-black">
+                                                    {comment.from.firstName} {comment.from.middleName} {comment.from.lastName}
+                                                </span>
+                                            </Link>
                                             <div className=" flex text-sm text-black xl:text-sm">
                                                 <div>
                                                     {comment.comment.split('\n').map((line, index) => (
@@ -258,14 +283,18 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                 {comment.replies.map(reply => (
                                     <div key={reply._id} className="w-full flex space-x-1 py-1">
                                         <div className="flex py-1 w-fit">
-                                            <Avatar
-                                                sx={{ width: 38, height: 38 }}
-                                                alt={reply.userId.username}
-                                                src={reply.userId.avatarUrl}
-                                            />
+                                            <Link
+                                                to={`/profile/${reply.userId.username}/${reply.userId._id}`}
+                                            >
+                                                <Avatar
+                                                    sx={{ width: 38, height: 38 }}
+                                                    alt={reply.userId.username}
+                                                    src={reply.userId.avatarUrl}
+                                                />
+                                            </Link>
                                         </div>
                                         <div className='w-full'>
-                                        {isUpdatingComment && replyCommentId === reply._id ? (
+                                            {isUpdatingComment && replyCommentId === reply._id ? (
                                                 <UpdateCommentTextArea
                                                     typeOfUpdate={'reply'}
                                                     // comment={comment}
@@ -279,102 +308,68 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 />
                                             ) : (
                                             <>
-                                            <div className='w-fit flex justify-between'>
-                                                <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
-                                                    <span className="text-sm font-semibold text-black">
-                                                        {reply.userId.firstName} {reply.userId.middleName} {reply.userId.lastName}
-                                                    </span>
-                                                    <div className="w-full flex text-sm text-black xl:text-sm">
-                                                        <div>
-                                                            {reply.comment.split('\n').map((line, index) => (
-                                                                <span key={index}>
-                                                                    {line}
-                                                                    {index < reply.comment.split('\n').length - 1 && <br />}
-                                                                </span>
-                                                            ))}
+                                                <div className='w-fit flex justify-between'>
+                                                    <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
+                                                        <Link
+                                                            to={`/profile/${reply.userId.username}/${reply.userId._id}`}
+                                                        >
+                                                            <span className="text-sm font-semibold text-black">
+                                                                {reply.userId.firstName} {reply.userId.middleName} {reply.userId.lastName}
+                                                            </span>
+                                                        </Link>
+                                                        <div className="w-full flex text-sm text-black xl:text-sm">
+                                                            <div>
+                                                                {reply.comment.split('\n').map((line, index) => (
+                                                                    <span key={index}>
+                                                                        {line}
+                                                                        {index < reply.comment.split('\n').length - 1 && <br />}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className='flex items-center p-1.5'>
-                                                    <MiOptionsVertical 
-                                                        className='text-sm cursor-pointer'
-                                                        onClick={() => handleCommentOptions('reply', post.authorId._id, reply._id, reply.userId._id, comment.comment)}
-                                                    />
-                                                </div>
-                                                {isOpenCommentOption && replyCommentId === reply._id && (
-                                                    <CommentOptions
-                                                        isUpdate={isUpdate}
-                                                        isDelete={isDelete}
-                                                        postId={postId}
-                                                        setIsUpdatingComment={setIsUpdatingComment}
-                                                        setCommentIdUpdating={setCommentIdUpdating}
-                                                        commentId={comment._id}
-                                                        replyId={reply._id}
-                                                        userId={userId}
-                                                        setIsOpenCommentOption={setIsOpenCommentOption}
-                                                        // parentRef={commentRef}
-                                                        typeOfUpdate={'reply'}
-                                                    />
-                                                )}
-                                            </div>
-                                            <div className="flex space-x-5 px-2.5">
-                                                <div className="text-xs">
-                                                    <span>
-                                                        <TimeAgoPost 
-                                                            timeStamp={reply.createdAt}
+                                                    <div className='flex items-center p-1.5'>
+                                                        <MiOptionsVertical 
+                                                            className='text-sm cursor-pointer'
+                                                            onClick={() => handleCommentOptions('reply', post.authorId._id, reply._id, reply.userId._id, comment.comment)}
                                                         />
-                                                    </span>
-                                                </div>
-                                                <div className="text-xs">
-                                                    <span className='cursor-pointer'>Like</span>
-                                                </div>
-                                                {reply.createdAt != reply.updatedAt &&
-                                                    (<div className='text-xs'>
-                                                        <span>
-                                                            Edited
-                                                        </span>
-                                                    </div>)
-                                                }
-                                            </div>
-                                            </>)}
-
-                                            {/* <div className='relative flex justify-between'>
-                                                <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg py-1.5 px-2.5">
-                                                    <textarea 
-                                                        ref={textareaRef}
-                                                        rows={1}
-                                                        cols={30}
-                                                        onChange={(e) => setReplyComment(e.target.value)}
-                                                        onInput={(e) => {
-                                                            const target = e.target as HTMLTextAreaElement;
-                                                            target.style.height = 'auto'; // reset height to auto to calculate new height
-                                                            target.style.height = `${target.scrollHeight}px`; // set height based on scrollHeight
-                                                        }}
-                                                        placeholder="Write a comment..."
-                                                        value={replyComment}
-                                                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
-                                                    />
-                                                </div>
-                                                <div className="absolute right-0 pr-3 flex items-center h-full">
-                                                    {replyComment.length !== 0 ? (
-                                                        <FluentSend28FilledColored 
-                                                            className="text-base cursor-pointer" 
-                                                            onClick={handleComment}
-                                                        />
-                                                    ) : (
-                                                        <FluentSend28Filled
-                                                            className="text-base cursor-pointer" 
-                                                            onClick={handleComment}
+                                                    </div>
+                                                    {isOpenCommentOption && replyCommentId === reply._id && (
+                                                        <CommentOptions
+                                                            isUpdate={isUpdate}
+                                                            isDelete={isDelete}
+                                                            postId={postId}
+                                                            setIsUpdatingComment={setIsUpdatingComment}
+                                                            setCommentIdUpdating={setCommentIdUpdating}
+                                                            commentId={comment._id}
+                                                            replyId={reply._id}
+                                                            userId={userId}
+                                                            setIsOpenCommentOption={setIsOpenCommentOption}
+                                                            // parentRef={commentRef}
+                                                            typeOfUpdate={'reply'}
                                                         />
                                                     )}
                                                 </div>
-                                            </div>
-                                            <div className="flex space-x-5 px-2.5">
-                                                <div className="text-xs">
-                                                    <p className='cursor-pointer'>Press Ecs to <span className='font-semibold'>cancel</span></p>
+                                                <div className="flex space-x-5 px-2.5">
+                                                    <div className="text-xs">
+                                                        <span>
+                                                            <TimeAgoPost 
+                                                                timeStamp={reply.createdAt}
+                                                            />
+                                                        </span>
+                                                    </div>
+                                                    <div className="text-xs">
+                                                        <span className='cursor-pointer'>Like</span>
+                                                    </div>
+                                                    {reply.createdAt != reply.updatedAt &&
+                                                        (<div className='text-xs'>
+                                                            <span>
+                                                                Edited
+                                                            </span>
+                                                        </div>)
+                                                    }
                                                 </div>
-                                            </div> */}
-                                            
+                                            </>)}
                                         </div>
                                     </div>
                                 ))}
@@ -390,17 +385,19 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                     <p className='text-xs cursor-pointer'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
                 </div>
             )}
-            <div className="relative flex items-center">
-                <textarea 
-                    ref={textareaRef}
-                    rows={1}
-                    cols={30}
-                    onChange={(e) => setReplyComment(e.target.value)}
-                    placeholder="Write a comment..."
-                    value={replyComment}
-                    className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
-                />
-                <div className="absolute right-0 pr-3 flex items-center h-full">
+            <div className="flex justify-between bg-gray-200 dark:bg-gray-700 rounded-lg">
+                <div className="w-[97%] flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg">
+                    <textarea 
+                        ref={textareaRef}
+                        rows={1}
+                        cols={30}
+                        onChange={(e) => setReplyComment(e.target.value)}
+                        placeholder="Write a comment..."
+                        value={replyComment}
+                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
+                    />
+                </div>
+                <div className="p-2 w-[5%] flex justify-end items-center">
                     {replyComment.length !== 0 ? (
                         <FluentSend28FilledColored 
                             className="text-base cursor-pointer" 
