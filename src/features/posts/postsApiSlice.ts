@@ -155,6 +155,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
         }),
+        addOrRemoveHeartToComment: builder.mutation({
+            query: ({ commentId, userId }) => ({
+                url: `/comment/${commentId}/heart`,
+                method: 'POST',
+                body: { userId },
+            }),
+        }),
+        addOrRemoveHeartToReply: builder.mutation({
+            query: ({ commentId, replyId, userId }) => ({
+                url: `/comment/${commentId}/replies/${replyId}/heart`,
+                method: 'POST',
+                body: { userId },
+            }),
+        }),
     }),
 });
 
@@ -178,5 +192,8 @@ export const {
 
     useAddReplyToCommentMutation,
     useUpdateAddReplyToCommentMutation,
-    useDeleteAddReplyToCommentMutation
+    useDeleteAddReplyToCommentMutation,
+
+    useAddOrRemoveHeartToCommentMutation,
+    useAddOrRemoveHeartToReplyMutation,
 } = usersApiSlice;

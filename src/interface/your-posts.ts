@@ -48,7 +48,17 @@ export interface ReplytoComment {
     comment: string;
     createdAt: string;
     updatedAt: string;
-    heart: any[];
+    heart: HeartReaction[];
+}
+
+export interface HeartReaction {
+    _id: string;
+    username: string;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    avatarUrl?: string;
+    coverPhotoUrl?: string;
 }
 
 
@@ -56,7 +66,7 @@ export interface PostComment {
     _id: string;
     comment: string;
     from: CommentFrom;
-    heart: any[];
+    heart: HeartReaction[];
     replies: ReplytoComment[];
     createdAt: string;
     updatedAt: string;

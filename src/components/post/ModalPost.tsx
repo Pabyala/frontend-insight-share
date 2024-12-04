@@ -43,6 +43,8 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
         }
     }, [selectedPost, refreshPost]);
 
+    console.log("POST BY ID: ", post)
+
     useEffect(() => {
       // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';

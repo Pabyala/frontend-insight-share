@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Post } from '../../interface/your-posts';
-import { useAddCommentToPostMutation, useAddReplyToCommentMutation, useDeleteCommentToPostMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { useAddCommentToPostMutation, useAddOrRemoveHeartToCommentMutation, useAddOrRemoveHeartToReplyMutation, useAddReplyToCommentMutation, useDeleteCommentToPostMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
-import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical } from '../others/CustomIcons';
+import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical, NotoOrangeHeart } from '../others/CustomIcons';
 import CommentOptions from './CommentOptions';
 import TimeAgoPost from './TimeAgoPost';
 import UpdateCommentTextArea from './UpdateCommentTextArea';
@@ -29,6 +29,8 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
     const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
     const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, error: errorDeleteComment }] = useDeleteCommentToPostMutation();
     const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment, error: errorAddReplyToComment }] = useAddReplyToCommentMutation()
+    const [addOrRemoveHeartToComment, { isLoading: isLoadingReactionToComment, isError: isErrorReactionToComment, error: errorReactionToComment }] = useAddOrRemoveHeartToCommentMutation()
+    const [addOrRemoveHeartToReply, { isLoading: isLoadingReactionToReply, isError: isErrorReactionToReply, error: errorReactionToReply }] = useAddOrRemoveHeartToReplyMutation()
     
     const [replyComment, setReplyComment] = useState<string>('')
     const [isReplyToComment, setIsReplyToComment] = useState<boolean>(false)
@@ -173,6 +175,17 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
         }
     }, [replyComment]);
 
+    const commentReplyReaction = async (typeOfReaction: string, commentId: string, replyId: string) => {
+        if(!typeOfReaction) return
+        if(typeOfReaction === 'commentReaction'){
+            await addOrRemoveHeartToComment({commentId, userId})
+        }
+        if(typeOfReaction === 'replyReaction') {
+            await addOrRemoveHeartToReply({commentId, replyId, userId})
+        }
+        refetch()
+    }
+
     return (
         <>
         <div className="flex flex-col">
@@ -257,7 +270,10 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                             </span>
                                         </div>
                                         <div className="text-xs">
-                                            <span className='cursor-pointer'>Like</span>
+                                            <span 
+                                                className='cursor-pointer'
+                                                onClick={() => commentReplyReaction('commentReaction', comment._id, '')}
+                                            >Heart</span>
                                         </div>
                                         <div className="text-xs">
                                             <span 
@@ -273,6 +289,13 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                     Edited
                                                 </span>
                                             </div>)
+                                        }
+                                        { comment.heart.length !== 0 && (
+                                            <div className="text-xs flex items-center">
+                                                <span>{comment.heart.length}</span>
+                                                <NotoOrangeHeart />
+                                            </div>
+                                            )
                                         }
                                     </div>
                                 </>
@@ -359,7 +382,10 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                         </span>
                                                     </div>
                                                     <div className="text-xs">
-                                                        <span className='cursor-pointer'>Like</span>
+                                                        <span 
+                                                            className='cursor-pointer' 
+                                                            onClick={() => commentReplyReaction('replyReaction', comment._id, reply._id)}
+                                                        >Heart</span>
                                                     </div>
                                                     {reply.createdAt != reply.updatedAt &&
                                                         (<div className='text-xs'>
@@ -367,6 +393,13 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                                 Edited
                                                             </span>
                                                         </div>)
+                                                    }
+                                                    { reply.heart.length !== 0 && (
+                                                        <div className="text-xs flex items-center">
+                                                            <span>{reply.heart.length}</span>
+                                                            <NotoOrangeHeart />
+                                                        </div>
+                                                        )
                                                     }
                                                 </div>
                                             </>)}
