@@ -14,6 +14,7 @@ export default function ViewUserProfile() {
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery(userId);
 
     const posts = yourPosts ? yourPosts.dataPost : [];
+    console.log("Profile post: ", yourPosts)
 
     const { data: getFollowing, error: errorGetFollowing, isLoading: isLoadingGetFollowing, refetch: refetchGetFollowing } = useGetFollowingQuery()
     console.log("MY FOLLOWING: ", getFollowing)

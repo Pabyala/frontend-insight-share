@@ -1,6 +1,6 @@
 import { apiSlice } from '../../app/api/apiSlice';
 import { GetAllPostsByUserResponse, SavedPosts } from '../../interface/posts-type';
-import { AddPost, Post, TimelinePosts } from '../../interface/your-posts';
+import { AddPost, AllUserReactions, Post, TimelinePosts } from '../../interface/your-posts';
 
 // add post
 interface RequiredPost {
@@ -169,6 +169,19 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: { userId },
             }),
         }),
+        // getAllUserWhoReactToPost: builder.query<AllUserReactions, { postId: string }>({
+        //     query: ({ postId }) => ({
+        //         url: `/post/${postId}/reactions`,
+        //         method: 'GET',
+        //     }),
+        // }),
+        getAllUserWhoReactToPost: builder.query<AllUserReactions, { postId: string }>({
+            query: ({ postId }) => `/post/${postId}/reactions`, 
+            transformResponse: (response: AllUserReactions) => {
+                console.log("API Response your timeline posts:", response);
+                return response
+            },
+        }),
     }),
 });
 
@@ -196,4 +209,7 @@ export const {
 
     useAddOrRemoveHeartToCommentMutation,
     useAddOrRemoveHeartToReplyMutation,
+
+    useGetAllUserWhoReactToPostQuery,
 } = usersApiSlice;
+

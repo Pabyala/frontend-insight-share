@@ -37,7 +37,6 @@ export default function Timeline() {
                 userId={userId}
                 refetch={refetchTimelinePosts}
             />
-            
         </div>
     )
 }

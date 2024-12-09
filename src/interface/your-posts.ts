@@ -1,3 +1,5 @@
+import { ResolvedTypeReferenceDirectiveWithFailedLookupLocations } from "typescript";
+
 // types/PostTypes.ts
 export interface UserReact {
     _id: string;
@@ -111,4 +113,19 @@ export interface newPost {
 export interface AddPost {
     message: string; 
     newPost: newPost;
+}
+
+
+export interface TypeReactions {
+    all?: UserReact[];
+    like?: UserReact[]; 
+    fire?: UserReact[]; 
+    handsUp?: UserReact[]; 
+    disLike?: UserReact[]; 
+    heart?: UserReact[];
+}
+
+export interface AllUserReactions {
+    message: string;
+    reactions: TypeReactions;
 }

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Post } from '../../interface/your-posts';
+import UserWhoReactToPost from './UserWhoReactToPost';
 
 interface PostNumberOfComment {
     totalCommets: number; 
@@ -11,6 +12,8 @@ interface PropsPost {
 }
 
 export default function ReactCommentShare({ post }: PropsPost) {
+
+    const [showUserReaction, setShowUserReaction] = useState<boolean>(false)
 
     const totalComments = post.comments.length; 
     const totalReplies = post.comments.reduce((acc, comment) => acc + (comment.replies?.length || 0), 0);
@@ -30,28 +33,43 @@ export default function ReactCommentShare({ post }: PropsPost) {
     };
     const totalReactions = getTotalReactions();
 
+    const handleShowModalReactions = () => {
+        setShowUserReaction(true)
+    }
+
     return (
-        <div className='flex'>
-            <div className='pt-1 flex justify-between w-full'>
-                {/* reaction */}
-                <div className='w-1/3 flex items-center justify-center'>
-                    <span className='text-sm text-slate-500 cursor-pointer'>
-                        {totalReactions === 0 ? '' : `${totalReactions} reacted`}
-                    </span>
-                </div>
-                {/* comment */}
-                <div className='w-1/3 flex items-center justify-center'>
-                    <span className='text-sm text-slate-500 cursor-pointer'>
-                    {allComments === 0  ? '' 
-                        : (allComments === 1 
-                        ? `${allComments} comment` 
-                        : `${allComments} comments`)
-                    }
-                    {/* 1.1K comments */}
-                    </span>
+        <>
+            <div className='flex'>
+                <div className='pt-1 flex justify-between w-full'>
+                    {/* reaction */}
+                    <div className='w-1/3 flex items-center justify-center'>
+                        <span 
+                            className='text-sm text-slate-500 cursor-pointer'
+                            onClick={handleShowModalReactions}
+                        >
+                            {totalReactions === 0 ? '' : `${totalReactions} reacted`}
+                        </span>
+                    </div>
+                    {/* comment */}
+                    <div className='w-1/3 flex items-center justify-center'>
+                        <span className='text-sm text-slate-500 cursor-pointer'>
+                        {allComments === 0  ? '' 
+                            : (allComments === 1 
+                            ? `${allComments} comment` 
+                            : `${allComments} comments`)
+                        }
+                        {/* 1.1K comments */}
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            {showUserReaction && (
+                <UserWhoReactToPost
+                    postId={post._id}
+                />
+            )}
+        </>
     )
 }
 
