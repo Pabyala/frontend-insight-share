@@ -18,10 +18,9 @@ interface PostModalInterface {
     userId: string | undefined;
     
     // setSelectedPostId: string | undefined;
-    // isSavedPost: boolean;
+    isSavedPost: boolean;
     // setSelectedPostId: (postId: string) => void;
     // selectedPostId: string | null;
-    
 }
 
 interface CommentDetails {
@@ -31,11 +30,12 @@ interface CommentDetails {
     lastName: string;
 }
 
-export default function ModalPost({ onClose, selectedPost, userId,  }: PostModalInterface) {
+export default function ModalPost({ onClose, selectedPost, userId, isSavedPost }: PostModalInterface) {
 
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
         skip: !selectedPost, // skip the query if postId is falsy (undefined/null).
     });
+    const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
     useEffect(() => {
         if (selectedPost) {
@@ -57,6 +57,7 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
     const handleOption = (postId: string) => {
         console.log("POST ID: ", postId)
         // setOpenOption(true)
+        setSelectedPostId(postId)
     }
 
     if (isLoadingPost) return <div>Loading posts...</div>;
@@ -126,19 +127,18 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
                                 <Tooltip title="Show more">
                                     <IconButton
                                         onClick={() => handleOption(post._id)}
-                                        // onClick={handleOption}
                                     >
                                         <MoreVertIcon />
                                     </IconButton>
                                 </Tooltip>
-                                {/* {selectedPostId === post._id && (
+                                {selectedPostId === post._id && (
                                     <PostOptions
                                         post={post}
                                         userId={userId} 
                                         isSavedPost={isSavedPost}
                                         setSelectedPostId={setSelectedPostId}
                                     />
-                                )} */}
+                                )}
                                 {/* {isOpenCommentOptions && (
                                     <CommentOptions
                                     />

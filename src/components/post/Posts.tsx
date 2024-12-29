@@ -260,6 +260,11 @@ export default function Posts({ posts, isLoading, error, userId, refetch }: Post
                         // isSavedPost={isSavedPost}
                         // setSelectedPostId={setSelectedPostId}
                         // selectedPostId={selectedPostId}
+
+                        // userId={userId} 
+                        isSavedPost={isSavedPost}
+                        // setSelectedPostId={setSelectedPostId}
+                        // selectedPostId={selectedPostId}
                     />
                 )}
 

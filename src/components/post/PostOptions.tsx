@@ -21,6 +21,7 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
     const [savedPost] = useSavedPostMutation();
     const [unsavedPost] = useUnsavedPostMutation();
     const [openUpdatePostModal, setOpenUpdatePostModal] = useState<boolean>(false)
+    console.log("IS SAVEDPOST", isSavedPost)
 
      // handle to show the modal for update of post
     const handleShowModalUpdate = (postId: string) => {
