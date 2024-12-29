@@ -66,6 +66,9 @@ export default function ModalPost({ onClose, selectedPost, userId,  }: PostModal
     return (
         <div
             className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto"
+            style={{
+                marginTop: '0px'
+            }}
             // onClick={handleOverlayClick}
             // onClick={onClose}
         >

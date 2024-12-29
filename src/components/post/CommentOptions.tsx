@@ -1,11 +1,9 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useAddCommentToPostMutation, useDeleteAddReplyToCommentMutation, useDeleteCommentToPostMutation, useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
-import { PostComment } from '../../interface/your-posts';
 
 interface PropsCommentOptions {
     isUpdate: boolean;
     isDelete: boolean;
-    // parentRef: RefObject<HTMLDivElement>;
     postId: string;
     setIsUpdatingComment: (value: boolean) => void;
     setCommentIdUpdating: (value: string) => void;
@@ -63,71 +61,63 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
         }
     }
 
-    // useEffect(() => {
-    //     if (parentRef.current && dropdownRef.current) {
-    //         const parentRect = parentRef.current.getBoundingClientRect();
-    //         const dropdownRect = dropdownRef.current.getBoundingClientRect();
-    //         const viewportHeight = window.innerHeight;
-    //         const viewportWidth = window.innerWidth;
-
-    //         // Calculate dropdown position dynamically
-    //         const fitsBelow = viewportHeight - parentRect.bottom > dropdownRect.height;
-    //         const fitsAbove = parentRect.top > dropdownRect.height;
-    //         const fitsRight = viewportWidth - parentRect.right > dropdownRect.width;
-    //         const fitsLeft = parentRect.left > dropdownRect.width;
-
-    //         setPosition({
-    //             top: fitsBelow ? parentRect.bottom : fitsAbove ? parentRect.top - dropdownRect.height : parentRect.bottom,
-    //             left: fitsRight ? parentRect.right - dropdownRect.width : fitsLeft ? parentRect.left : parentRect.left,
-    //         });
-    //     }
-    // }, [parentRef]);
+    const handleCloseCommentModal = () => {
+        setIsOpenCommentOption(false)
+    }
 
     return (
-        // <div className='absolute top-[45px] right-[-60px] z-[2]'>
-        <div 
-            ref={dropdownRef}
-            style={{
-                position: 'absolute',
-                top: `${position.top}px`,
-                left: `${position.left}px`,
-                zIndex: 2,
-            }}
-            className='bg-white drop-shadow-lg p-2 flex flex-col items-start border-[1px] rounded'
-        >
-            {/* <div className='bg-white drop-shadow-lg p-2 flex flex-col items-start border-[1px] rounded'> */}
-                <div className='flex flex-col w-[130px]'>
-                    {isUpdate && (
-                        <span 
-                            className='text-sm p-1 hover:bg-gray-200 rounded' 
-                            onClick={handleUpdateComment}
+        <div  className='fixed inset-0 z-51 drop-shadow-2xl flex items-center justify-center w-full h-full overflow-y-auto'>
+            <div className='relative w-fit'>
+                <div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
+                    <div className='flex items-center justify-between p-1.5 px-3 border-b rounded-t dark:border-gray-600'>
+                        <p className='text-sm font-medium'>Update</p>
+                        <button
+                            type="button"
+                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-2.5 h-2.5 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            onClick={handleCloseCommentModal}
                         >
-                            Edit comment
-                        </span>
-                    )}
-
-                    {isDelete && (
+                            <svg
+                                className="w-3 h-3"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 14 14"
+                            >
+                                <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <div className="flex flex-col bg-white p-2.5 w-fit rounded shadow-lg">
+                        {isUpdate && (
+                            <span 
+                                className='text-sm p-1 hover:bg-gray-200 rounded cursor-pointer' 
+                                onClick={handleUpdateComment}
+                            >
+                                Edit comment
+                            </span>
+                        )}
+                        {isDelete && (
+                            <span 
+                                className='text-sm p-1 hover:bg-gray-200 rounded cursor-pointer' 
+                                onClick={() => handleDeleteComment(commentId)}
+                            >
+                                Delete comment
+                            </span>
+                        )}
                         <span 
-                            className='text-sm p-1 hover:bg-gray-200 rounded' 
-                            onClick={() => handleDeleteComment(commentId)}
-                        >
-                            Delete comment
-                        </span>
-                    )}
-                    
-                        {/* <span 
-                            className='text-sm p-1 hover:bg-gray-200 rounded'
-                            onClick={() => handleDeleteComment(commentId)}
-                        >
-                            Delete comment
-                        </span> */}
-                        <span 
-                            className='text-sm p-1 hover:bg-gray-200 rounded'
+                            className='text-sm p-1 hover:bg-gray-200 rounded cursor-pointer'
                         >
                             Report comment
                         </span>
+                    </div>
                 </div>
-            {/* </div> */}
+            </div>
         </div>
     )
 }
