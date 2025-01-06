@@ -145,7 +145,7 @@ export default function SettingsProfileDetails() {
                             className='w-full h-full object-cover'
                         />
                     </div>
-                    <div className='w-full flex justify-center items-center'>
+                    <div className='w-full flex flex-col space-y-2 justify-center items-center'>
                         {/* <p className='text-sm font-medium xl:text-base'>Profile picture</p> */}
                         <button className='w-full py-1 px-2 bg-blue-600 flex items-center justify-center rounded'>
                             <label htmlFor="background-upload" className="text-sm font-normal text-white cursor-pointer xl:text-base">
@@ -160,6 +160,18 @@ export default function SettingsProfileDetails() {
                                 // disabled={isUpdatingBackground}
                             />
                         </button>
+                        {/* <div className='space-x-2'>
+                            <button 
+                                className='p-1.5 bg-gray-200 rounded text-sm hover:bg-gray-300 border-2 border-white'
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                className='py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
+                            >
+                                Saved
+                            </button>
+                        </div> */}
                     </div>
                 </div>
 
@@ -185,7 +197,7 @@ export default function SettingsProfileDetails() {
                             className='w-full h-full object-cover rounded'
                         />
                     </div>
-                    <div className='w-full flex justify-center items-center'>
+                    <div className='w-full flex flex-col space-y-2 justify-center items-center'>
                         <button className='w-full py-1 px-2 bg-blue-600 flex items-center justify-center rounded'>
                             <label htmlFor="background-upload" className="text-sm font-normal text-white cursor-pointer xl:text-base">
                                 Update
@@ -199,6 +211,18 @@ export default function SettingsProfileDetails() {
                                 // disabled={isUpdatingProfile}
                             />
                         </button>
+                        {/* <div className='space-x-2'>
+                            <button 
+                                className='p-1.5 bg-gray-200 rounded text-sm hover:bg-gray-300 border-2 border-white'
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                className='py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
+                            >
+                                Saved
+                            </button>
+                        </div> */}
                     </div>
                 </div>
             </div>
