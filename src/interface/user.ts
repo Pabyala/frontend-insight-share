@@ -11,7 +11,8 @@ export interface UserInfo {
     dateOfBirth: string;
     isDateBirthShow: boolean;
     isFollowedShow: boolean; 
-    bio?: string;            
+    bio?: string;         
+    userStatus?: string;   
     avatarUrl?: string;             
     coverPhotoUrl?: string;
     followers: string[];             
@@ -69,11 +70,24 @@ export interface socialsData {
 export interface UserDetails {
     livesIn: string;
     locFrom: string;
-    isFollowedShow: boolean;
+    isFollowedShow?: boolean;
     studyAt: string;
     companyName: string;
     position: string;
-    isDateBirthShow: boolean;
+    isDateBirthShow?: boolean;
+    birthday?: string;
+    gender?: string;
+    phoneNumber?: string;
+    status?: string;
     bio: string;
     socials: socialsData[];
+}
+
+export interface UserProfileDataDisplay {
+    username: string,
+    firstName: string,
+    middleName?: string,
+    lastName: string,
+    avatarUrl: string,
+    coverPhotoUrl: string,
 }
