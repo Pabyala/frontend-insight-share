@@ -1,230 +1,276 @@
-import React, { useState } from 'react'
-import { BxsUpArrow, FeArrowRight } from '../../others/CustomIcons'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useGetUserQuery } from '../../../features/users/usersApiSlice';
-import BdayFormater from '../../helper/BdayFormater';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
-import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import { UserProfileDataDisplay } from '../../../interface/user';
 
 export default function SettingsProfileDetails() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
-    const { data: getFollowers } = useGetFollowersQuery()
-    // const { data: getFollowing } = useGetFollowingQuery()
+    const [userProfileDetails, setUserProfileDetails] = useState<UserProfileDataDisplay>({
+        username: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        avatarUrl: '',
+        coverPhotoUrl: '',
+    }); 
+    const initialProfileImageUrl = userInfo?.avatarUrl || DefaultImg;
+    const initialBackgroundImageUrl = userInfo?.coverPhotoUrl || DefaultBg;
+    const [originalUserDetails, setOriginalUserDetails] = useState<UserProfileDataDisplay | null>(null);
+    const [isSaveDisabled, setIsSaveDisabled] = useState(true);
 
-    const formattedDate = BdayFormater(userInfo?.dateOfBirth);
+    const [profileFile, setProfileFile] = useState<File | null>(null);
+    const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
+    const [profilePreviewUrl, setProfilePreviewUrl] = useState<string>(initialProfileImageUrl);
+    const [backgroundPreviewUrl, setBackgroundPreviewUrl] = useState<string>(initialBackgroundImageUrl);
+    const [isUpdatingProfile, setIsUpdatingProfile] = useState<boolean>(false);
+    const [isUpdatingBackground, setIsUpdatingBackground] = useState<boolean>(false);
 
-    const [activeElement, setActiveElement] = useState<string | null>(null);
-    const [isBtnDisable, setIsBtnDisable] = useState<boolean>(true);
+    useEffect(() => {
+        if (userInfo) {
+            setUserProfileDetails((prev) => ({
+                ...prev,
+                username: userInfo.username || '',
+                firstName: userInfo.firstName || '',
+                middleName: userInfo.middleName || '',
+                lastName: userInfo.lastName || '',
+                avatarUrl: userInfo.avatarUrl || '',
+                coverPhotoUrl: userInfo.coverPhotoUrl || '',
+            }));
+            //  for checking the original state
+            setOriginalUserDetails({
+                username: userInfo.username || '',
+                firstName: userInfo.firstName || '',
+                middleName: userInfo.middleName || '',
+                lastName: userInfo.lastName || '',
+                avatarUrl: userInfo.avatarUrl || '',
+                coverPhotoUrl: userInfo.coverPhotoUrl || '',
+            });
+        }
+    }, [userInfo]);
 
-    const toggleAccordion = (section: string) => {
-        setActiveElement((prevSection) => (prevSection === section ? null : section));
+    // checking if the user details have changed to enable/disable Save button
+    useEffect(() => {
+        if (originalUserDetails) {
+            setIsSaveDisabled(
+                JSON.stringify(userProfileDetails) === JSON.stringify(originalUserDetails)
+            );
+        }
+    }, [userProfileDetails, originalUserDetails]);
+
+
+    const handleUploadPhoto = (e: ChangeEvent<HTMLInputElement>, type: 'profile' | 'background') => {
+        const file = e.target.files?.[0];
+        if (!file) return; 
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            if (type === 'profile') {
+                setProfileFile(file);
+                setProfilePreviewUrl(reader.result as string);
+                setIsUpdatingProfile(true);
+                setIsUpdatingBackground(false);
+            } else {
+                setBackgroundFile(file);
+                setBackgroundPreviewUrl(reader.result as string);
+                setIsUpdatingBackground(true);
+                setIsUpdatingProfile(false);
+            }
+        };
     };
 
+    const handleCancel = (type: 'profile' | 'background') => {
+        if (type === 'profile') {
+            setProfilePreviewUrl(initialProfileImageUrl);
+            setProfileFile(null);
+            setIsUpdatingProfile(false);
+            setIsUpdatingProfile(false);
+        } else {
+            setBackgroundPreviewUrl(initialBackgroundImageUrl);
+            setBackgroundFile(null);
+            setIsUpdatingBackground(false);
+            setIsUpdatingBackground(false);
+        }
+    };
+
+    const handleSave = async (type: 'profile' | 'background') => {
+        // try {
+        //     if (type === 'profile' && profileFile) {
+        //         const response = await uploadProfilePhoto({image: profilePreviewUrl}).unwrap();
+        //         console.log("Upload profile photo success:", response);
+        //         refetchUserInfo();
+        //         setIsUpdatingProfile(false);
+        //         console.log("Profile picture updated successfully");
+        //     } else if (type === 'background' && backgroundFile) {
+        //         const response = await uploadBgPhoto({image: backgroundPreviewUrl}).unwrap();
+        //         console.log("Upload background photo success:", response);
+        //         refetchUserInfo();
+        //         setIsUpdatingBackground(false);
+        //         console.log("Background picture updated successfully");
+        //     }
+        // } catch (error) {
+        //     console.error("Error updating image:", error);
+        // }
+    };
+
+
+        
     return (
         <div className='bg-white rounded lg:p-2'>
-            <p className='p-2 text-sm font-medium lg:text-base'>Profile Details</p>
-            <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+            <p className='p-2 text-sm font-semibold lg:text-base'>Profile Details</p>
+            <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className='space-y-1 p-2 lg:space-y-2'>
-                {/* Name(Firstname, Middlename, Lastname) */}
-                <div
-                    onClick={() => toggleAccordion('name')}
-                    className={`p-2 text-sm bg-gray-200 flex justify-between cursor-pointer ${activeElement === 'name' ? 'rounded-t' : 'rounded'}`}
-                >
-                    <span className={`lg:text-base ${activeElement === 'name' ? 'font-medium' : ''}`}>Name</span>
-                    <span className={`flex justify-center items-center transform transition-transform duration-300 ${activeElement === 'name' ? 'rotate-90' : ''}`}>
-                        <FeArrowRight />
-                    </span>
-                </div>
-                <div
-                    className={`bg-gray-200 rounded-b-lg space-y-2 p-2 overflow-hidden transition-all duration-500 ease-in-out ${activeElement === 'name' ? 'h-fit' : 'hidden max-h-0'}`}
-                >
-                    <div className="flex flex-col space-y-1.5 lg:space-y-2.5">
-                        <div className='flex flex-col space-y-1'>
-                            {/* <label htmlFor="" className='text-sm'>
-                                First Name
-                            </label> */}
-                            <input 
-                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="text" 
-                                placeholder='First Name'
-                                name="" 
-                                value={userInfo?.firstName || ''}
-                                id=""
-                            />
-                        </div>
-                        <div className='flex flex-col space-y-1'>
-                            {/* <label htmlFor="" className='text-sm'>
-                                Middle Name
-                            </label> */}
-                            <input 
-                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="text" 
-                                placeholder='Middle Name'
-                                name="" 
-                                value={userInfo?.middleName || ''}
-                                id=""
-                            />
-                        </div>
-                        <div className='flex flex-col space-y-1'>
-                            {/* <label htmlFor="" className='text-sm'>
-                                Last Name
-                            </label> */}
-                            <input 
-                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="text" 
-                                placeholder='Last Name'
-                                name="" 
-                                value={userInfo?.lastName || ''}
-                                id=""
-                            />
-                        </div>
-                        
-                        <button
-                            className='text-sm p-1.5 mt-2.5 text-white font-normal rounded bg-blue-600'
-                            // disabled={true}
-                        >
-                            Save
-                        </button>
-                    </div>
-                </div>
-
-                {/* Username */}
-                <div
-                    onClick={() => toggleAccordion('username')}
-                    className={`p-2 text-sm bg-gray-200 flex justify-between cursor-pointer ${activeElement === 'username' ? 'rounded-t' : 'rounded'}`}
-                >
-                    <span className={`lg:text-base ${activeElement === 'username' ? 'font-medium' : ''}`}>Username</span>
-                    <span className={`flex justify-center items-center transform transition-transform duration-300 ${activeElement === 'username' ? 'rotate-90' : ''}`}>
-                        <FeArrowRight />
-                    </span>
-                </div>
-                <div
-                    className={`bg-gray-200 rounded-b-lg space-y-2 p-2 overflow-hidden transition-all duration-500 ease-in-out ${activeElement === 'username' ? 'h-fit' : 'hidden max-h-0'}`}
-                >
-                    <div className="flex flex-col space-y-1.5 lg:space-y-2.5">
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className="border-none font-medium bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="text" 
-                                placeholder='Username'
-                                name="" 
-                                value={userInfo?.username || ''}
-                                id=""
-                            />
-                        </div>
-                        <button
-                            className='text-sm p-1.5 mt-2.5 text-white font-normal rounded bg-blue-600'
-                            disabled={true}
-                        >
-                            Save
-                        </button>
-                    </div>
-                </div>
 
                 {/* Profile picture */}
-                <div
-                    onClick={() => toggleAccordion('profile-picture')}
-                    className={`p-2 text-sm bg-gray-200 flex justify-between cursor-pointer ${activeElement === 'profile-picture' ? 'rounded-t' : 'rounded'}`}
-                >
-                    <span className='lg:text-base'>Profile picture</span>
-                    <span className={`flex justify-center items-center transform transition-transform duration-300 ${activeElement === 'profile-picture' ? 'rotate-90' : ''}`}>
-                        <FeArrowRight />
-                    </span>
-                </div>
-                <div
-                    className={`space-y-2 py-2 overflow-hidden rounded-b-lg transition-all duration-500 ease-in-out lg:space-y-2.5 bg-gray-200 p-2 ${activeElement === 'profile-picture' ? 'h-fit' : 'max-h-0 hidden'}`}
-                >
-                    <div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-white lg:w-[168px] lg:h-[168px] mx-auto'>
+                <div className='flex flex-col w-full space-y-4'>
+                    <div className='w-full flex justify-between'>
+                        <p className='text-sm font-medium xl:text-base'>Profile picture</p>
+                        <label htmlFor="photo-upload" className="text-sm font-medium text-blue-600 cursor-pointer xl:text-base">
+                            Update
+                        </label>
+                        <input
+                            id="photo-upload"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleUploadPhoto(e, 'profile')}
+                            disabled={isUpdatingBackground}
+                        />
+                    </div>
+                    <div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-gray-300 lg:w-[168px] lg:h-[168px] mx-auto'>
                         <img 
-                            // src='https://fastly.picsum.photos/id/582/256/256.jpg?hmac=peqwFP3WuZEwg549dK3PuPyou-m-mCW6Hmd3d3bzlrA' 
-                            // src={profilePreviewUrl}
-                            src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
+                            src={profilePreviewUrl}
                             alt="Profile"
                             className='w-full h-full object-cover'
                         />
                     </div>
-                    <div className='w-full flex flex-col space-y-2 justify-center items-center'>
-                        {/* <p className='text-sm font-medium xl:text-base'>Profile picture</p> */}
-                        <button className='w-full py-1 px-2 bg-blue-600 flex items-center justify-center rounded'>
-                            <label htmlFor="background-upload" className="text-sm font-normal text-white cursor-pointer xl:text-base">
-                                Update
-                            </label>
-                            <input
-                                id="photo-upload"
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                // onChange={(e) => handleUploadPhoto(e, 'profile')}
-                                // disabled={isUpdatingBackground}
-                            />
-                        </button>
-                        {/* <div className='space-x-2'>
+                    {isUpdatingProfile && (
+                        <div className='flex space-x-2 justify-center'>
                             <button 
-                                className='p-1.5 bg-gray-200 rounded text-sm hover:bg-gray-300 border-2 border-white'
+                                className='p-1.5 bg-gray-200 rounded text-sm hover:bg-gray-300' 
+                                onClick={() => handleCancel('profile')}
                             >
                                 Cancel
                             </button>
                             <button 
                                 className='py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
+                                onClick={() => handleSave('profile')}
                             >
-                                Saved
+                                Save
                             </button>
-                        </div> */}
-                    </div>
+                        </div>
+                    )}
                 </div>
-
                 {/* Background photo */}
-                <div
-                    onClick={() => toggleAccordion('background-photo')}
-                    className={`p-2 text-sm rounded bg-gray-200 flex justify-between cursor-pointer ${activeElement === 'profile-picture' ? 'rounded-t' : 'rounded'}`}
-                >
-                    <span className='lg:text-base'>Background photo</span>
-                    <span className={`flex justify-center items-center transform transition-transform duration-300 ${activeElement === 'background-photo' ? 'rotate-90' : ''}`}>
-                        <FeArrowRight />
-                    </span>
-                </div>
-                <div
-                    className={`space-y-2 py-2 rounded-b-lg overflow-hidden transition-all duration-500 ease-in-out lg:space-y-2.5 bg-gray-200 p-2 ${activeElement === 'background-photo' ? 'h-fit' : 'hidden max-h-0'}`}
-                >
+                <div className='flex flex-col w-full space-y-4'>
+                    <div className='w-full flex justify-between'>
+                        <p className='text-sm font-medium xl:text-base'>Cover photo</p>
+                        <label htmlFor="background-upload" className="text-sm font-medium text-blue-600 cursor-pointer xl:text-base">
+                            Update
+                        </label>
+                        <input
+                            id="background-upload"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleUploadPhoto(e, 'background')}
+                            disabled={isUpdatingProfile}
+                        />
+                    </div>
                     <div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px] dark:bg-gray-700'>
                         <img 
-                            // src='https://0nepiece.netlify.app/static/media/strawhatpirates.eccf099b1766a064828c.jpg'
-                            src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
-                            // src={backgroundPreviewUrl}
+                            src={backgroundPreviewUrl}
                             alt="Background"
                             className='w-full h-full object-cover rounded'
                         />
                     </div>
-                    <div className='w-full flex flex-col space-y-2 justify-center items-center'>
-                        <button className='w-full py-1 px-2 bg-blue-600 flex items-center justify-center rounded'>
-                            <label htmlFor="background-upload" className="text-sm font-normal text-white cursor-pointer xl:text-base">
-                                Update
-                            </label>
-                            <input
-                                id="background-upload"
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                // onChange={(e) => handleUploadPhoto(e, 'background')}
-                                // disabled={isUpdatingProfile}
-                            />
-                        </button>
-                        {/* <div className='space-x-2'>
+                    {isUpdatingBackground && (
+                        <div className='flex space-x-2 justify-center'>
                             <button 
-                                className='p-1.5 bg-gray-200 rounded text-sm hover:bg-gray-300 border-2 border-white'
+                                className='p-1.5 bg-gray-200 rounded text-sm hover:bg-gray-300' 
+                                onClick={() => handleCancel('background')}
                             >
                                 Cancel
                             </button>
                             <button 
                                 className='py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
-                            >
-                                Saved
+                                onClick={() => handleSave('background')}
+                            > 
+                                Save
                             </button>
-                        </div> */}
+                        </div>
+                    )}
+                </div>
+
+
+                <div className='w-full'>
+                    <p className='text-sm font-medium mb-1'>Name</p>
+                    <div className='w-full flex justify-between space-x-4   '>
+                        <div className='w-full'>
+                            <input 
+                                type="text" 
+                                value={userProfileDetails.firstName}
+                                onChange={(e) => setUserProfileDetails(prev => (
+                                    { ...prev, firstName: e.target.value }
+                                ))}
+                                placeholder='Enter your first name'
+                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            />
+                        </div>
+                        <div className='w-full'>
+                            <input 
+                                type="text" 
+                                value={userProfileDetails.middleName}
+                                onChange={(e) => setUserProfileDetails(prev => (
+                                    { ...prev, middleName: e.target.value }
+                                ))}
+                                placeholder='Enter your middle name'
+                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            />
+                        </div>
+                        <div className='w-full'>
+                            <input 
+                                type="text" 
+                                value={userProfileDetails.lastName}
+                                onChange={(e) => setUserProfileDetails(prev => (
+                                    { ...prev, lastName: e.target.value }
+                                ))}
+                                placeholder='Enter your last name'
+                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            />
+                        </div>
                     </div>
                 </div>
+
+                <div className='w-full'>
+                    <p className='text-sm font-medium mb-1'>Username</p>
+                    <div className='w-full'>
+                        <input 
+                            type="text"
+                            value={userProfileDetails.username} 
+                            onChange={(e) => setUserProfileDetails(prev => (
+                                { ...prev, username: e.target.value }
+                            ))}
+                            placeholder='Enter your username'
+                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                        />
+                    </div>
+                </div>
+
+                <div className='w-full flex justify-center'>
+                    <button 
+                        // onClick={handleSaveDetails}
+                        // disabled={isSaveDisabled}
+                        // className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
+                        className='w-full p-1.5 bg-gray-200 font-semibold hover:bg-gray-300'
+                    >
+                        Save
+                    </button>
+                </div>
+
+                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
             </div>
         </div>
     )

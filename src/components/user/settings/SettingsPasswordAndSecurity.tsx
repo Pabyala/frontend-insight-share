@@ -15,105 +15,52 @@ export default function SettingsPasswordAndSecurity() {
 
     return (
         <div className='bg-white rounded lg:p-2'>
-            <p className='p-2 text-sm font-medium lg:text-base'>Password and Security</p>
-            <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+            <p className='p-2 text-sm font-semibold lg:text-base'>Password and Security</p>
+            <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
 
             
             <div className='space-y-1 p-2 lg:space-y-2'>
-                {/* Change password 1 */}
-                <div
-                    onClick={() => toggleAccordion('changed-password')}
-                    className={`p-2 text-sm bg-gray-200 flex justify-between cursor-pointer ${activeElement === 'changed-password' ? 'rounded-t' : 'rounded'}`}
-                >
-                    <span className={`lg:text-base ${activeElement === 'changed-password' ? 'font-medium' : ''}`}>Change password</span>
-                    <span className={`flex justify-center items-center transform transition-transform duration-300 ${activeElement === 'changed-password' ? 'rotate-90' : ''}`}>
-                        <FeArrowRight />
-                    </span>
-                </div>
-                <div
-                    className={`bg-gray-200 rounded-b-lg space-y-2 p-2 overflow-hidden transition-all duration-500 ease-in-out ${activeElement === 'changed-password' ? 'h-fit' : 'hidden max-h-0'}`}
-                >
-                    <div className="flex flex-col space-y-1.5 lg:space-y-2.5">
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="password" 
-                                placeholder='Current password'
-                                name="" 
-                                id=""
-                            />
-                        </div>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="password" 
-                                placeholder='New password'
-                                name="" 
-                                id=""
-                            />
-                        </div>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="password" 
-                                placeholder='Confirm password'
-                                name="" 
-                                id=""
-                            />
-                        </div>
-                        
-                        <button
-                            className='text-sm p-1.5 mt-2.5 text-white font-normal rounded bg-blue-600'
-                            disabled={true}
-                        >
-                            Save
-                        </button>
+
+                <div className='w-full'>
+                    <p className='text-sm font-medium mb-1'>Password</p>
+                    <div className='w-full'>
+                        <input 
+                            type="password" 
+                            value={'sadsadasdasd'}
+                            // onChange={(e) => setUserProfileDetails(prev => (
+                            //     { ...prev, firstName: e.target.value }
+                            // ))}
+                            placeholder='Enter your first name'
+                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                        />
                     </div>
                 </div>
 
-                {/* Change email */}
-                <div
-                    onClick={() => toggleAccordion('changed-email')}
-                    className={`p-2 text-sm bg-gray-200 flex justify-between cursor-pointer ${activeElement === 'changed-email' ? 'rounded-t' : 'rounded'}`}
-                >
-                    <span className={`lg:text-base ${activeElement === 'changed-email' ? 'font-medium' : ''}`}>Change email</span>
-                    <span className={`flex justify-center items-center transform transition-transform duration-300 ${activeElement === 'changed-email' ? 'rotate-90' : ''}`}>
-                        <FeArrowRight />
-                    </span>
-                </div>
-                <div
-                    className={`bg-gray-200 rounded-b-lg space-y-2 p-2 overflow-hidden transition-all duration-500 ease-in-out ${activeElement === 'changed-email' ? 'h-fit' : 'hidden max-h-0'}`}
-                >
-                    <div className="flex flex-col space-y-1.5 lg:space-y-2.5">
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="email" 
-                                placeholder='Current email'
-                                name="" 
-                                value={userInfo?.email || ''}
-                                id=""
-                            />
-                        </div>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className="border-none font-light bg-white rounded focus:outline-none text-sm py-1.5 px-2"
-                                type="email" 
-                                placeholder='New email'
-                                name="" 
-                                id=""
-                            />
-                        </div>
-                        <button
-                            className='text-sm p-1.5 mt-2.5 text-white font-normal rounded bg-blue-600'
-                            disabled={true}
-                        >
-                            Save
-                        </button>
+                <div className='w-full'>
+                    <p className='text-sm font-medium mb-1'>Email</p>
+                    <div className='w-full'>
+                        <input 
+                            type="email" 
+                            value={userInfo?.email}
+                            placeholder='Enter your email'
+                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            readOnly 
+                        />
                     </div>
                 </div>
 
-                
+                <div className='w-full flex justify-center'>
+                    <button 
+                        // onClick={handleSaveDetails}
+                        // disabled={isSaveDisabled}
+                        // className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
+                        className='w-full p-1.5 bg-gray-200 font-semibold hover:bg-gray-300'
+                    >
+                        Update
+                    </button>
+                </div>
+
+                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
             </div>
         </div>
     );
