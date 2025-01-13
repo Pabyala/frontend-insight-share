@@ -55,6 +55,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: formData,
             }),
         }),
+        updateUserPersonalDetailsSettings: builder.mutation<UserDetails, Partial<UserDetails>>({
+            query: (userDetails) => ({
+                url: '/user/profile/settings/personal-details',
+                method: 'PUT',
+                body: userDetails,
+            }),
+            invalidatesTags: ['UserInfo'],
+        }),
+        updateUsernameAndName: builder.mutation({
+            query: (userDetails) => ({
+                url: '/user/profile/settings/profile-details',
+                method: 'PUT',
+                body: userDetails,
+            }),
+            invalidatesTags: ['UserInfo'],
+        }),
     }),
 });
 export const { 
@@ -66,6 +82,8 @@ export const {
     useUpdateUserProfilePictureMutation,  
     useUploadProfilePhotoMutation,  
     useUploadBgPhotoMutation,
+    useUpdateUserPersonalDetailsSettingsMutation,
+    useUpdateUsernameAndNameMutation,
 } = usersApiSlice; 
 
 // // creates memoized selector

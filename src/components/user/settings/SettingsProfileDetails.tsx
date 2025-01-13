@@ -1,12 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { useGetUserQuery } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery, useUpdateUsernameAndNameMutation } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
 import { UserProfileDataDisplay } from '../../../interface/user';
 
 export default function SettingsProfileDetails() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refetchUserInfo } = useGetUserQuery();
+    const [updateUsernameAndName] = useUpdateUsernameAndNameMutation();
     const [userProfileDetails, setUserProfileDetails] = useState<UserProfileDataDisplay>({
         username: '',
         firstName: '',
@@ -114,6 +115,22 @@ export default function SettingsProfileDetails() {
         //     console.error("Error updating image:", error);
         // }
     };
+
+    const handleSaveUsernameAndName = async () => {
+        if(!userProfileDetails.username || !userProfileDetails.firstName || !userProfileDetails.lastName) return 
+        
+        try {
+            await updateUsernameAndName({
+                username: userProfileDetails.username,
+                firstName: userProfileDetails.firstName,
+                middleName: userProfileDetails.middleName,
+                lastName: userProfileDetails.lastName,
+            }).unwrap();
+            refetchUserInfo();
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
         
@@ -265,6 +282,7 @@ export default function SettingsProfileDetails() {
                         // disabled={isSaveDisabled}
                         // className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
                         className='w-full p-1.5 bg-gray-200 font-semibold hover:bg-gray-300'
+                        onClick={handleSaveUsernameAndName}
                     >
                         Save
                     </button>

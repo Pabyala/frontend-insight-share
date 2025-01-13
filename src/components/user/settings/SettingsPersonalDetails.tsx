@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FeArrowRight, MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons'
 import { v4 as uuidv4 } from 'uuid';
 import CustomDatePicker from '../../others/CustomDatePicker';
-import { useGetUserQuery } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery, useUpdateUserPersonalDetailsSettingsMutation } from '../../../features/users/usersApiSlice';
 import { UserDetails } from '../../../interface/user';
 
 interface SocialLink {
@@ -12,8 +12,10 @@ interface SocialLink {
 
 export default function SettingsPersonalDetails() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refetchUserInfo } = useGetUserQuery();
     console.log("CURRENT USER INFO: ", userInfo)
+    // const [updateUserDetails] = useUpdateUserDetailsMutation();
+    const [updateUserPersonalDetails] = useUpdateUserPersonalDetailsSettingsMutation();
 
     const [userDetailsInfo, setUserDetailsInfo] = useState<UserDetails>({
         bio: '',
@@ -128,19 +130,30 @@ export default function SettingsPersonalDetails() {
     }
 
     const handleSaveDetails = async () => {
-        // try {
-        //     const updatedUserDetails = {
-        //         ...userDetailsInfo,
-        //         socials: mySocials,
-        //     };
-        //     console.log(userDetailsInfo)
-        //     await updateUserDetails(updatedUserDetails).unwrap();
-        //     refetchUserInfo();
-        //     onClose()
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        // const updatedUserDetails = {
+        //     ...userDetailsInfo,
+        //     socials: mySocials,
+        // };
+        // console.log("DATA1: ", userDetailsInfo)
+        // console.log("DATA2: ", updatedUserDetails)
+        try {
+            const updatedUserDetails = {
+                ...userDetailsInfo,
+                socials: mySocials,
+            };
+            console.log(userDetailsInfo)
+            await updateUserPersonalDetails(updatedUserDetails).unwrap();
+            refetchUserInfo();
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    const revertToOriginalDetails = () => {
+        if (originalUserDetails) {
+            setUserDetailsInfo(originalUserDetails);
+        }
+    };
 
     return (
         <div className='bg-white rounded lg:p-2'>
@@ -377,13 +390,20 @@ export default function SettingsPersonalDetails() {
 
                 <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
 
-                <div className='w-full flex justify-center'>
+                <div className='w-full flex justify-between'>
                     <button 
                         onClick={handleSaveDetails}
                         disabled={isSaveDisabled}
-                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
+                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} w-[48%] text-white rounded`}
                     >
-                        Save
+                        Save changes
+                    </button>
+                    <button 
+                        onClick={revertToOriginalDetails}
+                        disabled={isSaveDisabled}
+                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} w-[48%] text-white rounded`}
+                    >
+                        Revert to Original
                     </button>
                 </div>
             </div>

@@ -68,7 +68,7 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                     {/* Name and Other Details */}
                     <div className='mt-1 text-center flex flex-col mb-1.5 lg:items-start lg:m-0 lg:mb-[2px]'>
                         <p className='text-xl font-semibold lg:text-2xl'>
-                            <span>{userInfo?.firstName}</span> 
+                            <span>{userInfo?.firstName} </span> 
                             <span>{userInfo?.middleName} </span> 
                             <span> {userInfo?.lastName}</span>
                         </p>
