@@ -357,22 +357,22 @@ export default function SettingsPersonalDetails() {
                         />
                         {isUpdateLink ? (
                             <div className='w-[20%] flex justify-between'>
-                            <button 
-                                onClick={cancelUpdate}
-                                className='w-[47%] flex justify-center p-1.5 text-black font-medium text-sm bg-gray-200 rounded  hover:bg-gray-300'
-                            >
-                                <span className='text-[18px]'>
-                                    <MdiCloseThick/>
-                                </span>
-                            </button>
-                            <button 
-                                onClick={addSocial}
-                                className='w-[47%] p-1.5 flex justify-center items-center text-black font-medium text-sm bg-blue-600 rounded  hover:bg-blue-700'
-                            >
-                                <span className='text-[18px]'>
-                                    <MingcuteCheck2Fill/>
-                                </span>
-                            </button>
+                                <button 
+                                    onClick={cancelUpdate}
+                                    className='w-[47%] flex justify-center p-1.5 text-black font-medium text-sm bg-gray-200 rounded  hover:bg-gray-300'
+                                >
+                                    <span className='text-[18px]'>
+                                        <MdiCloseThick/>
+                                    </span>
+                                </button>
+                                <button 
+                                    onClick={addSocial}
+                                    className='w-[47%] p-1.5 flex justify-center items-center text-black font-medium text-sm bg-blue-600 rounded  hover:bg-blue-700'
+                                >
+                                    <span className='text-[18px]'>
+                                        <MingcuteCheck2Fill/>
+                                    </span>
+                                </button>
                             </div>
                         ) : (
                             <button 
@@ -390,18 +390,18 @@ export default function SettingsPersonalDetails() {
 
                 <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
 
-                <div className='w-full flex justify-between'>
+                <div className='w-full flex space-x-4'>
                     <button 
                         onClick={handleSaveDetails}
                         disabled={isSaveDisabled}
-                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} w-[48%] text-white rounded`}
+                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
                     >
                         Save changes
                     </button>
                     <button 
                         onClick={revertToOriginalDetails}
                         disabled={isSaveDisabled}
-                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} w-[48%] text-white rounded`}
+                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
                     >
                         Revert to Original
                     </button>

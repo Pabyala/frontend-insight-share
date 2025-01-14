@@ -9,9 +9,10 @@ interface UpdatePostPropsInterface {
     onClose: () => void;
     // selectedPostData: Post | undefined;
     selectedPostId: string | null;
+    setSelectedPostId: (postId: string) => void;
 }
 
-export default function UpdatePostModal({ onClose, selectedPostId }: UpdatePostPropsInterface) {
+export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPostId }: UpdatePostPropsInterface) {
 
     const { data: post, error: errorPost, isLoading: isLoadingPost } = useGetPostByIdQuery(selectedPostId!, {
         skip: !selectedPostId, // skip the query if postId is falsy (undefined/null).
@@ -50,9 +51,15 @@ export default function UpdatePostModal({ onClose, selectedPostId }: UpdatePostP
         try {
             await updatePost({ postId: post?._id, updatedPost: { captionPost: caption } }).unwrap();
             onClose();
+            setSelectedPostId('')
         } catch (error) {
             console.error('Failed to update the post:', error);
         }
+    }
+
+    const handleCloseModal = () => {
+        onClose();
+        setSelectedPostId('')
     }
 
     if (isLoadingPost) return <div>Loading posts...</div>;
@@ -71,7 +78,7 @@ export default function UpdatePostModal({ onClose, selectedPostId }: UpdatePostP
                             <button
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                onClick={onClose}
+                                onClick={handleCloseModal}
                             >
                                 <svg
                                     className="w-3 h-3"

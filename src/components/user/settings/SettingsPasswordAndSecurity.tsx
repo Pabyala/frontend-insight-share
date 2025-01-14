@@ -13,6 +13,8 @@ export default function SettingsPasswordAndSecurity() {
         setActiveElement((prevSection) => (prevSection === section ? null : section));
     };
 
+    console.log(userInfo)
+
     return (
         <div className='bg-white rounded lg:p-2'>
             <p className='p-2 text-sm font-semibold lg:text-base'>Password and Security</p>

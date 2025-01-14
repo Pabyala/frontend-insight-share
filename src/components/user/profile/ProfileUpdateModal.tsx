@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdiCloseThick } from '../../others/CustomIcons';
 import { useGetUserQuery, useUpdateUserProfilePictureMutation, useUploadBgPhotoMutation, useUploadProfilePhotoMutation } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
@@ -26,6 +26,15 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
     const [backgroundPreviewUrl, setBackgroundPreviewUrl] = useState<string>(initialBackgroundImageUrl);
     const [isUpdatingProfile, setIsUpdatingProfile] = useState<boolean>(false);
     const [isUpdatingBackground, setIsUpdatingBackground] = useState<boolean>(false);
+
+    useEffect(() => {
+          // prevent scrolling when the modal is open
+            document.body.style.overflow = 'hidden';
+            return () => {
+              // restore body scroll behavior when modal is closed
+                document.body.style.overflow = '';
+            };
+    }, []);
     
     const handleUploadPhoto = (e: ChangeEvent<HTMLInputElement>, type: 'profile' | 'background') => {
         const file = e.target.files?.[0];

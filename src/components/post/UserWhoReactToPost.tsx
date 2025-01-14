@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGetAllUserWhoReactToPostQuery } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
 import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
@@ -7,19 +7,30 @@ type ReactionKeys = 'all' | 'like' | 'fire' | 'handsUp' | 'disLike' | 'heart';
 
 interface UserReactions {
     postId: string;
+    onClose: () => void;
 }
 
-export default function UserWhoReactToPost({ postId }: UserReactions) {
+export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
 
     const [typeOfReaction, setTypeOfReaction] = useState<ReactionKeys>('all');
     const { data: allReaction, error: errorAllReaction, isLoading: isLoadingAllReaction } = useGetAllUserWhoReactToPostQuery({ postId });
+
+    useEffect(() => {
+        // prevent scrolling when the modal is open
+        document.body.style.overflow = 'hidden';
+        return () => {
+            // restore body scroll behavior when modal is closed
+            document.body.style.overflow = '';
+        };
+    }, []);
 
     const handleSelectTypeOfReaction = (reactionType: ReactionKeys) => {
         setTypeOfReaction(reactionType);
     };
 
     const users = allReaction ? allReaction.reactions[typeOfReaction] || [] : [];
-    console.log(users)
+    console.log("User who react", users)
+    console.log("User who react1", allReaction)
     
 
     if (isLoadingAllReaction) return <div>Loading posts...</div>;
@@ -31,47 +42,88 @@ export default function UserWhoReactToPost({ postId }: UserReactions) {
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     {/* <p>Hello world</p> */}
                     <div className='p-4 space-y-2'>
-                        <div className='flex items-center space-x-2'>
-                            <p className='flex items-center' onClick={() => handleSelectTypeOfReaction('all')}>
-                                All
-                            </p>
-                            { allReaction?.reactions.fire?.length !== 0 && (
-                                <p className='flex items-center' onClick={() => handleSelectTypeOfReaction('fire')}>
-                                    <TwemojiFire /> 
-                                    <span className='ml-[5px]'>
-                                        {allReaction?.reactions.fire?.length}
-                                    </span>
+                        
+                        <div className='flex justify-between pl-1'>
+                            <div className='flex items-center space-x-2'>
+                                <p className='flex items-center' onClick={() => handleSelectTypeOfReaction('all')}>
+                                    All
                                 </p>
-                            )}
+                                { allReaction?.reactions.fire?.length !== 0 && (
+                                    <p 
+                                        className='flex items-center' 
+                                        onClick={() => handleSelectTypeOfReaction('fire')}
+                                    >
+                                        <TwemojiFire /> 
+                                        <span className='ml-[5px]'>
+                                            {allReaction?.reactions.fire?.length}
+                                        </span>
+                                    </p>
+                                )}
 
-                            { allReaction?.reactions.handsUp?.length !== 0 && (
-                                <p className='flex items-center' onClick={() => handleSelectTypeOfReaction('handsUp')}>
-                                    <TwemojiRaisingHands />
-                                    <span className='ml-[5px]'>
-                                        {allReaction?.reactions.handsUp?.length}
-                                    </span>
-                                </p>
-                            )}
+                                { allReaction?.reactions.handsUp?.length !== 0 && (
+                                    <p 
+                                        className='flex items-center' 
+                                        onClick={() => handleSelectTypeOfReaction('handsUp')}
+                                    >
+                                        <TwemojiRaisingHands />
+                                        <span className='ml-[5px]'>
+                                            {allReaction?.reactions.handsUp?.length}
+                                        </span>
+                                    </p>
+                                )}
 
-                            { allReaction?.reactions.disLike?.length !== 0 && (
-                                <p className='flex items-center' onClick={() => handleSelectTypeOfReaction('disLike')}>
-                                    <AntDesignDislikeFilled />
-                                    <span className='ml-[5px]'>
-                                        {allReaction?.reactions.disLike?.length}
-                                    </span>
-                                </p>
-                            )}
+                                { allReaction?.reactions.disLike?.length !== 0 && (
+                                    <p 
+                                        className='flex items-center' 
+                                        onClick={() => handleSelectTypeOfReaction('disLike')}
+                                    >
+                                        <AntDesignDislikeFilled />
+                                        <span className='ml-[5px]'>
+                                            {allReaction?.reactions.disLike?.length}
+                                        </span>
+                                    </p>
+                                )}
 
-                            { allReaction?.reactions.heart?.length !== 0 && (
-                                <p className='flex items-center'  onClick={() => handleSelectTypeOfReaction('heart')}>
-                                    <NotoOrangeHeart />
-                                    <span className='ml-[5px]'>
-                                        {allReaction?.reactions.heart?.length}
-                                    </span>
-                                </p>
-                            )}
+                                { allReaction?.reactions.heart?.length !== 0 && (
+                                    <p 
+                                        className='flex items-center' 
+                                        onClick={() => handleSelectTypeOfReaction('heart')}
+                                    >
+                                        <NotoOrangeHeart />
+                                        <span className='ml-[5px]'>
+                                            {allReaction?.reactions.heart?.length}
+                                        </span>
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <button
+                                    type="button"
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-6 h-6 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    onClick={onClose}
+                                >
+                                    <svg
+                                        className="w-2.5 h-2.5"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 14 14"
+                                    >
+                                        <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
+                        <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
                         <div className='flex flex-col space-y-2'>
+                            {/* {allReaction?.reactions?.all?.map(user => ( */}
                             {users.map(user => (
                                 <div key={user._id} className='flex items-center justify-between'>
                                     <div className='flex items-center space-x-2'>
@@ -87,12 +139,12 @@ export default function UserWhoReactToPost({ postId }: UserReactions) {
                                     </div>
                                     <div className='items-center'>
                                         <span className='text-[25px]'>
-                                            <NotoOrangeHeart />
+                                            {user.reactionType === 'fire' && <TwemojiFire />}
+                                            {user.reactionType === 'handsUp' && <TwemojiRaisingHands />}
+                                            {user.reactionType === 'disLike' && <AntDesignDislikeFilled />}
+                                            {user.reactionType === 'heart' && <NotoOrangeHeart />}
                                         </span>
-
-                                        
                                     </div>
-                                    
                                 </div>
                             ))}
                         </div>

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { useGetUserQuery, useUpdateUsernameAndNameMutation } from '../../../features/users/usersApiSlice';
+import { useGetUserQuery, useUpdateUsernameAndNameMutation, useUploadBgPhotoMutation, useUploadProfilePhotoMutation } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
 import { UserProfileDataDisplay } from '../../../interface/user';
@@ -8,6 +8,9 @@ export default function SettingsProfileDetails() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refetchUserInfo } = useGetUserQuery();
     const [updateUsernameAndName] = useUpdateUsernameAndNameMutation();
+    const [uploadProfilePhoto, { isLoading: updateProfilePhotoLoading }] = useUploadProfilePhotoMutation();
+    const [uploadBgPhoto, { isLoading: updateBgPhotoLoading }] = useUploadBgPhotoMutation();
+
     const [userProfileDetails, setUserProfileDetails] = useState<UserProfileDataDisplay>({
         username: '',
         firstName: '',
@@ -97,23 +100,23 @@ export default function SettingsProfileDetails() {
     };
 
     const handleSave = async (type: 'profile' | 'background') => {
-        // try {
-        //     if (type === 'profile' && profileFile) {
-        //         const response = await uploadProfilePhoto({image: profilePreviewUrl}).unwrap();
-        //         console.log("Upload profile photo success:", response);
-        //         refetchUserInfo();
-        //         setIsUpdatingProfile(false);
-        //         console.log("Profile picture updated successfully");
-        //     } else if (type === 'background' && backgroundFile) {
-        //         const response = await uploadBgPhoto({image: backgroundPreviewUrl}).unwrap();
-        //         console.log("Upload background photo success:", response);
-        //         refetchUserInfo();
-        //         setIsUpdatingBackground(false);
-        //         console.log("Background picture updated successfully");
-        //     }
-        // } catch (error) {
-        //     console.error("Error updating image:", error);
-        // }
+        try {
+            if (type === 'profile' && profileFile) {
+                const response = await uploadProfilePhoto({image: profilePreviewUrl}).unwrap();
+                console.log("Upload profile photo success:", response);
+                refetchUserInfo();
+                setIsUpdatingProfile(false);
+                console.log("Profile picture updated successfully");
+            } else if (type === 'background' && backgroundFile) {
+                const response = await uploadBgPhoto({image: backgroundPreviewUrl}).unwrap();
+                console.log("Upload background photo success:", response);
+                refetchUserInfo();
+                setIsUpdatingBackground(false);
+                console.log("Background picture updated successfully");
+            }
+        } catch (error) {
+            console.error("Error updating image:", error);
+        }
     };
 
     const handleSaveUsernameAndName = async () => {
@@ -132,6 +135,11 @@ export default function SettingsProfileDetails() {
         }
     }
 
+    const revertToOriginalDetails = () => {
+        if (originalUserDetails) {
+            setUserProfileDetails(originalUserDetails);
+        }
+    };
 
         
     return (
@@ -276,15 +284,20 @@ export default function SettingsProfileDetails() {
                     </div>
                 </div>
 
-                <div className='w-full flex justify-center'>
+                <div className='w-full flex space-x-4'>
                     <button 
-                        // onClick={handleSaveDetails}
-                        // disabled={isSaveDisabled}
-                        // className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
-                        className='w-full p-1.5 bg-gray-200 font-semibold hover:bg-gray-300'
                         onClick={handleSaveUsernameAndName}
+                        disabled={isSaveDisabled}
+                        className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
                     >
-                        Save
+                        Save Changes
+                    </button>
+                    <button 
+                        onClick={revertToOriginalDetails}
+                        disabled={isSaveDisabled}
+                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
+                    >
+                        Revert to Original
                     </button>
                 </div>
 

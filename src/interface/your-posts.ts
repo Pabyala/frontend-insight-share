@@ -125,7 +125,19 @@ export interface TypeReactions {
     heart?: UserReact[];
 }
 
+export interface UserReact {
+    avatarUrl: string;
+    coverPhotoUrl?: string;
+    firstName: string;
+    lastName: string;
+    reactionType: string;
+    username: string;
+    _id: string;
+}
+
 export interface AllUserReactions {
     message: string;
     reactions: TypeReactions;
+    reactionType: string;
+
 }

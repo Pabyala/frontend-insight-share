@@ -37,6 +37,10 @@ export default function ReactCommentShare({ post }: PropsPost) {
         setShowUserReaction(true)
     }
 
+    const handleCloseModal = () => {
+        setShowUserReaction(false);
+    };
+
     return (
         <>
             <div className='flex'>
@@ -67,6 +71,7 @@ export default function ReactCommentShare({ post }: PropsPost) {
             {showUserReaction && (
                 <UserWhoReactToPost
                     postId={post._id}
+                    onClose={handleCloseModal} 
                 />
             )}
         </>
