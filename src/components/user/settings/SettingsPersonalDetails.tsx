@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { FeArrowRight, MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons'
+import { DropdownIcon, FeArrowRight, MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill, UpdownIcon } from '../../others/CustomIcons'
 import { v4 as uuidv4 } from 'uuid';
 import CustomDatePicker from '../../others/CustomDatePicker';
 import { useGetUserQuery, useUpdateUserPersonalDetailsSettingsMutation } from '../../../features/users/usersApiSlice';
 import { UserDetails } from '../../../interface/user';
+import { BiSolidDownArrow } from "react-icons/bi";
+import { BiSolidUpArrow } from "react-icons/bi";
+import { dropdownValues, dropdownValuesStatus } from '../../../data/dropdown-values';
 
 interface SocialLink {
     urlId: string;
@@ -36,6 +39,8 @@ export default function SettingsPersonalDetails() {
     const [isUpdateLink, setIsUpdateLink]  = useState<boolean>(false)
     const [originalUserDetails, setOriginalUserDetails] = useState<UserDetails | null>(null);
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+    const [isActiveGender, setIsActiveGender] = useState<boolean>(false)
+    const [isActiveStatus, setIsActiveStatus] = useState<boolean>(false)
     
     // setting initial user details and user socials once userInfo is loaded
     useEffect(() => {
@@ -155,6 +160,27 @@ export default function SettingsPersonalDetails() {
         }
     };
 
+    const handleShowDropdownSelection = (type: string) => {
+        if(type === 'gender') {
+            setIsActiveGender(!isActiveGender)
+            setIsActiveStatus(false)
+        } else if(type === 'status') {
+            setIsActiveStatus(!isActiveStatus)
+            setIsActiveGender(false)
+        } else {
+            setIsActiveStatus(false)
+            setIsActiveGender(false)
+        }
+    }
+
+    const handleSelect = (value: string) => {
+        setUserDetailsInfo((prev) => ({
+            ...prev,
+            gender: value,
+        }));
+        setIsActiveGender(false);
+    };
+
     return (
         <div className='bg-white rounded lg:p-2'>
             <p className='p-2 text-sm font-semibold lg:text-base'>Personal Details</p>
@@ -266,16 +292,29 @@ export default function SettingsPersonalDetails() {
 
                     <div  className='w-full'>
                         <p className='text-sm font-medium mb-1'>Gender</p>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                type="text"
-                                value={userDetailsInfo.gender} 
-                                onChange={(e) => setUserDetailsInfo(prev => (
-                                    { ...prev, gender: e.target.value }
-                                ))}
-                                placeholder='Enter gender'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                            />
+                        <div className='flex flex-col space-y-1 relative'>
+                            <div 
+                                className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                onClick={() => handleShowDropdownSelection("gender")}
+                            >
+                                    <span>{userDetailsInfo.gender || 'Select Gender'}</span>
+                                    <span className='flex items-center justify-center'>
+                                        {isActiveGender ?  <BiSolidDownArrow /> : <BiSolidUpArrow />}
+                                    </span>
+                            </div>
+                            {isActiveGender && (
+                                <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
+                                    {dropdownValues.map((value, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => handleSelect(value)}
+                                            className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
+                                        >
+                                            {value}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -288,27 +327,48 @@ export default function SettingsPersonalDetails() {
                             <input 
                                 type="number"
                                 value={userDetailsInfo.phoneNumber} 
-                                onChange={(e) => setUserDetailsInfo(prev => (
-                                    { ...prev, phoneNumber: e.target.value }
-                                ))}
+                                onChange={(e) => { if(e.target.value.length <= 11) {
+                                    setUserDetailsInfo((prev) => ({
+                                        ...prev, 
+                                        phoneNumber: e.target.value
+                                    }))
+                                }}}
                                 placeholder='Enter phone number'
                                 className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                style={{
+                                    appearance: 'none',
+                                    MozAppearance: 'textfield',
+                                    WebkitAppearance: 'none',
+                                }}
                             />
                         </div>
                     </div>
 
                     <div  className='w-full'>
                         <p className='text-sm font-medium mb-1'>Status</p>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                type="text"
-                                value={userDetailsInfo.status} 
-                                onChange={(e) => setUserDetailsInfo(prev => (
-                                    { ...prev, status: e.target.value } 
-                                ))}
-                                placeholder='Enter status'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                            />
+                        <div className='flex flex-col space-y-1 relative'>
+                            <div 
+                                className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                onClick={() => handleShowDropdownSelection("status")}
+                            >
+                                    <span>{userDetailsInfo.status || 'Select Status'}</span>
+                                    <span className='flex items-center justify-center'>
+                                        {isActiveStatus ?  <BiSolidDownArrow /> : <BiSolidUpArrow />}
+                                    </span>
+                            </div>
+                            {isActiveStatus && (
+                                <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
+                                    {dropdownValuesStatus.map((value, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => handleSelect(value)}
+                                            className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
+                                        >
+                                            {value}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

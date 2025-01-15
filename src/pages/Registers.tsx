@@ -118,7 +118,12 @@ export default function Register() {
 
             <div className="">
               <p className="text-sm mb-0.5">Set your date of birth:</p>
-              <CustomDatePicker onChange={handleDateChange} />
+              <input 
+                  className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                  type="date" 
+                  placeholder='Date'
+                  value={formData.dateOfBirth}
+              />
             </div>
 
             <div className="">

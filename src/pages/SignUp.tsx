@@ -116,7 +116,12 @@ export default function SignUp() {
                             {/* Bday */}
                             <div className="">
                                 <p className="text-sm mb-0.5">Set your date of birth:</p>
-                                <CustomDatePicker onChange={handleDateChange} />
+                                <input 
+                                    className='text-sm w-full p-1.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none'
+                                    type="date" 
+                                    placeholder='Date'
+                                    value={formData.dateOfBirth}
+                                />
                             </div>
                             {/* Gender */}
                             <div className="">
