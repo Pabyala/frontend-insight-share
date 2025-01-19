@@ -16,7 +16,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
 
     const { data: post, error: errorPost, isLoading: isLoadingPost } = useGetPostByIdQuery(selectedPostId!, {
         skip: !selectedPostId, // skip the query if postId is falsy (undefined/null).
-    });
+    }); 
     console.log("SELECTED POST ID: ", selectedPostId)
     console.log("SELECTED POST: ", post)
 

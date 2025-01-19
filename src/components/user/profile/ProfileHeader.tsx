@@ -78,7 +78,9 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
 
                         </p>
                         {/* <p className='text-sm text-gray-600 lg:text-base'>{followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'}</p> */}
-                        <ProfileListOfFollowers/>
+                        <ProfileListOfFollowers
+                            currentUserId={currentUserId}
+                        />
                     </div>
                 </div>
 

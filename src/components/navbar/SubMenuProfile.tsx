@@ -6,8 +6,14 @@ import { logOut, selectCurrentToken } from '../../features/auth/authSlice'
 // import { useGetUserDataQuery } from '../../features/auth/authApiSlice'
 import { useGetUserQuery } from '../../features/users/usersApiSlice'
 import { useLogoutUserMutation } from '../../features/auth/authApiSlice'
+import { useState } from 'react'
+import BirthdayListModal from '../rightbar/BirthdayListModal'
 
-export default function SubmenuProfile() {
+interface SubmenuProfileProps {
+    setShowBdayListModal: (value: boolean) => void;
+}
+
+export default function SubmenuProfile({setShowBdayListModal}: SubmenuProfileProps) {
 
     const navigate = useNavigate()
     const token = useSelector(selectCurrentToken)
@@ -16,6 +22,9 @@ export default function SubmenuProfile() {
     const userId = userInfo?._id
 
     const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
+    // const [showBdayListModal, setShowBdayListModal] = useState<boolean>(false);
+    const [isShowBdayListModal, setIsShowBdayListModal] = useState<boolean>(true);
+
 
     const handleLogout = async () => {
         if (!token) {
@@ -34,25 +43,36 @@ export default function SubmenuProfile() {
 
     // const notificationCount = userInfo?.followers.length
 
+    const handleShowBdayModal = () => {
+        // setShowBdayListModal(true)
+        // setIsShowBdayListModal(!isShowBdayListModal)
+        console.log("hello")
+        setShowBdayListModal(true)
+    }
+    // console.log(showBdayListModal)
+    // console.log(isShowBdayListModal)
+
     return (
+        <>
         <div className="absolute top-full right-[0px] mt-[11px] w-[392px] bg-white rounded-md shadow-lg py-2">
             <div className='block px-4 py-2 text-gray-800 hover:bg-gray-100'>
-                <div className="flex">
-                    <Avatar
-                        sx={{ width: 32, height: 32 }}
-                        alt="Remy Sharp"
-                        src={userInfo?.avatarUrl}
-                    />
-                    <div className='flex flex-col ml-2.5'>
-                        {/* <span className='text-sm font-semibold'>Eleomar F. Fajutnao</span> */}
-                        <p className="text-sm font-semibold">
-                            <span>{userInfo?.firstName} </span>
-                            {/* <span>{userInfo?.middleName} </span>   */}
-                            <span>{userInfo?.lastName}</span>
-                        </p>
-                        <span className='text-sm'>{userInfo?.username}</span>
+                <Link to={`/profile/id/${userId}`}>
+                    <div className="flex items-center">
+                        <Avatar
+                            sx={{ width: 32, height: 32 }}
+                            alt="Remy Sharp"
+                            src={userInfo?.avatarUrl}
+                        />
+                        <div className='flex flex-col ml-2.5'>
+                            <p className="text-sm font-semibold">
+                                <span>{userInfo?.firstName} </span>
+                                <span>{userInfo?.middleName} </span> 
+                                <span>{userInfo?.lastName}</span>
+                            </p>
+                            <span className='text-sm'>{`@${userInfo?.username}`}</span>
+                        </div>
                     </div>
-                </div>
+                </Link>
             </div>
             <div className="block px-4">
                 <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
@@ -67,61 +87,56 @@ export default function SubmenuProfile() {
                 </div>
             </Link>
 
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
-                <div className='flex items-center space-x-2'>
-                    <div>
-                        <MingcuteUserFollow2Fill className='text-2xl' />
-                    </div>
-                    <span>
-                        Following {userInfo?.following && userInfo.following.length !== 0 
-                            ? userInfo.following.length 
-                            : ''
-                        }
-                    </span>
-
-                </div>
-            </a>
-
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <Link to="/followers" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <FluentPersonArrowBack24Filled className='text-2xl' />
                     </div>
                     <span>
-                        Followers {userInfo?.followers && userInfo.followers.length !== 0 
-                            ? userInfo.followers.length 
-                            : ''
-                        }
+                        Followers
                     </span>
                 </div>
-            </a>
+            </Link>
 
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <Link to="/following" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+                <div className='flex items-center space-x-2'>
+                    <div>
+                        <MingcuteUserFollow2Fill className='text-2xl' />
+                    </div>
+                    <span>
+                        Following
+                    </span>
+
+                </div>
+            </Link>
+
+            <Link to="/my-post" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <IconoirPostSolid className='text-2xl' />
                     </div>
                     <span>Post</span>
                 </div>
-            </a>
+            </Link>
 
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
-                <div className='flex items-center space-x-2'>
+            <div className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+                <div onClick={handleShowBdayModal} className='flex items-center space-x-2'>
                     <div>
                         <MdiGift className='text-2xl' />
                     </div>
                     <span>Today's birthday</span>
                 </div>
-            </a>
+            </div>
 
-            <a href="/" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
+            <Link to="/settings" className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
                         <AntDesignSettingFilled className='text-2xl' />
                     </div>
                     <span>Settings</span>
                 </div>
-            </a>
+            </Link>
+
             <div className="block px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-100 lg:text-sm" >
                 <div className='flex items-center space-x-2'>
                     <div>
@@ -130,6 +145,10 @@ export default function SubmenuProfile() {
                     <span onClick={handleLogout}>Logout</span>
                 </div>
             </div>
+
+            
         </div>
+        
+        </>
     )
 }
