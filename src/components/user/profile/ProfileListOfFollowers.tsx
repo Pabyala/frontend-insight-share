@@ -1,6 +1,7 @@
 import React from 'react'
 import { followerRequest } from '../../../data/dummy-data'
 import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import DefaultImg from '../../../asset/DefaultImg.jpg';
 
 interface ProfileListOfFollowersProps {
     currentUserId: string | undefined;
@@ -11,15 +12,15 @@ export default function ProfileListOfFollowers({ currentUserId }: ProfileListOfF
     const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery(currentUserId)
     
     if (isLoadingGetFollowers) {
-        return <p>Loading followers...</p>;
+        return <p className='text-sm'>Loading followers...</p>;
     }
 
     if (errorGetFollowers) {
-        return <p>Error loading followers.</p>;
+        return <p className='text-sm'>Error loading followers.</p>;
     }
 
     if (getFollowers?.totalFollowers === 0) {
-        return <p>No followers.</p>
+        return <p className='text-sm'>No followers</p>
     }
 
     const displayedFollowers = getFollowers?.allFollowers.slice(0, 9);
@@ -41,7 +42,7 @@ export default function ProfileListOfFollowers({ currentUserId }: ProfileListOfF
                         <div className='relative inline-flex cursor-pointer'>
                             <div className="cursor-pointer" >
                                 <img
-                                    src={fol.avatarUrl}
+                                    src={fol.avatarUrl || DefaultImg}
                                     alt={fol.username}
                                     className="relative inline-block h-[33px] w-[33px] !rounded-full object-cover object-center"
                                 />

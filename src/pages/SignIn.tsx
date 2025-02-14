@@ -9,7 +9,7 @@ import usePersist from '../hooks/usePersist';
 export default function SignIn() {
 
     const navigate = useNavigate()
-    const [username, setUsername] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [disableBtn, setDisableBtn] = useState<boolean>(true);
@@ -23,13 +23,13 @@ export default function SignIn() {
     const from = location.state?.from?.pathname || '/'; 
     const handleSubmit = async () => {
 
-        if(username === '' || password === '') return alert('username and password required')
-
+        if(email === '' || password === '') return alert('Email and password required')
+        console.log("User data: ", `${email} and ${password}`)
         try {
-            const userData = await login({username, password}).unwrap()
+            const userData = await login({email, password}).unwrap()
             console.log("userData", userData)
             dispatch(setCredentials({ 
-                username: userData.username, 
+                email: userData.email, 
                 accessToken: userData.accessToken,
                 id: userData._id
             }));
@@ -40,7 +40,7 @@ export default function SignIn() {
                 dispatch(setUserDetails(userData));
             }
 
-            setUsername('');
+            setEmail('');
             setPassword('')
             navigate(from, { replace: true });
         } catch (error) {
@@ -50,12 +50,12 @@ export default function SignIn() {
     }
 
     useEffect(() => {
-        if(username.length === 0 || password.length === 0) {
+        if(email.length === 0 || password.length === 0) {
             setDisableBtn(true)
         } else {
             setDisableBtn(false)
         }
-    }, [username, password])
+    }, [email, password])
 
     return (
         <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-5">
@@ -70,9 +70,9 @@ export default function SignIn() {
 
             <div className="bg-white mx-auto p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
                 <input
-                    value={username}
+                    value={email}
                     type="text"
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email or Phone Number"
                     className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
                 />

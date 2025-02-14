@@ -70,8 +70,6 @@ export default function ModalPost({ onClose, selectedPost, userId, isSavedPost }
             style={{
                 marginTop: '0px'
             }}
-            // onClick={handleOverlayClick}
-            // onClick={onClose}
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">

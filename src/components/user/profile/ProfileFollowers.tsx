@@ -16,15 +16,15 @@ export default function ProfileFollowers({ currentUserId }: ProfileFollowersProp
     const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery(currentUserId)
     
     if (isLoadingGetFollowers) {
-        return <p>Loading followers...</p>;
+        return <p className='text-sm'>Loading followers...</p>;
     }
 
     if (errorGetFollowers) {
-        return <p>Error loading followers.</p>;
+        return <p className='text-sm'>Error loading followers.</p>;
     }
 
     if (getFollowers?.totalFollowers === 0) {
-        return <p>No followers.</p>
+        return <p className='text-sm bg-white p-3'>No followers</p>
     }
 
     const displayedFollowers = getFollowers?.allFollowers.slice(0, 9);

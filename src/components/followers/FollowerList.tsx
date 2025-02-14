@@ -44,9 +44,9 @@ export default function FollowerList() {
         }
     }
 
-    if (isLoadingGetFollowers) return <p>Loading followers...</p>;
-    if (errorGetFollowers) return <p>Failed to load followers.</p>;
-    // if (totalFollowers === 0 || totalFollowersYouDontFollowingBack === 0) return <p>No following.</p>;
+    if (isLoadingGetFollowers) return <p className='text-sm'>Loading followers...</p>;
+    if (errorGetFollowers) return <p className='text-sm'>Failed to load followers.</p>;
+    if (totalFollowers === 0 || totalFollowersYouDontFollowingBack === 0) return <p className='text-sm bg-white p-3'>No followers</p>;
 
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3 w-full'>

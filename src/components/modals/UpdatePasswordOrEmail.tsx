@@ -48,9 +48,9 @@ export default function UpdatePasswordOrEmail({ onClose }: PropsUpdatePasswordOr
                         </div>
                     </div>
                     <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
-                    <div className="w-full flex space-x-4 justify-center">
-                        <button className='p-2 bg-slate-200 w-[40%] text-sm font-medium  hover:bg-slate-300'>Email</button>
-                        <button className='p-2 bg-slate-200 w-[40%] text-sm font-medium  hover:bg-slate-300'>Password</button>
+                    <div className="flex w-full space-x-3">
+                        <button className='rounded-base p-2 bg-slate-200 w-1/2 text-sm font-medium  hover:bg-slate-300'>Email</button>
+                        <button className='rounded-base p-2 bg-slate-200 w-1/2 text-sm font-medium  hover:bg-slate-300'>Password</button>
                     </div>
                 </div>
             </div>

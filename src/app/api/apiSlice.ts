@@ -6,7 +6,7 @@ import type { RootState } from '../store';
 interface RefreshResponse {
     accessToken: string;
     id: string;
-    username: string;
+    email: string;
 }
 
 const baseQuery = fetchBaseQuery({
@@ -32,9 +32,9 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
         const refreshResult = await baseQuery('/refresh', api, extraOptions);
 
         if (refreshResult?.data) {
-            const { accessToken, id, username } = refreshResult.data as RefreshResponse;
+            const { accessToken, id, email } = refreshResult.data as RefreshResponse;
             // Update credentials in the store
-            api.dispatch(setCredentials({ username, accessToken, id }));
+            api.dispatch(setCredentials({ email, accessToken, id }));
 
             // Retry the original query with the new access token
             result = await baseQuery(args, api, extraOptions);

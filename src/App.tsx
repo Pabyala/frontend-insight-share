@@ -17,6 +17,7 @@ import SavedPost from "./pages/SavedPost";
 import MyPosts from "./pages/MyPosts";
 import PersistLogin from "./components/PersistLogin";
 import ViewUserProfile from "./pages/ViewUserProfile";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             {/* Public routes */}
             <Route path="/login" element={<SignIn />} />
             <Route path="/register" element={<SignUp />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
             
             {/* Protected routes */}
             <Route element={<PersistLogin/>}>

@@ -7,6 +7,7 @@ import { UserDetails } from '../../../interface/user';
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 import { dropdownValues, dropdownValuesStatus } from '../../../data/dropdown-values';
+import ConfirmAlert from '../../alert/ConfirmAlert';
 
 interface SocialLink {
     urlId: string;
@@ -41,6 +42,7 @@ export default function SettingsPersonalDetails() {
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const [isActiveGender, setIsActiveGender] = useState<boolean>(false)
     const [isActiveStatus, setIsActiveStatus] = useState<boolean>(false)
+    const [showConfirmAlert, setShowConfirmAlert] = useState<boolean>(false);
     
     // setting initial user details and user socials once userInfo is loaded
     useEffect(() => {
@@ -152,7 +154,12 @@ export default function SettingsPersonalDetails() {
         } catch (error) {
             console.log(error)
         }
+        setShowConfirmAlert(false);
     }
+
+    const handleCancelSave = () => {
+        setShowConfirmAlert(false);
+    };
 
     const revertToOriginalDetails = () => {
         if (originalUserDetails) {
@@ -182,291 +189,300 @@ export default function SettingsPersonalDetails() {
     };
 
     return (
-        <div className='bg-white rounded lg:p-2'>
-            <p className='p-2 text-sm font-semibold lg:text-base'>Personal Details</p>
-            <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div className='space-y-1 p-2 lg:space-y-2'>
-                
-                <div className='w-full'>
-                    <p className='text-sm font-medium mb-1'>Set your bio</p>
-                    <textarea 
-                        value={userDetailsInfo.bio}
-                        onChange={(e) => { if(e.target.value.length <= 200) {
-                            setUserDetailsInfo((prev) => ({
-                                ...prev, 
-                                bio: e.target.value
-                            }))
-                        }}}
-                        placeholder="Describe who you are"
-                        className="w-full p-2 border border-gray-300 focus:border-black focus:outline-none rounded text-sm text-center h-[45px] md:h-[50px] resize-none"
-                    />
-                </div>
-
-                <div className='w-full'>
-                    <p className='text-sm font-medium mb-1'>Current City</p>
+        <>
+            <div className='bg-white rounded lg:p-2'>
+                <p className='p-2 text-sm font-semibold lg:text-base'>Personal Details</p>
+                <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                <div className='space-y-1 p-2 lg:space-y-2'>
+                    
                     <div className='w-full'>
-                        <input 
-                            type="text"
-                            value={userDetailsInfo.livesIn} 
-                            onChange={(e) => setUserDetailsInfo(prev => (
-                                { ...prev, livesIn: e.target.value }
-                            ))}
-                            placeholder='Enter your city'
-                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                        <p className='text-sm font-medium mb-1'>Set your bio</p>
+                        <textarea 
+                            value={userDetailsInfo.bio}
+                            onChange={(e) => { if(e.target.value.length <= 200) {
+                                setUserDetailsInfo((prev) => ({
+                                    ...prev, 
+                                    bio: e.target.value
+                                }))
+                            }}}
+                            placeholder="Describe who you are"
+                            className="w-full p-2 border border-gray-300 focus:border-black focus:outline-none rounded text-sm text-center h-[45px] md:h-[50px] resize-none"
                         />
                     </div>
-                </div>
 
-                <div className='w-full'>
-                    <p className='text-sm font-medium mb-1'>Home town</p>
                     <div className='w-full'>
-                        <input 
-                            type="text" 
-                            value={userDetailsInfo.locFrom} 
-                            onChange={(e) => setUserDetailsInfo(prev => (
-                                { ...prev, locFrom: e.target.value }
-                            ))}
-                            placeholder='Enter your home town'
-                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                        />
+                        <p className='text-sm font-medium mb-1'>Current City</p>
+                        <div className='w-full'>
+                            <input 
+                                type="text"
+                                value={userDetailsInfo.livesIn} 
+                                onChange={(e) => setUserDetailsInfo(prev => (
+                                    { ...prev, livesIn: e.target.value }
+                                ))}
+                                placeholder='Enter your city'
+                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className='w-full'>
-                    <p className='text-sm font-medium mb-1'>Study at</p>
                     <div className='w-full'>
-                        <input 
-                            type="text" 
-                            value={userDetailsInfo.studyAt} 
-                            onChange={(e) => setUserDetailsInfo(prev => (
-                                { ...prev, studyAt: e.target.value }
-                            ))}
-                            placeholder='Enter your school'
-                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                        />
-                    </div>
-                </div>
-
-                <div className='w-full'>
-                    <p className='text-sm font-medium mb-1'>Work at </p>
-                    <div className='w-full flex justify-between space-x-4   '>
+                        <p className='text-sm font-medium mb-1'>Home town</p>
                         <div className='w-full'>
                             <input 
                                 type="text" 
-                                value={userDetailsInfo.companyName}
+                                value={userDetailsInfo.locFrom} 
                                 onChange={(e) => setUserDetailsInfo(prev => (
-                                    { ...prev, companyName: e.target.value }
+                                    { ...prev, locFrom: e.target.value }
                                 ))}
-                                placeholder='Enter company'
+                                placeholder='Enter your home town'
                                 className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
                             />
                         </div>
+                    </div>
+
+                    <div className='w-full'>
+                        <p className='text-sm font-medium mb-1'>Study at</p>
                         <div className='w-full'>
                             <input 
                                 type="text" 
-                                value={userDetailsInfo.position}
+                                value={userDetailsInfo.studyAt} 
                                 onChange={(e) => setUserDetailsInfo(prev => (
-                                    { ...prev, position: e.target.value }
+                                    { ...prev, studyAt: e.target.value }
                                 ))}
-                                placeholder='Enter position'
+                                placeholder='Enter your school'
                                 className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
                             />
                         </div>
                     </div>
-                </div>
 
-                <div className='flex space-x-4'>
-                    <div  className='w-full'>
-                        <p className='text-sm font-medium mb-1'>Birthday</p>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                                type="date" 
-                                placeholder='Date'
-                                value={userInfo?.dateOfBirth || ''}
-                                name="" 
-                                id=""
-                            />
-                        </div>
-                    </div>
-
-                    <div  className='w-full'>
-                        <p className='text-sm font-medium mb-1'>Gender</p>
-                        <div className='flex flex-col space-y-1 relative'>
-                            <div 
-                                className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                                onClick={() => handleShowDropdownSelection("gender")}
-                            >
-                                    <span>{userDetailsInfo.gender || 'Select Gender'}</span>
-                                    <span className='flex items-center justify-center'>
-                                        {isActiveGender ?  <BiSolidDownArrow /> : <BiSolidUpArrow />}
-                                    </span>
-                            </div>
-                            {isActiveGender && (
-                                <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
-                                    {dropdownValues.map((value, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => handleSelect(value)}
-                                            className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
-                                        >
-                                            {value}
-                                        </div>
+                    <div className='w-full'>
+                        <p className='text-sm font-medium mb-1'>Work at </p>
+                        <div className='w-full flex justify-between space-x-4   '>
+                            <div className='w-full'>
+                                <input 
+                                    type="text" 
+                                    value={userDetailsInfo.companyName}
+                                    onChange={(e) => setUserDetailsInfo(prev => (
+                                        { ...prev, companyName: e.target.value }
                                     ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-                
-
-                <div className='flex space-x-4'>
-                    <div  className='w-full'>
-                        <p className='text-sm font-medium mb-1'>Phone Number</p>
-                        <div className='flex flex-col space-y-1'>
-                            <input 
-                                type="number"
-                                value={userDetailsInfo.phoneNumber} 
-                                onChange={(e) => { if(e.target.value.length <= 11) {
-                                    setUserDetailsInfo((prev) => ({
-                                        ...prev, 
-                                        phoneNumber: e.target.value
-                                    }))
-                                }}}
-                                placeholder='Enter phone number'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                                style={{
-                                    appearance: 'none',
-                                    MozAppearance: 'textfield',
-                                    WebkitAppearance: 'none',
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div  className='w-full'>
-                        <p className='text-sm font-medium mb-1'>Status</p>
-                        <div className='flex flex-col space-y-1 relative'>
-                            <div 
-                                className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
-                                onClick={() => handleShowDropdownSelection("status")}
-                            >
-                                    <span>{userDetailsInfo.status || 'Select Status'}</span>
-                                    <span className='flex items-center justify-center'>
-                                        {isActiveStatus ?  <BiSolidDownArrow /> : <BiSolidUpArrow />}
-                                    </span>
+                                    placeholder='Enter company'
+                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                />
                             </div>
-                            {isActiveStatus && (
-                                <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
-                                    {dropdownValuesStatus.map((value, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => handleSelect(value)}
-                                            className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
-                                        >
-                                            {value}
-                                        </div>
+                            <div className='w-full'>
+                                <input 
+                                    type="text" 
+                                    value={userDetailsInfo.position}
+                                    onChange={(e) => setUserDetailsInfo(prev => (
+                                        { ...prev, position: e.target.value }
                                     ))}
-                                </div>
-                            )}
+                                    placeholder='Enter position'
+                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className='w-full space-y-1'>
-                    <p className='text-sm font-medium'>Your socials </p>
-                    <div className='flex flex-col space-y-1'>
-                        {mySocials.map((social, index) => (
-                            <div key={index} className='flex justify-between items-center'>
-                                <div className='w-[75%]'>
-                                    <a 
-                                    href={social.url}
-                                    className='w-full text-sm text-[#0866FF] '
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    >{social.url}</a>
+                    <div className='flex space-x-4'>
+                        <div  className='w-full'>
+                            <p className='text-sm font-medium mb-1'>Birthday</p>
+                            <div className='flex flex-col space-y-1'>
+                                <input 
+                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    type="date" 
+                                    placeholder='Date'
+                                    value={userInfo?.dateOfBirth || ''}
+                                    name="" 
+                                    id=""
+                                />
+                            </div>
+                        </div>
+
+                        <div  className='w-full'>
+                            <p className='text-sm font-medium mb-1'>Gender</p>
+                            <div className='flex flex-col space-y-1 relative'>
+                                <div 
+                                    className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    onClick={() => handleShowDropdownSelection("gender")}
+                                >
+                                        <span>{userDetailsInfo.gender || 'Select Gender'}</span>
+                                        <span className='flex items-center justify-center'>
+                                            {isActiveGender ?  <BiSolidDownArrow /> : <BiSolidUpArrow />}
+                                        </span>
                                 </div>
+                                {isActiveGender && (
+                                    <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
+                                        {dropdownValues.map((value, index) => (
+                                            <div
+                                                key={index}
+                                                onClick={() => handleSelect(value)}
+                                                className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
+                                            >
+                                                {value}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div className='flex space-x-4'>
+                        <div  className='w-full'>
+                            <p className='text-sm font-medium mb-1'>Phone Number</p>
+                            <div className='flex flex-col space-y-1'>
+                                <input 
+                                    type="number"
+                                    value={userDetailsInfo.phoneNumber} 
+                                    onChange={(e) => { if(e.target.value.length <= 11) {
+                                        setUserDetailsInfo((prev) => ({
+                                            ...prev, 
+                                            phoneNumber: e.target.value
+                                        }))
+                                    }}}
+                                    placeholder='Enter phone number'
+                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    style={{
+                                        appearance: 'none',
+                                        MozAppearance: 'textfield',
+                                        WebkitAppearance: 'none',
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <div  className='w-full'>
+                            <p className='text-sm font-medium mb-1'>Status</p>
+                            <div className='flex flex-col space-y-1 relative'>
+                                <div 
+                                    className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    onClick={() => handleShowDropdownSelection("status")}
+                                >
+                                        <span>{userDetailsInfo.status || 'Select Status'}</span>
+                                        <span className='flex items-center justify-center'>
+                                            {isActiveStatus ?  <BiSolidDownArrow /> : <BiSolidUpArrow />}
+                                        </span>
+                                </div>
+                                {isActiveStatus && (
+                                    <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
+                                        {dropdownValuesStatus.map((value, index) => (
+                                            <div
+                                                key={index}
+                                                onClick={() => handleSelect(value)}
+                                                className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
+                                            >
+                                                {value}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='w-full space-y-1'>
+                        <p className='text-sm font-medium'>Your socials </p>
+                        <div className='flex flex-col space-y-1'>
+                            {mySocials.map((social, index) => (
+                                <div key={index} className='flex justify-between items-center'>
+                                    <div className='w-[75%]'>
+                                        <a 
+                                        href={social.url}
+                                        className='w-full text-sm text-[#0866FF] '
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        >{social.url}</a>
+                                    </div>
+                                    <div className='w-[20%] flex justify-between'>
+                                        <button 
+                                            onClick={() => handleUpdate(social.urlId)}
+                                            className='w-[47%] flex justify-center p-1.5 text-white font-medium text-sm rounded bg-gray-200 hover:bg-gray-300'
+                                        >
+                                            <span className='text-[18px]'>
+                                                <MdiPen/>
+                                            </span>
+                                        </button>
+                                        <button 
+                                            onClick={() => removeSocial(social.urlId)}
+                                            className='w-[47%] flex justify-center p-1.5 text-white font-medium text-sm rounded bg-gray-200 hover:bg-gray-300'
+                                        >
+                                            <span className='text-[18px]'>
+                                                <MaterialSymbolsDelete/>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className='w-full flex justify-between'>
+                            <input 
+                                value={newSocialUrl}
+                                onChange={(event) => setNewSocialUrl(event.target.value)}
+                                type="text" 
+                                placeholder='Enter your social'
+                                className='p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm w-[77%]'
+                            />
+                            {isUpdateLink ? (
                                 <div className='w-[20%] flex justify-between'>
                                     <button 
-                                        onClick={() => handleUpdate(social.urlId)}
-                                        className='w-[47%] flex justify-center p-1.5 text-white font-medium text-sm rounded bg-gray-200 hover:bg-gray-300'
+                                        onClick={cancelUpdate}
+                                        className='w-[47%] flex justify-center p-1.5 text-black font-medium text-sm bg-gray-200 rounded  hover:bg-gray-300'
                                     >
                                         <span className='text-[18px]'>
-                                            <MdiPen/>
+                                            <MdiCloseThick/>
                                         </span>
                                     </button>
                                     <button 
-                                        onClick={() => removeSocial(social.urlId)}
-                                        className='w-[47%] flex justify-center p-1.5 text-white font-medium text-sm rounded bg-gray-200 hover:bg-gray-300'
+                                        onClick={addSocial}
+                                        className='w-[47%] p-1.5 flex justify-center items-center text-black font-medium text-sm bg-blue-600 rounded  hover:bg-blue-700'
                                     >
                                         <span className='text-[18px]'>
-                                            <MaterialSymbolsDelete/>
+                                            <MingcuteCheck2Fill/>
                                         </span>
                                     </button>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className='w-full flex justify-between'>
-                        <input 
-                            value={newSocialUrl}
-                            onChange={(event) => setNewSocialUrl(event.target.value)}
-                            type="text" 
-                            placeholder='Enter your social'
-                            className='p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm w-[77%]'
-                        />
-                        {isUpdateLink ? (
-                            <div className='w-[20%] flex justify-between'>
-                                <button 
-                                    onClick={cancelUpdate}
-                                    className='w-[47%] flex justify-center p-1.5 text-black font-medium text-sm bg-gray-200 rounded  hover:bg-gray-300'
-                                >
-                                    <span className='text-[18px]'>
-                                        <MdiCloseThick/>
-                                    </span>
-                                </button>
+                            ) : (
                                 <button 
                                     onClick={addSocial}
-                                    className='w-[47%] p-1.5 flex justify-center items-center text-black font-medium text-sm bg-blue-600 rounded  hover:bg-blue-700'
+                                    className='w-[20%] p-1.5 flex justify-center items-center text-center text-black font-medium text-sm bg-blue-600 rounded  hover:bg-blue-700'
                                 >
                                     <span className='text-[18px]'>
                                         <MingcuteCheck2Fill/>
                                     </span>
                                 </button>
-                            </div>
-                        ) : (
-                            <button 
-                                onClick={addSocial}
-                                className='w-[20%] p-1.5 flex justify-center items-center text-center text-black font-medium text-sm bg-blue-600 rounded  hover:bg-blue-700'
-                            >
-                                <span className='text-[18px]'>
-                                    <MingcuteCheck2Fill/>
-                                </span>
-                            </button>
-                        )}
-                        
+                            )}
+                            
+                        </div>
+                    </div>
+
+                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+
+                    <div className='w-full flex space-x-4'>
+                        <button 
+                            onClick={() => setShowConfirmAlert(true)}
+                            disabled={isSaveDisabled}
+                            className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
+                        >
+                            Save changes
+                        </button>
+                        <button 
+                            onClick={revertToOriginalDetails}
+                            disabled={isSaveDisabled}
+                            className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
+                        >
+                            Revert to Original
+                        </button>
                     </div>
                 </div>
-
-                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
-
-                <div className='w-full flex space-x-4'>
-                    <button 
-                        onClick={handleSaveDetails}
-                        disabled={isSaveDisabled}
-                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
-                    >
-                        Save changes
-                    </button>
-                    <button 
-                        onClick={revertToOriginalDetails}
-                        disabled={isSaveDisabled}
-                        className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
-                    >
-                        Revert to Original
-                    </button>
-                </div>
             </div>
-        </div>
+            {showConfirmAlert && (
+                <ConfirmAlert
+                    message='Are you sure you want to save the changes?'
+                    onConfirm={handleSaveDetails}
+                    onCancel={handleCancelSave}
+                />
+            )}
+        </>
     )
 }

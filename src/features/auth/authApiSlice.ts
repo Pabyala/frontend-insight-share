@@ -10,7 +10,7 @@ export interface GetUserPostsResponse {
 export interface RefreshResponse {
     accessToken: string;
     id: string;
-    username: string;
+    email: string;
 }
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -53,7 +53,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url: '/refresh',
                 method: 'GET',
             }),
-            transformResponse: (response: { accessToken: string; id: string; username: string }) => {
+            transformResponse: (response: { accessToken: string; id: string; email: string }) => {
                 console.log("Refresh token response: ", response)
                 store.dispatch(setCredentials(response));
                 return response; 

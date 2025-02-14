@@ -40,7 +40,7 @@ export default function SignUp() {
         if (isPasswordMatch(formData.password, confirmPassword)) {
             console.log("Password is match");
             console.log(formData);
-        navigate("/login");
+        navigate("/verify-email");
         } else {
             console.log("Password not match");
         }
@@ -231,6 +231,7 @@ export default function SignUp() {
                         </div>
                         <div className="w-full flex justify-center items-center">
                             <button
+                                onClick={handleSubmit}
                                 type="submit"
                                 className="w-full text-sm p-2 rounded font-semibold bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black  transition-colors"
                             >

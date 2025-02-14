@@ -85,9 +85,9 @@ export default function Posts({ posts, isLoading, error, userId, refetch }: Post
         };
     }, [selectedPostId]);
 
-    if (isLoading) return <div>Loading posts...</div>;
-    if (error) return <div>Error loading posts</div>;
-    if (!posts || posts.length === 0) return <div>No posts available</div>;
+    if (isLoading) return <div className='text-sm'>Loading posts...</div>;
+    if (error) return <div className='text-sm'>Error loading posts</div>;
+    if (!posts || posts.length === 0) return <div className='text-sm bg-white p-3'>No posts available</div>;
 
     // handle for modal of post
     const handlePostModal = (postId: string) => {

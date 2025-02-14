@@ -9,9 +9,9 @@ export default function FollowingList() {
     const myFollowing = getFollowing?.youFollowed
     const totalFollowing = getFollowing?.totalFollowing
 
-    if (isLoadingGtFollowing) return <p>Loading following...</p>;
-    if (errorGtFollowing) return <p>Failed to load following.</p>;
-    if (totalFollowing === 0) return <p>No following.</p>;
+    if (isLoadingGtFollowing) return <p className='text-sm'>Loading following...</p>;
+    if (errorGtFollowing) return <p className='text-sm'>Failed to load following.</p>;
+    if (totalFollowing === 0) return <p className='text-sm bg-white p-3'>No following</p>;
     
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
