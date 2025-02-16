@@ -5,10 +5,12 @@ import { useLoginMutation } from '../features/auth/authApiSlice';
 import { useDispatch } from 'react-redux';
 import { setCredentials, setUserDetails } from '../features/auth/authSlice';
 import usePersist from '../hooks/usePersist';
+import { useResendVerificationCodeMutation } from '../features/verify-email-reset-password/verify-email-reset-password';
 
 export default function SignIn() {
 
-    const navigate = useNavigate()
+    const [resendVerificationCode, { isLoading: isLoadingResendVerificationCode, isError: isErrorResendVerificationCode, error: errorResendVerificationCode }] = useResendVerificationCodeMutation();
+    const navigate = useNavigate();
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -42,6 +44,11 @@ export default function SignIn() {
 
             setEmail('');
             setPassword('')
+            if(!userData.isVerified) {
+                await resendVerificationCode({ email }).unwrap();
+                navigate('/verify-email', { state: { email: email, typeOfCode: 'verifyToLogin' } });
+                return
+            }
             navigate(from, { replace: true });
         } catch (error) {
             console.log(error)
@@ -67,11 +74,10 @@ export default function SignIn() {
                 </p>
             </div>
 
-
             <div className="bg-white mx-auto p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
                 <input
                     value={email}
-                    type="text"
+                    type="email"
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email or Phone Number"
                     className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
@@ -101,11 +107,11 @@ export default function SignIn() {
                     // className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
                     // Log In
                     className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn || isLoading ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
-                    {isLoading ? 'Logging in...' : 'Log In'}
+                    {isLoading || isLoadingResendVerificationCode ? 'Logging in...' : 'Log In'}
                 </button>
 
                 <div className="text-center mt-4">
-                    <a className="text-blue-600 cursor-pointer text-sm">Forgot Password?</a>
+                    <Link to='/reset-password-verify' className="text-blue-600 cursor-pointer text-sm">Forgot Password?</Link>
                     {/* <Link to='/'>Page</Link> */}
                 </div>
                 <label htmlFor="persist">

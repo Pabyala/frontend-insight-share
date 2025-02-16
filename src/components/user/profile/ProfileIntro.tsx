@@ -21,7 +21,6 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps) {
 
     const setFollowers = followerRequest.slice(0, 9);
     const [showInputDetails, setShowInputDetails] = useState<boolean>(false)
-    const [myBio, setMyBio] = useState<string>('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.')
 
     // const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();

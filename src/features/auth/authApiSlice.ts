@@ -23,6 +23,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['UserInfo', 'UserPosts', 'TimelinePosts', 'UserBday', 'SavedPost', 'Followers', 'Following'],
         }),
+        signUp: builder.mutation({
+            query: (formData) => ({
+                url: '/signup',
+                method: 'POST',
+                body: formData,
+            }),
+            invalidatesTags: ['UserInfo'],
+        }),
         logoutUser: builder.mutation<void, void>({
             query: () => ({
                 url: '/logout',
@@ -69,4 +77,5 @@ export const {
     useGetUserPostsQuery, 
     // useGetPostsQuery,
     useRefreshTokenQuery,
+    useSignUpMutation,
 } = authApiSlice; 

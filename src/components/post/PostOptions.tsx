@@ -3,6 +3,7 @@ import { Post } from '../../interface/your-posts';
 import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
 import { FlatColorIconsFolder, MdiPenColored, MingcuteDelete2Fill } from '../others/CustomIcons';
 import UpdatePostModal from './UpdatePostModal';
+import ConfirmAlert from '../alert/ConfirmAlert';
 
 interface PropsPostOptions {
     post: Post;
@@ -21,7 +22,10 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
     const [deletePost] = useDeletePostMutation();
     const [savedPost] = useSavedPostMutation();
     const [unsavedPost] = useUnsavedPostMutation();
+    const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
     const [openUpdatePostModal, setOpenUpdatePostModal] = useState<boolean>(false)
+    const [currentPostId, setCurrentPostId] = useState<string>('')
+    console.log("IS SHOW CONFIRMING MODAL: ", openDeleteModal)
 
      // handle to show the modal for update of post
     const handleShowModalUpdate = (postId: string) => {
@@ -29,16 +33,21 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         setSelectedPostId(postId)
     }
 
-    // handle to delete the post
-    const handleDeletePost = async (postId: string) => {
-        setSelectedPostId('')
-        if(!postId) return
+    const handleConfirmDeletePost = async () => {
         try {
-            await deletePost(postId).unwrap();
+            await deletePost(currentPostId).unwrap();
             setSelectedPostId('');
         } catch (error) {
-            console.log(error)
+            alert(error)
         }
+        setCurrentPostId('')
+    }
+
+    // handle to delete the post
+    const handleDeletePost = (postId: string) => {
+        if(!postId) return
+        setOpenDeleteModal(true)
+        setCurrentPostId(postId)
     }
 
     // handle to save the post
@@ -63,6 +72,12 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const handleCancel = () => {
+        setOpenDeleteModal(false)
+        setCurrentPostId('')
+        setSelectedPostId('')
     }
 
     return (
@@ -112,6 +127,13 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
                     // selectedPostData={selectedPostData}
                     selectedPostId={post._id}
                     setSelectedPostId={setSelectedPostId}
+                />
+            )}
+            {openDeleteModal && (
+                <ConfirmAlert
+                    message='Are you sure you want to delete this post?'
+                    onConfirm={handleConfirmDeletePost}
+                    onCancel={handleCancel}
                 />
             )}
         </>

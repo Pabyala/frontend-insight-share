@@ -3,8 +3,11 @@ import CustomDatePicker from "../components/others/CustomDatePicker";
 import { userGender } from "../data/app-data";
 import { Link, useNavigate } from "react-router-dom";
 import { MdiEye, MdiEyeOff } from "../components/others/CustomIcons";
+import { useSignUpMutation } from "../features/auth/authApiSlice";
 
 export default function SignUp() {
+
+    const [signUp, { isLoading: isLoadingSignUp, isError: isErrorSignUp, error: errorSignUp }] = useSignUpMutation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
@@ -35,14 +38,18 @@ export default function SignUp() {
         return password === confirmPassword;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (isPasswordMatch(formData.password, confirmPassword)) {
-            console.log("Password is match");
-            console.log(formData);
-        navigate("/verify-email");
-        } else {
-            console.log("Password not match");
+
+        if (!isPasswordMatch(formData.password, confirmPassword)) {
+            alert("Password does not match");
+        }
+
+        try {
+            await signUp(formData).unwrap();
+            navigate("/verify-email", { state: { email: formData.email, typeOfCode: 'verify'} });
+        } catch (error) {
+            console.error("Something went wrong. Please try again.", error);
         }
     };
 
@@ -121,6 +128,7 @@ export default function SignUp() {
                                     type="date" 
                                     placeholder='Date'
                                     value={formData.dateOfBirth}
+                                    onChange={(e) => handleDateChange(e.target.value)}
                                 />
                             </div>
                             {/* Gender */}
@@ -134,16 +142,14 @@ export default function SignUp() {
                                         <span className="text-sm">{selectGender}</span>
                                     </div>
                                     {isSelected && (
-                                        <div className="right-0 top-16 bg-gray-200 w-full absolute h-fit overflow-x-hidden overflow-y-hidden p-2 cursor-pointer rounded text-sm  text-slate-700 font-semibold hover:text-black  transition-colors">
+                                        <div className="w-full border border-gray-300 rounded bg-white max-h-40 overflow-auto absolute top-[110%] left-0 z-50">
                                             {userGender.map((gender) => (
                                                 <div
                                                     key={gender.id}
-                                                    className="p-1.5 rounded hover:bg-gray-300 hover:text-black"
+                                                    className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
                                                     onClick={() => handleGenderSelect(gender.label)}
                                                 >
-                                                    <span className="text-sm font-medium">
-                                                        {gender.label}
-                                                    </span>
+                                                    {gender.label}
                                                 </div>
                                             ))}
                                         </div>
@@ -235,7 +241,7 @@ export default function SignUp() {
                                 type="submit"
                                 className="w-full text-sm p-2 rounded font-semibold bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black  transition-colors"
                             >
-                                Sign Up
+                                {isLoadingSignUp ? "Loading.." : "Sign Up"}
                             </button>
                         </div>
                     </form>

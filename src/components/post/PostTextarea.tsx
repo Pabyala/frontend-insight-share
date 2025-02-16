@@ -3,6 +3,7 @@ import { useAddPostMutation } from "../../features/posts/postsApiSlice";
 import { useEffect, useState } from "react";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import DefaultImg from '../../asset/DefaultImg.jpg'
+import { showErrorToast, showToast } from "../utils/ToastUtils";
 
 interface closePostTextArea {
     onClose: () => void
@@ -32,30 +33,21 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
 
     const handleCreatePost = () => {
         if (!userInfo) {
-            console.error("User is not authenticated");
-            alert('Please log in to post');
+            showErrorToast('User is not authenticated');
             return;
         }
 
         if (!captionPost || authorId.length === 0) {
-            console.error("Required caption and userId");
-            alert('Required caption and userId')
-            return;
-        }
-        console.log(`${captionPost}. My Id: ${authorId}`)
-
-        if (!userInfo) {
-            console.error("User is not authenticated");
-            alert('Please log in to post');
+            showErrorToast('Required caption and userId');
             return;
         }
 
         try {
-            console.log("My post: ", captionPost)
             addPost({ captionPost, authorId }).unwrap();
             onClose();
+            showToast("Your thought has been shared with the world!", "success")
         } catch (error) {
-            console.log(error)
+            showErrorToast('Failed to publish post. Please try again.');
         }
     }
 

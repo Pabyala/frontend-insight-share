@@ -1,22 +1,36 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SuccessAlert from "../components/alert/SuccessAlert";
+import { useResendVerificationCodeMutation, useResetPasswordMutation, useVerifyEmailUserMutation, useVerifyTokenResetPassMutation } from "../features/verify-email-reset-password/verify-email-reset-password";
+import { FluentColorWarning20, SolarBillCheckBold } from "../components/others/CustomIcons";
 
 export default function VerifyEmail() {
+
+    const [verifyEmail, { isLoading: isLoadingSignUp, isError: isErrorSignUp, error: errorSignUp }] = useVerifyEmailUserMutation();
+    const [resendVerificationCode, { isLoading: isLoadingResendVerificationCode, isError: isErrorResendVerificationCode, error: errorResendVerificationCode }] = useResendVerificationCodeMutation();
+    const [verifyTokenResetPass, { isLoading: isLoadingVerifyTokenResetPass, isError: isErrorVerifyTokenResetPass, error: errorVerifyTokenResetPass }] = useVerifyTokenResetPassMutation();
+    const [resetPassword, { isLoading: isLoadingResetPassword, isError: isErrorResetPassword, error: errorResetPassword }] = useResetPasswordMutation();
     const navigate = useNavigate();
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
     const [code, setCode] = useState(["", "", "", "", "", ""]);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [showSuccess, setShowSuccess] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
+    const [typeOfError, setTypeOfError] = useState<string>("");
+    const location = useLocation();
+    const email = location.state?.email;
+    const typeOfCode = location.state?.typeOfCode;
+    console.log("EMAIL: ", email)
+    console.log("typeOfCode: ", typeOfCode)
+    const isCodeComplete = code.every(digit => digit !== "");
 
     const handleChange = (index: number, value: string) => {
-        if (!/^\d?$/.test(value)) return; // Allow only numbers
+        if (!/^\d?$/.test(value)) return; // allow only numbers
 
         const newCode = [...code];
         newCode[index] = value;
         setCode(newCode);
 
-        // Move to the next input if a number is entered
+        // move to the next input if a number is entered
         if (value !== "" && index < 5) {
             inputRefs.current[index + 1]?.focus();
         }
@@ -24,7 +38,7 @@ export default function VerifyEmail() {
 
     const handleKeyDown = (index: number, event: React.KeyboardEvent) => {
         if (event.key === "Backspace" && code[index] === "") {
-            // Move focus to the previous input and delete the value
+            // move focus to the previous input and delete the value
             if (index > 0) {
                 inputRefs.current[index - 1]?.focus();
                 const newCode = [...code];
@@ -34,15 +48,73 @@ export default function VerifyEmail() {
         }
     };
 
+
     const handleSave = async () => {
-        setShowSuccess(true)
+        const verificationCode = code.join("");
+        
+        if(verificationCode === '') return alert("Required verification code.")
+        try {
+            if(typeOfCode === 'verify') {
+                await verifyEmail({verificationCode}).unwrap();
+                setTypeOfError('success');
+                setMessage("Congratulations! Your account has been successfully verified.");
+                setShowSuccess(true)
+            } else if(typeOfCode === 'reset'){
+                await verifyTokenResetPass({verificationCode}).unwrap();
+                setTypeOfError('success-reset');
+                setMessage("");
+                navigate("/set-new-password", { state: { resetPasswordToken: verificationCode } });
+            } else if(typeOfCode === 'verifyToLogin') {
+                await verifyEmail({verificationCode}).unwrap();
+                setTypeOfError('success-home-page');
+                setMessage("Congratulations! Your account has been successfully verified.");
+                setShowSuccess(true)
+            }
+        } catch (error: any) {
+            const errorMessage = error?.data?.message || "Something went wrong. Please try again.";
+            console.log("ERROR: ", errorMessage)
+            setTypeOfError('error');
+            setMessage(errorMessage);
+            setShowSuccess(true)
+        }
     };
-    const isCodeComplete = code.every(digit => digit !== "");
+    
 
     const handleSuccess = () => {
-        navigate("/login");
-        setShowSuccess(false)
+        if(typeOfError === "success"){
+            navigate("/login");
+        } else if(typeOfError === 'success-home-page') {
+            navigate("/");
+        } else if(typeOfError === "error"){
+            setShowSuccess(false)
+        } else if(typeOfError === 'success-reset') {
+            navigate("/set-new-password");
+        } else {
+            setMessage("Something went wrong.");
+        }
+        setTypeOfError('');
+        setMessage('');
     }
+
+    const handleResendCode = async () => {
+        if (!email) {
+            alert("Error: Email is required.");
+            return;
+        }
+
+        try {
+            if(typeOfCode === 'verify') {
+                await resendVerificationCode({ email }).unwrap();
+            } else if(typeOfCode === 'reset'){
+                await resetPassword({ email }).unwrap();
+                console.log("Sending token for reset password"); 
+            } else if(typeOfCode === 'verifyToLogin') {
+                await resendVerificationCode({ email }).unwrap();
+            }
+        } catch (error) {
+            console.error("Error resending verification email:", error);
+        }
+    };
 
     return (
         <>
@@ -74,7 +146,16 @@ export default function VerifyEmail() {
                                 disabled={!isCodeComplete}
                                 className="px-6 py-2 w-full text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
                             >
-                                {isSubmitting ? "Saving..." : "Save"}
+                                {isLoadingSignUp || isLoadingVerifyTokenResetPass ? "Saving..." : "Save"}
+                            </button>
+                        </div>
+                        <div className="flex justify-center mt-3 space-x-2">
+                            <span className="text-sm">Didn't receive the code?</span>
+                            <button
+                                onClick={handleResendCode}
+                                className="text-blue-500 text-sm hover:underline"
+                            >
+                                {isLoadingResendVerificationCode ? "Resending..." : "Resend"}
                             </button>
                         </div>
                     </div>
@@ -82,8 +163,10 @@ export default function VerifyEmail() {
             </div>
             {showSuccess && (
                 <SuccessAlert
-                    message='Congratulations! Your account has been successfully verified. Welcome to Insight Share – the place where ideas, thoughts, and insights are shared with the world.'
+                    message={message}
                     onConfirm={handleSuccess}
+                    buttonName="OKAY"
+                    icon={typeOfError === "success" || 'success-reset' ? <SolarBillCheckBold /> : <FluentColorWarning20 />}
                 />
             )}
         </>

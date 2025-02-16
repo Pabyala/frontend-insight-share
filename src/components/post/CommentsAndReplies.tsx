@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Post } from '../../interface/your-posts';
-import { useAddCommentToPostMutation, useAddOrRemoveHeartToCommentMutation, useAddOrRemoveHeartToReplyMutation, useAddReplyToCommentMutation, useDeleteCommentToPostMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { useAddCommentToPostMutation, useAddOrRemoveHeartToCommentMutation, useAddOrRemoveHeartToReplyMutation, useAddReplyToCommentMutation } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
 import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical, NotoOrangeHeart } from '../others/CustomIcons';
 import CommentOptions from './CommentOptions';
 import TimeAgoPost from './TimeAgoPost';
 import UpdateCommentTextArea from './UpdateCommentTextArea';
 import { Link } from 'react-router-dom';
+import { showErrorToast, showLoadingToast } from '../utils/ToastUtils';
+import { toast } from 'react-toastify';
 
 interface CommentDetails {
     commentId: string;
@@ -26,11 +28,24 @@ interface PropsPost {
 export default function CommentsAndReplies({ userId, selectedPost, postId, post, refetch }: PropsPost) {
 
     const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
-    const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
-    const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, error: errorDeleteComment }] = useDeleteCommentToPostMutation();
     const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment, error: errorAddReplyToComment }] = useAddReplyToCommentMutation()
     const [addOrRemoveHeartToComment, { isLoading: isLoadingReactionToComment, isError: isErrorReactionToComment, error: errorReactionToComment }] = useAddOrRemoveHeartToCommentMutation()
     const [addOrRemoveHeartToReply, { isLoading: isLoadingReactionToReply, isError: isErrorReactionToReply, error: errorReactionToReply }] = useAddOrRemoveHeartToReplyMutation()
+
+    useEffect(() => {
+        if (isLoadingAddCommentToPost || isLoadingAddReplyToComment || isLoadingReactionToComment || isLoadingReactionToReply) {
+            const loadingToast = showLoadingToast("Processing request...");
+    
+          return () => toast.dismiss(loadingToast); // Cleanup the toast when loading stops
+        }
+    }, [isLoadingAddCommentToPost, isLoadingAddReplyToComment, isLoadingReactionToComment, isLoadingReactionToReply]);
+
+    useEffect(() => {
+        if (isErrorAddCommentToPost) showErrorToast("Failed to add comment.");
+        if (isErrorAddReplyToComment) showErrorToast("Failed to add reply.");
+        if (isErrorReactionToComment) showErrorToast("Failed to react to comment.");
+        if (isErrorReactionToReply) showErrorToast("Failed to react to reply.");
+    }, [isErrorAddCommentToPost, isErrorAddReplyToComment, isErrorReactionToComment, isErrorReactionToReply]);
     
     const [replyComment, setReplyComment] = useState<string>('')
     const [isReplyToComment, setIsReplyToComment] = useState<boolean>(false)
@@ -70,37 +85,6 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
             }
         }
         setIsReplyToComment(false)
-        // try {
-        //     if (isUpdatingComment) {
-        //         // Update comment logic
-        //         await updateCommentToPost({
-        //             commentId: commentDetails.commentId,
-        //             updatedComment: replyComment,
-        //             userId,
-        //         });
-        //     } else if (isReplyToComment) {
-        //         // Reply to comment logic
-        //         await addReplyToComment({
-        //             commentId: commentDetails.commentId,
-        //             userId,
-        //             reply: replyComment,
-        //         });
-        //     } else {
-        //         // Add new comment logic
-        //         await addCommentToPost({
-        //             postId,
-        //             commenterId: userId,
-        //             comment: replyComment,
-        //         });
-        //     }
-        //     refetch();
-        //     setReplyComment('');
-        // } catch (error) {
-        //     console.log(error);
-        // }
-    
-        // setIsReplyToComment(false);
-        // setIsUpdatingComment(false);
     }
 
     const handleReply = async (commentId: string, firstName: string, middleName: string | undefined, lastName: string) => {

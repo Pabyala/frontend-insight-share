@@ -15,6 +15,9 @@ import ReactCommentShare from './ReactCommentShare';
 import Reactions from './Reactions';
 import PostOptions from './PostOptions';
 import ModalPost from './ModalPost';
+import { showToast } from '../utils/ToastUtils';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface PostsProps {
     posts: Post[]; 
@@ -60,6 +63,7 @@ export default function Posts({ posts, isLoading, error, userId, refetch }: Post
     
     // to check if the post is already saved
     const handleOption = (postId: string) => {
+        if(!postId) return
         setSelectedPostId((prevId) => (prevId === postId ? null : postId));
         if(allSavedPostId.includes(postId)){
             console.log("Yes")

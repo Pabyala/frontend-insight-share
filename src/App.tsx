@@ -18,17 +18,26 @@ import MyPosts from "./pages/MyPosts";
 import PersistLogin from "./components/PersistLogin";
 import ViewUserProfile from "./pages/ViewUserProfile";
 import VerifyEmail from "./pages/VerifyEmail";
+import ResetPassword from "./pages/ResetPassword";
+import SetNewPassword from "./pages/SetNewPassword";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
+    <>
+    
     <div className="bg-gray-100 min-h-screen">
         {/* <div className="flex-grow"> */}
+        <ToastContainer/>
         <Routes>
           <Route path="/" element={<Layout />}>
             {/* Public routes */}
             <Route path="/login" element={<SignIn />} />
             <Route path="/register" element={<SignUp />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/reset-password-verify" element={<ResetPassword />} />
+            <Route path="/set-new-password" element={<SetNewPassword />} />
             
             {/* Protected routes */}
             <Route element={<PersistLogin/>}>
@@ -54,6 +63,7 @@ function App() {
         </Routes>
       {/* </div> */}
     </div>
+    </>
   );
 }
 
