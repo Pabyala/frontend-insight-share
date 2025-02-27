@@ -9,6 +9,7 @@ import UpdateCommentTextArea from './UpdateCommentTextArea';
 import { Link } from 'react-router-dom';
 import { showErrorToast, showLoadingToast } from '../utils/ToastUtils';
 import { toast } from 'react-toastify';
+import socketSetup from '../../socket-io/socket-setup';
 
 interface CommentDetails {
     commentId: string;
@@ -80,6 +81,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                 await addCommentToPost({postId, commenterId: userId, comment: replyComment})
                 refetch()
                 setReplyComment('');
+                socketSetup.emit('addCommentToPost', userId);
             } catch (error) {
                 console.log(error)
             }

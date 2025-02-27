@@ -311,3 +311,8 @@ export function FluentColorDocumentEdit20(props: SVGProps<SVGSVGElement>) {
 export function FlatColorIconsFullTrash(props: SVGProps<SVGSVGElement>) {
 	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" {...props}><path fill="#ff8a65" d="M24 21.3L12.7 10L26 1.7L38.3 10z"></path><path fill="#ffab91" d="M24 21.3L12.7 10L17 4.7L38.3 10z"></path><path fill="#b39ddb" d="M30.6 44H17.4c-2 0-3.7-1.4-4-3.4L9 11h30l-4.5 29.6c-.3 2-2 3.4-3.9 3.4"></path><path fill="#7e57c2" d="M38 13H10c-1.1 0-2-.9-2-2s.9-2 2-2h28c1.1 0 2 .9 2 2s-.9 2-2 2"></path></svg>);
 }
+
+// comment 
+export function FluentColorComment48(props: SVGProps<SVGSVGElement>) {
+	return (<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" {...props}><g fill="none"><path fill="url(#fluentColorComment480)" d="M4 13.25A7.25 7.25 0 0 1 11.25 6h25.5A7.25 7.25 0 0 1 44 13.25v15.5A7.25 7.25 0 0 1 36.75 36H26.397l-10.85 7.658C14.058 44.71 12 43.644 12 41.82V36h-.75A7.25 7.25 0 0 1 4 28.75z"></path><defs><radialGradient id="fluentColorComment480" cx={0} cy={0} r={1} gradientTransform="matrix(47.9808 53.59654 -97.18809 87.0049 -5.23 -5.715)" gradientUnits="userSpaceOnUse"><stop stopColor="#fab500"></stop><stop offset={0.535} stopColor="#fe8401"></stop><stop offset={1} stopColor="#fb5937"></stop></radialGradient></defs></g></svg>);
+}

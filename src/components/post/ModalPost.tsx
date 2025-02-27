@@ -10,12 +10,13 @@ import SelectOneReaction from './SelectOneReaction';
 import PostOptions from './PostOptions';
 import CommentOptions from './CommentOptions';
 import CommentsAndReplies from './CommentsAndReplies';
+import { useGetUserQuery } from '../../features/users/usersApiSlice';
 
 interface PostModalInterface {
     onClose: () => void;
     selectedPost: string | null;
     // selectedPostData: Post | undefined;
-    userId: string | undefined;
+    // userId: string | undefined;
     
     // setSelectedPostId: string | undefined;
     isSavedPost: boolean;
@@ -30,12 +31,15 @@ interface CommentDetails {
     lastName: string;
 }
 
-export default function ModalPost({ onClose, selectedPost, userId, isSavedPost }: PostModalInterface) {
+export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostModalInterface) {
 
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
         skip: !selectedPost, // skip the query if postId is falsy (undefined/null).
     });
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const userId = userInfo?._id
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+
 
     useEffect(() => {
         if (selectedPost) {

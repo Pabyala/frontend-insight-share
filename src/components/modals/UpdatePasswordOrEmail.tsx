@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 interface PropsUpdatePasswordOrEmail {
     onClose: () => void;
@@ -14,6 +15,15 @@ export default function UpdatePasswordOrEmail({ onClose }: PropsUpdatePasswordOr
             document.body.style.overflow = '';
         };
     }, []);
+    const navigate = useNavigate();
+
+    const handleUpdateEmail = () => {
+        return alert("Under development")
+    }
+
+    const handleUpdatePassword = () => {
+        navigate("/reset-password-verify");
+    }
 
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50'>
@@ -49,8 +59,8 @@ export default function UpdatePasswordOrEmail({ onClose }: PropsUpdatePasswordOr
                     </div>
                     <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
                     <div className="flex w-full space-x-3">
-                        <button className='rounded-base p-2 bg-slate-200 w-1/2 text-sm font-medium  hover:bg-slate-300'>Email</button>
-                        <button className='rounded-base p-2 bg-slate-200 w-1/2 text-sm font-medium  hover:bg-slate-300'>Password</button>
+                        <button onClick={handleUpdateEmail} className='rounded-base p-2 bg-slate-200 w-1/2 text-sm font-medium  hover:bg-slate-300'>Email</button>
+                        <button onClick={handleUpdatePassword} className='rounded-base p-2 bg-slate-200 w-1/2 text-sm font-medium  hover:bg-slate-300'>Password</button>
                     </div>
                 </div>
             </div>

@@ -26,7 +26,6 @@ export default function SignIn() {
     const handleSubmit = async () => {
 
         if(email === '' || password === '') return alert('Email and password required')
-        console.log("User data: ", `${email} and ${password}`)
         try {
             const userData = await login({email, password}).unwrap()
             console.log("userData", userData)

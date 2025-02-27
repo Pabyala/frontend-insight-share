@@ -90,7 +90,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { userId, reactionType },
             }),
-            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts'],
+            invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts', 'Notification'],
         }),
         // getReactionOfPost: builder.query({
         //     query: (postId: string) => ({

@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { logOut, setCredentials } from '../../features/auth/authSlice';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store'; 
+// import { socketService } from './socketService';
+import { addNotification } from '../../features/notification/notificationApiSliceSocket';
 
 interface RefreshResponse {
     accessToken: string;
@@ -50,5 +52,22 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: builder => ({}),  
-    tagTypes: ['UserInfo', 'UserInfoById', 'UserPosts', 'TimelinePosts', 'UserBday', 'SavedPost', 'Followers', 'Following'],
+    tagTypes: ['UserInfo', 'UserInfoById', 'UserPosts', 'TimelinePosts', 'UserBday', 'SavedPost', 'Followers', 'Following', 'Notification'],
 });
+
+
+// // Listen for WebSocket events and invalidate RTK Query cache   
+// socketService.getSocket()?.on("newNotification", () => {
+//     apiSlice.util.invalidateTags(["Notification"]);
+// });
+
+// Start listening for notifications and update Redux store
+// export const initializeSocket = (userId: string, dispatch: any) => {
+//     socketService.connect(userId, (data) => {
+//         dispatch(addNotification(data)); // Dispatch notification to Redux
+//     });
+// };
+
+// socketService.getSocket()?.on("newPost", () => {
+//     apiSlice.util.invalidateTags(["TimelinePosts"]);
+// });

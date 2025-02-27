@@ -27,15 +27,11 @@ export default function FollowersRequestContent() {
     setShowAllNotification(true);
   };
 
-  // const setFollowersDisplay = showAllNotification
-  //   ? followerRequest
-  //   : followerRequest.slice(0, 7);
-
   const setFollowersDisplay = showAllNotification 
   ? getFollowers?.followersYouDontFollowingBack : getFollowers?.followersYouDontFollowingBack?.slice(0, 7);
 
 if (isLoadingGetFollowers) return <div>Loading...</div>;
-if (errorGetFollowers) return <div>Error fetching posts</div>;
+if (errorGetFollowers) return <div>Error fetching posts. Please reload the page.</div>;
     
   return (
     <div
@@ -47,46 +43,46 @@ if (errorGetFollowers) return <div>Error fetching posts</div>;
         <span className="text-sm font-semibold">Followed you</span>
         <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
       </div>
-      {setFollowersDisplay?.map((follower) => (
-        <div key={follower._id} className="block cursor-pointer text-xs text-gray-800  lg:text-sm">
-          <Link
-            to={`/profile/${follower.username}/${follower._id}`}
-          >
-            <div className="flex justify-between space-x-2 hover:bg-gray-100 px-2 py-1.5 rounded">
-              <div className="profileandName flex items-center space-x-4">
-                <div className="flex" style={{ margin: "auto" }}>
-                  <Avatar
-                    sx={{ width: 38, height: 38 }}
-                    alt="Remy Sharp"
-                    src={follower.avatarUrl}
-                  />
-                </div>
-                <div>
-                  <div>
-                    <span className="font-semibold text-sm">
-                      {follower?.firstName} {follower?.middleName}{" "}
-                      {follower.lastName}
-                    </span>
+      {setFollowersDisplay && setFollowersDisplay.length > 0 ? (
+        setFollowersDisplay.map((follower) => (
+          <div key={follower._id} className="block cursor-pointer text-xs text-gray-800 lg:text-sm">
+            <Link to={`/profile/${follower.username}/${follower._id}`}>
+              <div className="flex justify-between space-x-2 hover:bg-gray-100 px-2 py-1.5 rounded">
+                <div className="profileandName flex items-center space-x-4">
+                  <div className="flex" style={{ margin: "auto" }}>
+                    <Avatar sx={{ width: 38, height: 38 }} alt="Remy Sharp" src={follower.avatarUrl} />
                   </div>
                   <div>
-                    <span className="text-sm">{follower.username}</span>
+                    <div>
+                      <span className="font-semibold text-sm">
+                        {follower?.firstName} {follower?.middleName} {follower.lastName}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-sm">{follower.username}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-between space-x-2">
+                  <div>
+                    <MingcuteUserRemove2Fill className="text-3xl cursor-pointer" />
+                  </div>
+                  <div>
+                    <FluentPersonArrowBack24Filled className="text-3xl cursor-pointer" />
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between space-x-2">
-                <div>
-                  <MingcuteUserRemove2Fill className="text-3xl cursor-pointer" />
-                </div>
-                <div>
-                  <FluentPersonArrowBack24Filled className="text-3xl cursor-pointer" />
-                </div>
-              </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
+        ))
+      ) : (
+        <div className="text-center py-2 text-gray-500 text-sm">
+          No followers list
         </div>
-      ))}
+      )}
 
-      {!showAllNotification && (
+
+      {!showAllNotification && (getFollowers?.followersYouDontFollowingBack?.length ?? 0) >= 15 && (
         <div className="block text-center px-2 py-2">
           <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
           <button

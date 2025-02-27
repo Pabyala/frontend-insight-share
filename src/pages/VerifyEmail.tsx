@@ -19,8 +19,7 @@ export default function VerifyEmail() {
     const location = useLocation();
     const email = location.state?.email;
     const typeOfCode = location.state?.typeOfCode;
-    console.log("EMAIL: ", email)
-    console.log("typeOfCode: ", typeOfCode)
+
     const isCodeComplete = code.every(digit => digit !== "");
 
     const handleChange = (index: number, value: string) => {
@@ -43,7 +42,7 @@ export default function VerifyEmail() {
                 inputRefs.current[index - 1]?.focus();
                 const newCode = [...code];
                 newCode[index - 1] = "";
-                setCode(newCode);
+                setCode(newCode);   
             }
         }
     };

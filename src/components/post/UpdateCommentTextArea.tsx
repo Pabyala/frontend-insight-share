@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CommentFrom, PostComment } from '../../interface/your-posts';
 import { FluentSend28Filled, FluentSend28FilledColored } from '../others/CustomIcons';
 import { useGetPostByIdQuery, useUpdateAddReplyToCommentMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import socketSetup from '../../socket-io/socket-setup';
 
 interface PropsUpdateCommentTextArea {
     typeOfUpdate: string
@@ -43,6 +44,7 @@ export default function UpdateCommentTextArea({ comment, commentId, replyId, use
                 refreshPost();
                 setIsUpdatingComment(false);
                 setIsOpenCommentOption(false);
+                socketSetup.emit('addCommentToPost', userId);
             } else if (typeOfUpdate === 'reply') {
                 await updateAddReplyToComment({
                     commentId,

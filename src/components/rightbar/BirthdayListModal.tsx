@@ -15,7 +15,7 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
     if (isLoadingTodaysBirthday){
         content = <div>Loading posts...</div>;
     } else if (errorTodaysBirthday) {
-        content = <p>Error loading birthdays. Please try again later.</p>;
+        content = <p>Error loading birthdays. Please reload the page.</p>;
     } else if (!todaysBirthday || todaysBirthday.countBirthday === 0) {
         content = <p>No birthdays today.</p>;
     } else {
@@ -25,7 +25,7 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
                     <div className='flex items-center space-x-2' key={bday._id}>
                         <div className='flex items-center'>
                             <p className="text-base">
-                                <span className="font-semibold">{bday.firstName} {bday.middleName ? bday.middleName + ' ' : ''}{bday.lastName}</span>'s
+                                <span className="font-semibold">{bday.firstName} {bday.middleName ? bday.middleName + ' ' : ''}{bday.lastName}</span>
                                 birthday is today.
                             </p>
                         </div>

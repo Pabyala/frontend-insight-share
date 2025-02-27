@@ -4,6 +4,7 @@ import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } f
 import { FlatColorIconsFolder, MdiPenColored, MingcuteDelete2Fill } from '../others/CustomIcons';
 import UpdatePostModal from './UpdatePostModal';
 import ConfirmAlert from '../alert/ConfirmAlert';
+import socketSetup from '../../socket-io/socket-setup';
 
 interface PropsPostOptions {
     post: Post;
@@ -37,6 +38,7 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         try {
             await deletePost(currentPostId).unwrap();
             setSelectedPostId('');
+            socketSetup.emit('deletedPost', currentPostId);
         } catch (error) {
             alert(error)
         }

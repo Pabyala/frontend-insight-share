@@ -22,47 +22,60 @@ import ResetPassword from "./pages/ResetPassword";
 import SetNewPassword from "./pages/SetNewPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./app/store";
+import { useEffect } from "react";
+// import { initializeSocket } from "./app/api/apiSlice";
 
 function App() {
+  // const dispatch = useDispatch();
+  //   // const userId = useSelector((state: RootState) => state.auth.user?.id);
+  //   const userId = useSelector((state: RootState) => state.auth.id);
+
+  //   useEffect(() => {
+  //       if (userId) {
+  //           initializeSocket(userId, dispatch);
+  //       }
+  //   }, [userId, dispatch]);
   return (
     <>
     
-    <div className="bg-gray-100 min-h-screen">
-        {/* <div className="flex-grow"> */}
-        <ToastContainer/>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            {/* Public routes */}
-            <Route path="/login" element={<SignIn />} />
-            <Route path="/register" element={<SignUp />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/reset-password-verify" element={<ResetPassword />} />
-            <Route path="/set-new-password" element={<SetNewPassword />} />
-            
-            {/* Protected routes */}
-            <Route element={<PersistLogin/>}>
-              <Route element={<RequiredAuth/>}>
-                <Route path="/" element={<Home />} />
-                <Route path="/followers" element={<Followers />} />
-                <Route path="/following" element={<Following />} />
-                <Route path="/my-post" element={<MyPosts />} />
-                <Route path="/saved-post" element={<SavedPost />} />
-                <Route path="/profile/id/:userId" element={<Profile />} />
-                {/* <Route path="/profile/view" element={<ViewUserProfile />} /> */}
-                <Route path="/profile/:username/:userId" element={<ViewUserProfile />} />
-                <Route path="/settings" element={<Settings />} />
+      <div className="bg-gray-100 min-h-screen">
+          {/* <div className="flex-grow"> */}
+          <ToastContainer/>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              {/* Public routes */}
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/register" element={<SignUp />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/reset-password-verify" element={<ResetPassword />} />
+              <Route path="/set-new-password" element={<SetNewPassword />} />
+              
+              {/* Protected routes */}
+              <Route element={<PersistLogin/>}>
+                <Route element={<RequiredAuth/>}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/followers" element={<Followers />} />
+                  <Route path="/following" element={<Following />} />
+                  <Route path="/my-post" element={<MyPosts />} />
+                  <Route path="/saved-post" element={<SavedPost />} />
+                  <Route path="/profile/id/:userId" element={<Profile />} />
+                  {/* <Route path="/profile/view" element={<ViewUserProfile />} /> */}
+                  <Route path="/profile/:username/:userId" element={<ViewUserProfile />} />
+                  <Route path="/settings" element={<Settings />} />
 
-                {/* for demo */}
-                <Route path="/upload-img" element={<UploadProfileImg />} />
-                <Route path="/welcome" element={<Welcome />} />
-                <Route path="/userlist" element={<Welcomeuser />} />
-                <Route path="/logout" element={<Logout />} />
+                  {/* for demo */}
+                  <Route path="/upload-img" element={<UploadProfileImg />} />
+                  <Route path="/welcome" element={<Welcome />} />
+                  <Route path="/userlist" element={<Welcomeuser />} />
+                  <Route path="/logout" element={<Logout />} />
+                </Route>
               </Route>
             </Route>
-          </Route>
-        </Routes>
-      {/* </div> */}
-    </div>
+          </Routes>
+        {/* </div> */}
+      </div>
     </>
   );
 }

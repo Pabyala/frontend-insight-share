@@ -8,17 +8,59 @@ import FollowersRequestContent from "./FollowersRequestContent";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import DefaultImg from '../../asset/DefaultImg.jpg'
 import BirthdayListModal from "../rightbar/BirthdayListModal";
+import { useGetNotificationQuery } from "../../features/notification/notificationApiSlice";
+import { io } from "socket.io-client";
+import socketSetup from "../../socket-io/socket-setup";
+// import { socketService } from "../../app/api/socketService";
+
+const socket = io('http://localhost:8000', { reconnection: true });
 
 export default function Navbar() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: getNotification, error: getNotificationError, isLoading: isGetNotificationLoading, refetch } = useGetNotificationQuery(userInfo?._id ?? "", {
+        skip: !userInfo?._id, // Prevent calling API until `userId` is available
+    });
+
+    const [notifications, setNotifications] = useState(getNotification?.notifications || []);
+    console.log("Current Notification: ", notifications)
+    // useEffect(() => {
+    //     if (userInfo?._id) {
+    //         socketService.connect(userInfo?._id, (data) => {
+    //             console.log("New notification:", data);
+    //             // Handle the notification (e.g., update state)
+    //         });
+    //         socketService.onNewNotification((newNotification) => {
+    //             setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
+    //         });
+
+    //         return () => {
+    //             socketService.disconnect();
+    //         };
+    //     }
+    // }, [userInfo?._id]);
 
     const countFollower: number = 4;
     const [showFollowerMenu, setShowFollowerMenu] = useState<boolean>(false);
     const [showNotificationMenu, setShowNotificationMenu] = useState<boolean>(false);
     const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
     const [showBdayListModal, setShowBdayListModal] = useState<boolean>(false);
-    
+
+    useEffect(() => {
+            console.log('SOCKET IO', socketSetup)
+            socketSetup.on('addReactPost', (newReact: string)=> {
+                console.log(newReact)
+                refetch()
+            })
+            socketSetup.on('deletedPost', (currentPostId: string)=> {
+                console.log(currentPostId)
+                refetch()
+            })
+            socketSetup.on('addCommentToPost', (currentPostId: string)=> {
+                console.log(currentPostId)
+                refetch()
+            })
+    }, [])
 
     const followerRef = useRef<HTMLDivElement>(null);
     const notificationRef = useRef<HTMLDivElement>(null);
@@ -60,6 +102,9 @@ export default function Navbar() {
         };
     }, []);
 
+    if (isUserInfoLoading) return <p>Loading user info...</p>;
+    if (userInfoError) return <p>Error loading user info</p>;
+
     return (
         <div 
             // className='fixed top-0 left-0 right-0 pt-3 pb-2 flex items-center justify-between bg-white z-50'
@@ -98,11 +143,6 @@ export default function Navbar() {
                                     <FluentColorPeople48/>
                                 </span>
                             </button>
-                            {/* {userData?.userInfo?.followers.length > 0 && (
-                                <span className="absolute top-0.5 right-0.5 grid min-h-[18px] min-w-[18px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-500 p-0.5 text-[12px] font-medium leading-none text-white content-['']">
-                                    {userData?.userInfo?.followers.length}
-                                </span>
-                            )} */}
                             {countFollower > 0 && (
                                 <span className="absolute top-0.5 right-0.5 grid min-h-[18px] min-w-[18px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-500 p-0.5 text-[12px] font-medium leading-none text-white content-['']">
                                     {countFollower}
@@ -111,13 +151,6 @@ export default function Navbar() {
                             {showFollowerMenu && (
                                 <FollowersRequestContent/>
                             )}
-                            {/* <div
-                                className={`absolute top-full mt-2 transition-transform transform-gpu origin-top duration-300 ease-in-out ${
-                                    showFollowerMenu ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
-                                }`}
-                            >
-                                <FollowersRequestContent />
-                            </div> */}
                         </div>
 
                     {/* notification */}
@@ -133,13 +166,15 @@ export default function Navbar() {
                                     <FluentEmojiBell/>
                                 </span>
                             </button>
-                            {countFollower != 0 && (
+                            {getNotification?.notifications.length != 0 && (
                                 <span className="absolute top-0.5 right-0.5 grid min-h-[18px] min-w-[18px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-500 p-0.5 text-[12px] font-medium leading-none text-white content-['']">
-                                {countFollower}
+                                {getNotification?.notifications.length}
                                 </span>
                             )}
-                            {showNotificationMenu && (
-                                <NotificationContent/>
+                            {showNotificationMenu && (  
+                                <NotificationContent
+                                    getUserNotification={getNotification?.notifications || []}
+                                />
                             )}
                             {/* <div
                                 className={`absolute top-full mt-2 transition-transform transform-gpu origin-top duration-300 ease-in-out ${
