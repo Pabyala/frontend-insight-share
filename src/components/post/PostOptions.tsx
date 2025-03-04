@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Post } from '../../interface/your-posts';
-import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
+import { useDeletePostMutation, useGetSavedPostQuery, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
 import { FlatColorIconsFolder, MdiPenColored, MingcuteDelete2Fill } from '../others/CustomIcons';
 import UpdatePostModal from './UpdatePostModal';
 import ConfirmAlert from '../alert/ConfirmAlert';
@@ -26,7 +26,6 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
     const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
     const [openUpdatePostModal, setOpenUpdatePostModal] = useState<boolean>(false)
     const [currentPostId, setCurrentPostId] = useState<string>('')
-    console.log("IS SHOW CONFIRMING MODAL: ", openDeleteModal)
 
      // handle to show the modal for update of post
     const handleShowModalUpdate = (postId: string) => {

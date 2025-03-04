@@ -2,18 +2,26 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import Posts from '../components/post/Posts'
-import { useGetUserQuery } from '../features/users/usersApiSlice'
 import { useGetSavedPostQuery } from '../features/posts/postsApiSlice'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
+import { useGetUserQuery } from '../features/users/usersApiSlice'
+import socketSetup from '../socket-io/socket-setup'
 
 export default function SavedPost() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const { data: savedPosts, error: errorSavedPosts, isLoading: isLoadingSavedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery()
-    const userId = userInfo?._id
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
-    console.log("All id that saved: ", allSavedPostId)
+    console.log(savedPosts)
+
+    useEffect(() => {
+        socketSetup.on('deletedPost', (currentPostId: string)=> {
+            console.log(currentPostId)
+            refetchSavedPosts()
+        })
+        console.log("Refresh the page.")
+    }, [])
 
     useEffect(() => {
         if (mySavedPosts) {
@@ -22,11 +30,8 @@ export default function SavedPost() {
         }
     }, [mySavedPosts]);
 
-    if (isLoadingSavedPosts) return <div>Loading...</div>;
-    if (errorSavedPosts) return <div>Error fetching posts</div>;
-    // if (errorSavedPosts) {
-    //     return <div>Error fetching saved posts: {errorSavedPosts.message}</div>;
-    // }
+    if (isLoadingSavedPosts || isUserInfoLoading) return <div>Loading...</div>;
+    if (errorSavedPosts || userInfoError) return <div>Error fetching posts</div>;
 
     return (
         <div className='flex flex-col pb-5'>
@@ -44,8 +49,6 @@ export default function SavedPost() {
                             posts={mySavedPosts} 
                             isLoading={isLoadingSavedPosts} 
                             error={errorSavedPosts}
-                            // savedPostIds={allSavedPostId}
-                            userId={userId}
                             refetch={refetchSavedPosts}
                         />
                     </div>

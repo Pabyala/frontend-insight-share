@@ -22,13 +22,14 @@ interface PostProps {
     setIsSavedPost: (open: boolean) => void;
     selectedPost: string | null;
     setSelectedPost: (open: string) => void;   
+    postId: string;
 }
 
-export default function SinglePost({ post, openPostModal, openPostTextArea, isSavedPost, selectedPost, setOpenPostModal, setOpenPostTextArea, setIsSavedPost, setSelectedPost }: PostProps) {
+export default function SinglePost({ openPostModal, openPostTextArea, isSavedPost, selectedPost, setOpenPostModal, setOpenPostTextArea, setIsSavedPost, setSelectedPost, postId }: PostProps) {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: singPost, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(post._id!,{
-            skip: !post._id, // skip the query if postId is falsy (undefined/null).
+    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
+            skip: !postId, // skip the query if postId is falsy (undefined/null).
     });
     const userId = userInfo?._id
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
@@ -40,9 +41,16 @@ export default function SinglePost({ post, openPostModal, openPostTextArea, isSa
             console.log(newReact)
             refreshPost();
         })
-
-        socketSetup.on('addCommentToPost', (newReact: string)=> {
-            console.log(newReact)
+        socketSetup.on('addCommentToPost', (newComment: string)=> {
+            console.log(newComment)
+            refreshPost();
+        })
+        socketSetup.on('addRemoveReactToComment', (addRemoveHeartReact: string)=> {
+            console.log(addRemoveHeartReact)
+            refreshPost();
+        })
+        socketSetup.on('addRemoveReactToReply', (addRemoveHeartReact: string)=> {
+            console.log(addRemoveHeartReact)
             refreshPost();
         })
     }, [])
@@ -88,6 +96,8 @@ export default function SinglePost({ post, openPostModal, openPostTextArea, isSa
         //     console.log("No")
         // }
     }
+
+    if (!post) return null;
 
     return (
         <>

@@ -34,7 +34,7 @@ export default function Timeline() {
                 isLoading={isLoadingTimelinePosts}
                 error={errorTimelinePosts}
                 // savedPostIds={allSavedPostId}
-                userId={userId}
+                // userId={userId}
                 refetch={refetchTimelinePosts}
             />
         </div>

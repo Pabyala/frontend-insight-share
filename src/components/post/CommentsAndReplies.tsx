@@ -161,16 +161,27 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
         }
     }, [replyComment]);
 
-    const commentReplyReaction = async (typeOfReaction: string, commentId: string, replyId: string) => {
-        if(!typeOfReaction) return
-        if(typeOfReaction === 'commentReaction'){
-            await addOrRemoveHeartToComment({commentId, userId})
+    const commentReplyReaction = async (typeOfReaction: string, commentId: string, replyId?: string) => {
+        try {
+            if (!typeOfReaction || !commentId) return;
+            
+            if (typeOfReaction === 'commentReaction') {
+                await addOrRemoveHeartToComment({ commentId, userId });
+                socketSetup.emit('addRemoveReactToComment', 'addHeartComment');
+            }
+    
+            if (typeOfReaction === 'replyReaction' && replyId) {
+                await addOrRemoveHeartToReply({ commentId, replyId, userId });
+                console.log(commentId, replyId, userId);
+                socketSetup.emit('addRemoveReactToReply', 'addHeartReply');
+            }
+    
+            refetch();
+        } catch (error) {
+            alert("Error in commentReplyReaction:");
         }
-        if(typeOfReaction === 'replyReaction') {
-            await addOrRemoveHeartToReply({commentId, replyId, userId})
-        }
-        refetch()
-    }
+    };
+    
 
     return (
         <>

@@ -11,12 +11,8 @@ export default function Profile() {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
-    // const myId = useSelector(selectCurrentId);
 
     const posts = yourPosts ? yourPosts.dataPost : [];
-    const userId = userInfo?._id
-    // const userId: string | undefined = myId ?? undefined;
-    console.log("My posts", yourPosts)
 
     const myBirthday = userInfo?.dateOfBirth;
     const isTodayBirthday = () => {
@@ -28,11 +24,10 @@ export default function Profile() {
         return today.getDate() === birthDate.getDate() && today.getMonth() === birthDate.getMonth();
     };
 
-    const { data: savedPosts, error: errorSavedPosts, isLoading: isLoadingSavedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery()
+    const { data: savedPosts } = useGetSavedPostQuery()
 
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
-    console.log("All id that saved: ", allSavedPostId)
 
     useEffect(() => {
         if (mySavedPosts && mySavedPosts.length > 0) {
@@ -58,7 +53,7 @@ export default function Profile() {
                 />
                 <div className='flex flex-col space-y-1.5 lg:space-y-0 lg:flex-row lg:justify-between'>
                     <div className='lg:w-[42%]'>
-                        <ProfileIntro  
+                        <ProfileIntro 
                             userInfo={userInfo}
                         />
                     </div>
@@ -71,7 +66,7 @@ export default function Profile() {
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
                             // savedPostIds={allSavedPostId}
-                            userId={userId}
+                            // userId={userId}
                             refetch={refetchYourPosts}
                         />
                     </div>

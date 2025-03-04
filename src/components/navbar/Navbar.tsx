@@ -9,11 +9,7 @@ import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import DefaultImg from '../../asset/DefaultImg.jpg'
 import BirthdayListModal from "../rightbar/BirthdayListModal";
 import { useGetNotificationQuery } from "../../features/notification/notificationApiSlice";
-import { io } from "socket.io-client";
 import socketSetup from "../../socket-io/socket-setup";
-// import { socketService } from "../../app/api/socketService";
-
-const socket = io('http://localhost:8000', { reconnection: true });
 
 export default function Navbar() {
 
@@ -21,24 +17,6 @@ export default function Navbar() {
     const { data: getNotification, error: getNotificationError, isLoading: isGetNotificationLoading, refetch } = useGetNotificationQuery(userInfo?._id ?? "", {
         skip: !userInfo?._id, // Prevent calling API until `userId` is available
     });
-
-    const [notifications, setNotifications] = useState(getNotification?.notifications || []);
-    console.log("Current Notification: ", notifications)
-    // useEffect(() => {
-    //     if (userInfo?._id) {
-    //         socketService.connect(userInfo?._id, (data) => {
-    //             console.log("New notification:", data);
-    //             // Handle the notification (e.g., update state)
-    //         });
-    //         socketService.onNewNotification((newNotification) => {
-    //             setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
-    //         });
-
-    //         return () => {
-    //             socketService.disconnect();
-    //         };
-    //     }
-    // }, [userInfo?._id]);
 
     const countFollower: number = 4;
     const [showFollowerMenu, setShowFollowerMenu] = useState<boolean>(false);
@@ -59,6 +37,18 @@ export default function Navbar() {
             socketSetup.on('addCommentToPost', (currentPostId: string)=> {
                 console.log(currentPostId)
                 refetch()
+            })
+            socketSetup.on('addRemoveReactToComment', (addRemoveHeartReact: string)=> {
+                console.log(addRemoveHeartReact)
+                refetch();
+            })
+            socketSetup.on('addRemoveReactToReply', (addRemoveHeartReact: string)=> {
+                console.log(addRemoveHeartReact)
+                refetch();
+            })
+            socketSetup.on('newFollower', (follow: string)=> {
+                console.log(follow)
+                refetch();
             })
     }, [])
 

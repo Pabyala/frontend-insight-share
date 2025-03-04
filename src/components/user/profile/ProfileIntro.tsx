@@ -9,30 +9,21 @@ import { Followers, UserDetails, UserInfo } from '../../../interface/user';
 import BdayFormater from '../../helper/BdayFormater';
 import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 
-// interface ProfileHeaderProps {
-//     followersData: Followers | undefined; // Replace `any` with the correct type for followersData if available
-//     userInfo?: UserInfo; // Replace `any` with the correct type for userInfo if available
-// }
 interface ProfileIntroProps {
     userInfo: UserInfo | undefined;
 }
 
-export default function ProfileIntro({ userInfo }: ProfileIntroProps) {
+export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
 
-    const setFollowers = followerRequest.slice(0, 9);
     const [showInputDetails, setShowInputDetails] = useState<boolean>(false)
-
-    // const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
-
-    const { data: getFollowers } = useGetFollowersQuery()
-    // const { data: getFollowing } = useGetFollowingQuery()
-
     const formattedDate = BdayFormater(userInfo?.dateOfBirth);
-
     const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const authenticatedUserId = authenticatedUserInfo?._id
     const currentUserId = userInfo?._id
+
+
+    if (isUserInfoLoading) return <div>Loading...</div>;
+    if (userInfoError) return <div>Error fetching posts</div>;
 
     return (
         <div className='w-full flex flex-col space-y-1.5 lg:space-y-2.5'>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CustomDatePicker from "../components/others/CustomDatePicker";
 import { userGender } from "../data/app-data";
 import { Link, useNavigate } from "react-router-dom";
 import { MdiEye, MdiEyeOff } from "../components/others/CustomIcons";

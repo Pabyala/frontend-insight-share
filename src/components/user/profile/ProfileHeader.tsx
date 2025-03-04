@@ -7,7 +7,8 @@ import DefaultBg from '../../../asset/DefaultBg.png'
 import { FollowerData, Followers, UserInfo } from '../../../interface/user';
 import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
-import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import { useFollowUserMutation, useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import socketSetup from '../../../socket-io/socket-setup';
 
 interface ProfileHeaderProps {
     userInfo: UserInfo | undefined;
@@ -17,11 +18,24 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
 
     const [showUpdateProfileModal, setShowUpdateProfileModal] = useState<boolean>(false);
     const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
-    const { data: getFollowers } = useGetFollowersQuery()
-    // const { data: getFollowing } = useGetFollowingQuery()
+    const [followerUser] = useFollowUserMutation();
     const authenticatedUserId = authenticatedUserInfo?._id
     const currentUserId = userInfo?._id
+
+    const handleFollowUser = async (userId: string) => {
+        if(!userId) return
+        try {
+            await followerUser(userId).unwrap(); 
+            socketSetup.emit('newFollower', 'follow');
+        } catch (error) {
+            console.error("Error following user:", error);
+            console.log(error)
+            // alert("Error following user:");
+        }
+    }
+
+    if (isUserInfoLoading) return <div>Loading...</div>;
+    if (userInfoError) return <div>Error fetching posts</div>;
 
     return (
         <div className='w-full mx-auto flex flex-col bg-white rounded'>
@@ -29,20 +43,10 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
             <div className='w-full h-[260px] overflow-hidden relative lg:h-[360px] xl:h-[463px] lg:w-full rounded'>
                 {/* <div className='w-full'> */}
                     <img 
-                        // src='https://0nepiece.netlify.app/static/media/strawhatpirates.eccf099b1766a064828c.jpg'
                         src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
                         alt="Background"
                         className='w-full h-full object-cover rounded'
                     />
-                {/* </div> */}
-                {/* <button 
-                    className='text-sm absolute bottom-[15px] right-[30px] p-1.5 bg-gray-200  rounded flex space-x-2 lg:right-[1.5rem] xl:right-[45px]'
-                >
-                    <span className='text-[20px]'>
-                        <GridiconsCamera/>
-                    </span>
-                    <span className='hidden text-sm md:block'>Edit your cover photo</span>
-                </button> */}
             </div>
 
             {/* Profile Image and Details */}
@@ -114,6 +118,7 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                 ) : (
                     <div className='flex space-x-2'>
                         <button
+                            onClick={() => userInfo?._id && handleFollowUser(userInfo?._id)}
                             className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
                         >
                             <span className='text-[18px]'>

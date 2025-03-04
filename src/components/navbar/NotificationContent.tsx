@@ -14,38 +14,31 @@
   } from "../others/CustomIcons";
   import '.././style/style-navigation.css'
   import '.././style/Style.css'
-  import { MyNotification, NotificationResponse } from "../../interface/notification-types";
+  import { MyNotification } from "../../interface/notification-types";
 import TimeAgoPost from "../post/TimeAgoPost";
 
-  interface propsNotificationContent {
-    getUserNotification?: MyNotification[];
-  }
+interface propsNotificationContent {
+  getUserNotification?: MyNotification[];
+}
 
-  export default function NotificationContent({ getUserNotification }: propsNotificationContent) {
-    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-    const dropdownRef = useRef(null);
-    const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
-    // console.log("Notification: ", notification)
-    console.log("My notification: ", getUserNotification)
-    useEffect(() => {
-      const handleResize = () => {
-        setWindowHeight(window.innerHeight);
-      };
-      window.addEventListener("resize", handleResize);
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, []);
+export default function NotificationContent({ getUserNotification }: propsNotificationContent) {
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const dropdownRef = useRef(null);
+  const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
 
-    const handleShowMoreNotif = () => {
-      setShowAllNotification(true);
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
     };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-    const setNotificationDisplay = showAllNotification
-      ? notification
-      : notification.slice(0, 7);
-
-      console.log("Notif", notification)
+  const handleShowMoreNotif = () => {
+    setShowAllNotification(true);
+  };
 
     return (
       <div
@@ -58,11 +51,6 @@ import TimeAgoPost from "../post/TimeAgoPost";
             <span className="text-sm font-semibold">Notifications</span>
             <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
           </div>
-          
-          {/* {getUserNotification?.map((notif) => (
-            <div key={notif._id}>{notif.typeOfNotification}</div>
-          ))} */}
-
 
           {getUserNotification?.map((notif) => (
             <div
@@ -98,6 +86,47 @@ import TimeAgoPost from "../post/TimeAgoPost";
                       </>
                     )}
 
+                    {/* FOR REACTION TO COMMENT*/}
+                    {notif.type === "reactionToComment" && (
+                      <>
+                        <span className="font-semibold text-sm">
+                          {notif.senderId.firstName} {notif.senderId.middleName} {notif.senderId.lastName}
+                        </span>
+                        <span className="text-sm">
+                          {" "}
+                          {notif?.message} "{notif.commentId?.comment.slice(0, 25)}
+                          ..."
+                        </span>
+                      </>
+                    )}
+
+                    {/* FOR REACTION TO FOLLOWED USER*/}
+                    {notif.type === "follow" && (
+                      <>
+                        <span className="font-semibold text-sm">
+                          {notif.senderId.firstName} {notif.senderId.middleName} {notif.senderId.lastName}
+                        </span>
+                        <span className="text-sm">
+                          {" "}
+                          {notif?.message}.
+                        </span>
+                      </>
+                    )}
+
+                    {/* FOR REACTION TO REPLY*/}
+                    {notif.type === "reactionToReply" && (
+                      <>
+                        <span className="font-semibold text-sm">
+                          {notif.senderId.firstName} {notif.senderId.middleName} {notif.senderId.lastName}
+                        </span>
+                        <span className="text-sm">
+                          {" "}
+                          {notif?.message} "{notif.commentId?.replies?.[0]?.comment.slice(0, 25)}
+                          ..."
+                        </span>
+                      </>
+                    )}
+
                     {/* FOR COMMENT */}
                     {notif.type === "comment" && (
                       <>
@@ -111,15 +140,7 @@ import TimeAgoPost from "../post/TimeAgoPost";
                         </span>
                       </>
                     )}
-
-                    {notif.typeOfNotification === "following" && (
-                      <>
-                        <span className="font-bold text-sm">
-                          {notif.senderId.firstName} {notif.senderId.middleName} {notif.senderId.lastName}{" "}
-                        </span>
-                        <span className="text-sm">stated following you</span>
-                      </>
-                    )}
+                    
                   </div>
                 </div>
                 <div>
@@ -148,11 +169,18 @@ import TimeAgoPost from "../post/TimeAgoPost";
                       )}
                     </>
                   )}
-                  {notif.type === "following" && (
+                  {notif.type === "follow" && (
                     <FluentPersonArrowBack24Filled className="text-4xl cursor-pointer" />
                   )}
                   {notif.type === "comment" && (
                     <FluentColorComment48 className="text-4xl cursor-pointer" />
+                  )}
+                  {notif.type === "reactionToComment" || notif.type === "reactionToReply" && (
+                    <>
+                      {notif.typeOfNotification === "heart" && (
+                        <NotoOrangeHeart className="text-red-600 text-4xl text-blue-600/100" />
+                      )}
+                    </>
                   )}
                 </div>
               </div>

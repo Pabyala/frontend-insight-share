@@ -53,14 +53,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: updatedPost, 
             }),
-            invalidatesTags: ['UserPosts', 'TimelinePosts'],
+            invalidatesTags: ['UserPosts', 'TimelinePosts', 'SavedPost'],
         }),
         deletePost: builder.mutation({
             query: (postId) => ({
                 url: `/post/delete/${postId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['UserPosts', 'TimelinePosts'],
+            invalidatesTags: ['UserPosts', 'TimelinePosts', 'SavedPost'],
         }),
         getSavedPost: builder.query<TimelinePosts, void>({
             query: () => '/post/saved', 

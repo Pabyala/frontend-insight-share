@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
-import { useGetUserQuery } from '../features/users/usersApiSlice';
 import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts/postsApiSlice';
 import Posts from '../components/post/Posts';
+import { useGetUserQuery } from '../features/users/usersApiSlice';
 
 export default function MyPosts() {
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+
+    const { data: userInfo } = useGetUserQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
-    const { data: savedPosts, error: errorSavedPosts, isLoading: isLoadingSavedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery()
+    const { data: savedPosts } = useGetSavedPostQuery()
 
     const posts = yourPosts ? yourPosts.dataPost : [];
-    const userId = userInfo?._id
 
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
@@ -24,8 +24,6 @@ export default function MyPosts() {
         }
     }, [mySavedPosts]); 
 
-    if (isUserInfoLoading) return <div>Loading...</div>;
-    if (userInfoError) return <div>Error fetching posts</div>;
     return (
         <div className='flex flex-col pb-5'>
             <Navbar />
@@ -42,8 +40,6 @@ export default function MyPosts() {
                             posts={posts} 
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
-                            // savedPostIds={allSavedPostId}
-                            userId={userId}
                             refetch={refetchYourPosts}
                         />
                     </div>

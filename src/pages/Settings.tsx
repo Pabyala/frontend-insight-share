@@ -8,8 +8,11 @@ import { useGetUserQuery } from '../features/users/usersApiSlice';
 
 export default function Settings() {
 
-    const [openTab, setOpenTab] = useState<number>(1);
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const [openTab, setOpenTab] = useState<number>(1);
+
+    if (isUserInfoLoading) return <div>Loading...</div>;
+    if (userInfoError) return <div>Error fetching posts</div>;
 
     return (
         <div className='flex flex-col pb-5'>

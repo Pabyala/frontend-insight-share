@@ -28,7 +28,7 @@ export default function SelectOneReaction({ postId } : SelectOneReactionProps) {
             await reactToPost({postId, userId, reactionType})
             // add alert or modal
             // socketSetup.emit('reactPost', reactionType)
-            socketSetup.emit('reactPost', reactionType);
+            socketSetup.emit('addReactPost', reactionType);
         } catch (error) {
             console.log(error)
         }

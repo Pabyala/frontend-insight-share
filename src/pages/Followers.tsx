@@ -6,7 +6,12 @@ import FollowerList from '../components/followers/FollowerList'
 import { useGetUserQuery } from '../features/users/usersApiSlice'
 
 export default function Followers() {
+
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    
+    if (isUserInfoLoading) return <div>Loading...</div>;
+    if (userInfoError) return <div>Error fetching user data</div>;
+
     return (
         <div className='flex flex-col pb-5'>
             <Navbar/>

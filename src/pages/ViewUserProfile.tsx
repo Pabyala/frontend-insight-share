@@ -9,7 +9,7 @@ import { useGetFollowingQuery } from '../features/FollowersFollowing/followersAp
 import Posts from '../components/post/Posts';
 
 export default function ViewUserProfile() {
-    const { username, userId } = useParams();
+    const { userId } = useParams();
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserByIdQuery(userId || '');
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery(userId);
 
@@ -45,7 +45,7 @@ export default function ViewUserProfile() {
                             isLoading={isLoadingYourPosts} 
                             error={errorYourPosts}
                             // savedPostIds={allSavedPostId}
-                            userId={userId}
+                            // userId={userId}
                             refetch={refetchYourPosts}
                         />
                     </div>

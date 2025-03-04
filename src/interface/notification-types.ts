@@ -6,12 +6,14 @@ export interface MyNotification {
     _id: string;    
     senderId: UserData;
     receiverId: UserData;
-    type: string; 
+    userId: UserData;
     postId?: PostContent; 
-    // commentId?: 
+    type: string; 
+    commentId?: CommentContent;
     message: string;    
     typeOfNotification: string; 
     isRead: boolean;
+    commentContext: string;
     createdAt: string; 
     updatedAt: string; 
     __v:  number;
@@ -23,11 +25,30 @@ export interface UserData {
     firstName: string;
     middleName?: string;
     lastName: string;
-    avatarUrl: string;
-    coverPhotoUrl: string;
+    avatarUrl?: string;
+    coverPhotoUrl?: string;
 } 
 
 export interface PostContent {
     _id: string;    
     captionPost: string;
+}
+
+export interface CommentContent {
+    _id: string;  
+    comment: string;
+    from: UserData;
+    replies: RepliesData[];
+
+}
+
+export interface RepliesData {
+    rid: string;
+    userId: UserData; 
+    comment: string;
+    replyAt: string; 
+    createdAt: string; 
+    updatedAt: string; 
+    heart: string[]; 
+    _id: string;
 }
