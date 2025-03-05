@@ -35,32 +35,32 @@ export default function Reactions({ post }: PostsProps) {
                 <div className="absolute w-full">
                     <div className=" flex justify-center items-center w-full space-x-1">
                         <div className="rounded-full bg-slate-400 p-1 border-white border-2">
-                        {/* <div className="rounded-full bg-white p-1 border-bl border-2"> */}
-                        {currentReaction === "fire" && (<TwemojiFire />)}
-                        {currentReaction === "handsUp" && (<TwemojiRaisingHands />)}
-                        {currentReaction === "disLike" && (<AntDesignDislikeFilled />)}
-                        {currentReaction === "heart" && (<NotoOrangeHeart />)}
+                            {currentReaction === "fire" && (<TwemojiFire />)}
+                            {currentReaction === "handsUp" && (<TwemojiRaisingHands />)}
+                            {currentReaction === "disLike" && (<AntDesignDislikeFilled />)}
+                            {currentReaction === "heart" && (<NotoOrangeHeart />)}
                         </div>
                         <div>
-                        {currentReaction === "fire" && (<p className="flex text-sm">Fire</p>)}
-                        {currentReaction === "handsUp" && (<p className="flex text-sm">Hands up</p>)}
-                        {currentReaction === "disLike" && (<p className="flex text-sm">Unlike</p>)}
-                        {currentReaction === "heart" && (<p className="flex text-sm">Heart</p>)}  
+                            {currentReaction === "fire" && (<p className="flex text-sm">Fire</p>)}
+                            {currentReaction === "handsUp" && (<p className="flex text-sm">Hands up</p>)}
+                            {currentReaction === "disLike" && (<p className="flex text-sm">Unlike</p>)}
+                            {currentReaction === "heart" && (<p className="flex text-sm">Heart</p>)}  
                         </div>
                     </div>
                 </div>
                 </div>
-            ) : (
+            ) : 
+            (
                 <div className="relative flex items-center h-full w-[90px]">
-                {reactions.map((reaction) => (
-                    <div
-                    key={reaction.id}
-                    className="absolute top-0 bg-slate-400 p-1 rounded-full border-white border-2"
-                    style={reaction.style}
-                    >
-                    <span className="text-sm">{reaction.component}</span>
-                    </div>
-                ))}
+                    {reactions.map((reaction) => (
+                        <div
+                        key={reaction.id}
+                        className="absolute top-0 bg-slate-400 p-1 rounded-full border-white border-2"
+                        style={reaction.style}
+                        >
+                        <span className="text-sm">{reaction.component}</span>
+                        </div>
+                    ))}
                 </div>
             )}
         </>

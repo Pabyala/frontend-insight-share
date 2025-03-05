@@ -11,6 +11,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import { useGetPostByIdQuery } from "../../features/posts/postsApiSlice";
 import socketSetup from "../../socket-io/socket-setup";
+import ErrorComponent from "../alert/ErrorComponent";
+import BeatLoading from "../loading/BeatLoading";
 
 interface PostProps {
     post: Post;
@@ -84,24 +86,17 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
 
     // handle for modal of post
     const handlePostModal = (postId: string) => {
-        console.log("Open post modal!")
         setSelectedPost(postId)
         setOpenPostModal(!openPostModal)
-        // setSelectedPostId((prevId) => (prevId === postId ? null : postId));
-        // if(allSavedPostId.includes(postId)){
-        //     console.log("Yes")
-        //     setIsSavedPost(true)
-        // } else {
-        //     setIsSavedPost(false)
-        //     console.log("No")
-        // }
     }
 
     if (!post) return null;
 
+    if (isLoadingPost || isUserInfoLoading) return <BeatLoading/>;
+    if (errorPost || userInfoError) return <ErrorComponent/>;
+
     return (
         <>
-            {/* {post?.map((post) => ( */}
                 <div key={post._id} className="w-full relative">
                     <div className="bg-lightWhite p-3 rounded">
                         {/* Profile and more option */}
@@ -194,7 +189,6 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
                         </div>
                     </div>
                 </div>
-            {/* ))} */}
         </>
     );
 }

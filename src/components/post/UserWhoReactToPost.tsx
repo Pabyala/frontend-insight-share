@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useGetAllUserWhoReactToPostQuery } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
 import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
+import BeatLoadingModal from '../loading/BeatLoadingModal';
+import ErrorAlert from '../alert/ErrorAlert';
 
 type ReactionKeys = 'all' | 'like' | 'fire' | 'handsUp' | 'disLike' | 'heart';
 
@@ -32,9 +34,8 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
     console.log("User who react", users)
     console.log("User who react1", allReaction)
     
-
-    if (isLoadingAllReaction) return <div>Loading posts...</div>;
-    if (errorAllReaction) return <div>Error loading posts</div>;
+    if (isLoadingAllReaction) return <BeatLoadingModal/>;
+    if (errorAllReaction) return <ErrorAlert message='Error reactions.' onClose={onClose} />;
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto">

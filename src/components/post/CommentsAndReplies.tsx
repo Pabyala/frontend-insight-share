@@ -280,13 +280,13 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 Reply
                                             </span>
                                         </div>
-                                        {comment.createdAt != comment.updatedAt &&
+                                        {/* {comment.createdAt != comment.updatedAt &&
                                             (<div className='text-xs'>
                                                 <span>
                                                     Edited
                                                 </span>
                                             </div>)
-                                        }
+                                        } */}
                                         { comment.heart.length !== 0 && (
                                             <div className="text-xs flex items-center">
                                                 <span>{comment.heart.length}</span>

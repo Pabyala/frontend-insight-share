@@ -1,17 +1,6 @@
-  import React, { useEffect, useRef, useState } from "react";
+  import { useEffect, useRef, useState } from "react";
   import { Avatar } from "@mui/material";
-  import { notification } from "../../data/dummy-data";
-  import {
-    AntDesignDislikeFilled,
-    FluentColorComment48,
-    FluentPersonArrowBack24Filled,
-    NotoAngryFace,
-    NotoFaceWithTearsOfJoy,
-    NotoOrangeHeart,
-    NotoSadButRelievedFace,
-    TwemojiFire,
-    TwemojiRaisingHands,
-  } from "../others/CustomIcons";
+  import { AntDesignDislikeFilled, FluentColorComment48, FluentPersonArrowBack24Filled, NotoAngryFace, NotoFaceWithTearsOfJoy, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands, } from "../others/CustomIcons";
   import '.././style/style-navigation.css'
   import '.././style/Style.css'
   import { MyNotification } from "../../interface/notification-types";

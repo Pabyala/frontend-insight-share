@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Post } from '../../interface/your-posts';
 import UserWhoReactToPost from './UserWhoReactToPost';
+import BeatLoading from '../loading/BeatLoading';
 
 interface PostNumberOfComment {
     totalCommets: number; 
@@ -62,7 +63,6 @@ export default function ReactCommentShare({ post }: PropsPost) {
                             ? `${allComments} comment` 
                             : `${allComments} comments`)
                         }
-                        {/* 1.1K comments */}
                         </span>
                     </div>
                 </div>

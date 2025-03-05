@@ -1,27 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useAddCommentToPostMutation, useAddReplyToCommentMutation, useGetPostByIdQuery } from '../../features/posts/postsApiSlice';
+import { useEffect, useState } from 'react'
+import { useGetPostByIdQuery } from '../../features/posts/postsApiSlice';
 import { Avatar, IconButton, Tooltip } from '@mui/material';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TimeAgoPost from './TimeAgoPost';
-import { FluentSend28Filled, FluentSend28FilledColored, MiOptionsVertical } from '../others/CustomIcons';
 import ReactCommentShare from './ReactCommentShare';
 import Reactions from './Reactions';
 import SelectOneReaction from './SelectOneReaction';
 import PostOptions from './PostOptions';
-import CommentOptions from './CommentOptions';
 import CommentsAndReplies from './CommentsAndReplies';
 import { useGetUserQuery } from '../../features/users/usersApiSlice';
+import BeatLoading from '../loading/BeatLoading';
+import ErrorComponent from '../alert/ErrorComponent';
 
 interface PostModalInterface {
     onClose: () => void;
     selectedPost: string | null;
-    // selectedPostData: Post | undefined;
-    // userId: string | undefined;
-    
-    // setSelectedPostId: string | undefined;
     isSavedPost: boolean;
-    // setSelectedPostId: (postId: string) => void;
-    // selectedPostId: string | null;
 }
 
 interface CommentDetails {
@@ -64,8 +58,8 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
         setSelectedPostId(postId)
     }
 
-    if (isLoadingPost) return <div>Loading posts...</div>;
-    if (errorPost) return <div>Error loading posts</div>;
+    if (isLoadingPost || isUserInfoLoading) return <BeatLoading/>;
+    if (errorPost || userInfoError) return <ErrorComponent/>;
     if (!post) return <div>No posts available</div>;
 
     return (
@@ -141,10 +135,6 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                                         setSelectedPostId={setSelectedPostId}
                                     />
                                 )}
-                                {/* {isOpenCommentOptions && (
-                                    <CommentOptions
-                                    />
-                                )} */}
                             </div>
                         </div>
 
@@ -210,38 +200,6 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                                 post={post}
                                 refetch={refreshPost}
                             />
-                            {/* textarea for comment and reply */}
-                            {/* <div className='flex flex-col space-y-1.5 pt-2.5'>
-                                {isReplyToComment && (
-                                    <div className='flex space-x-2'>
-                                        <p className='text-xs cursor-pointer'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
-                                    </div>
-                                )}
-                                <div className="relative flex items-center">
-                                    <textarea 
-                                        ref={textareaRef}
-                                        rows={1}
-                                        cols={30}
-                                        onChange={(e) => setReplyComment(e.target.value)}
-                                        placeholder="Write a comment..."
-                                        value={replyComment}
-                                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
-                                    />
-                                    <div className="absolute right-0 pr-3 flex items-center h-full">
-                                        {replyComment.length !== 0 ? (
-                                            <FluentSend28FilledColored 
-                                                className="text-base cursor-pointer" 
-                                                onClick={handleComment}
-                                            />
-                                        ) : (
-                                            <FluentSend28Filled
-                                                className="text-base cursor-pointer" 
-                                                onClick={handleComment}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>

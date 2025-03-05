@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CiSearch } from 'react-icons/ci'
 import { FluentColorPeople48, FluentEmojiBell } from '../others/CustomIcons'
 import NotificationContent from "./NotificationContent";
@@ -10,6 +10,8 @@ import DefaultImg from '../../asset/DefaultImg.jpg'
 import BirthdayListModal from "../rightbar/BirthdayListModal";
 import { useGetNotificationQuery } from "../../features/notification/notificationApiSlice";
 import socketSetup from "../../socket-io/socket-setup";
+import BeatLoading from "../loading/BeatLoading";
+import ErrorComponent from "../alert/ErrorComponent";
 
 export default function Navbar() {
 
@@ -92,8 +94,8 @@ export default function Navbar() {
         };
     }, []);
 
-    if (isUserInfoLoading) return <p>Loading user info...</p>;
-    if (userInfoError) return <p>Error loading user info</p>;
+    if (isUserInfoLoading || isGetNotificationLoading) return <BeatLoading/>;
+    if (userInfoError || getNotificationError) return <ErrorComponent/>;
 
     return (
         <div 

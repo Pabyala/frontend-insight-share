@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import '../style/Style.css'
 import { useGetFollowersQuery } from "../../features/FollowersFollowing/followersApiSlice";
 import { Link } from "react-router-dom";
+import BeatLoading from "../loading/BeatLoading";
+import ErrorComponent from "../alert/ErrorComponent";
 
 export default function FollowersRequestContent() {
 
@@ -12,7 +14,7 @@ export default function FollowersRequestContent() {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const dropdownRef = useRef(null);
   const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
-  console.log("Follower Request: ", followerRequest)
+  
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
@@ -30,9 +32,8 @@ export default function FollowersRequestContent() {
   const setFollowersDisplay = showAllNotification 
   ? getFollowers?.followersYouDontFollowingBack : getFollowers?.followersYouDontFollowingBack?.slice(0, 7);
 
-if (isLoadingGetFollowers) return <div>Loading...</div>;
-if (errorGetFollowers) return <div>Error fetching posts. Please reload the page.</div>;
-    
+  if (isLoadingGetFollowers) return <BeatLoading/>;
+  if (errorGetFollowers) return <ErrorComponent/>;
   return (
     <div
       ref={dropdownRef}

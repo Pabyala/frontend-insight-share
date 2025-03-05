@@ -3,11 +3,9 @@ import { AntDesignSettingFilled, ClarityUserSolid, FluentPersonArrowBack24Filled
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut, selectCurrentToken } from '../../features/auth/authSlice'
-// import { useGetUserDataQuery } from '../../features/auth/authApiSlice'
 import { useGetUserQuery } from '../../features/users/usersApiSlice'
 import { useLogoutUserMutation } from '../../features/auth/authApiSlice'
 import { useState } from 'react'
-import BirthdayListModal from '../rightbar/BirthdayListModal'
 
 interface SubmenuProfileProps {
     setShowBdayListModal: (value: boolean) => void;
@@ -18,12 +16,9 @@ export default function SubmenuProfile({setShowBdayListModal}: SubmenuProfilePro
     const navigate = useNavigate()
     const token = useSelector(selectCurrentToken)
     const { data: userInfo, error, isLoading } = useGetUserQuery();
+    const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const userId = userInfo?._id
-
-    const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
-    // const [showBdayListModal, setShowBdayListModal] = useState<boolean>(false);
-    const [isShowBdayListModal, setIsShowBdayListModal] = useState<boolean>(true);
 
 
     const handleLogout = async () => {

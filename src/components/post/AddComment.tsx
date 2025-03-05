@@ -12,7 +12,6 @@ export default function AddComment() {
                     />
                 </div>
                 <div
-                    // onClick={toggleShowPostTextArea}
                     className="w-full flex flex-grow cursor-pointer"
                 >
                 <input type="text" />

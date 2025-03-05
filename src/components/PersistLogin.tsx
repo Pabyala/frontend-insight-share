@@ -35,7 +35,7 @@ export default function PersistLogin() {
             return <Outlet />;
         // if loading is true, refresh token is still in progress
         } else if (isLoading) {
-            return <p>Loading...</p>;
+            return
         // if has error during refresh token process
         } else if (isError) {
             return (
