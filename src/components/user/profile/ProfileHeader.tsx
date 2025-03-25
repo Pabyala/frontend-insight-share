@@ -4,10 +4,10 @@ import { AntDesignSettingFilledWhite, GridiconsCamera, MdiPen } from '../../othe
 import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
-import { FollowerData, Followers, UserInfo } from '../../../interface/user';
+import { UserInfo } from '../../../interface/user';
 import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
-import { useFollowUserMutation, useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import { useFollowUserMutation, useGetFollowersQuery, useUnfollowUserMutation } from '../../../features/FollowersFollowing/followersApiSlice';
 import socketSetup from '../../../socket-io/socket-setup';
 
 interface ProfileHeaderProps {
@@ -18,19 +18,28 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
 
     const [showUpdateProfileModal, setShowUpdateProfileModal] = useState<boolean>(false);
     const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const [followerUser] = useFollowUserMutation();
+    const { data: followersData } = useGetFollowersQuery(userInfo?._id);
+    const [followUser] = useFollowUserMutation();
+    const [unfollowUser] = useUnfollowUserMutation();
+
     const authenticatedUserId = authenticatedUserInfo?._id
     const currentUserId = userInfo?._id
 
-    const handleFollowUser = async (userId: string) => {
-        if(!userId) return
+    const isFollowing = followersData?.allFollowers?.some((follower: any) => follower._id === authenticatedUserId);
+
+    const handleFollowUser = async () => {
+        if(!currentUserId) return
         try {
-            await followerUser(userId).unwrap(); 
-            socketSetup.emit('newFollower', 'follow');
+            if (isFollowing) {
+                await unfollowUser(currentUserId).unwrap();
+                socketSetup.emit('newFollower', 'unfollow');
+            } else {
+                await followUser(currentUserId).unwrap();
+                socketSetup.emit('newFollower', 'follow');
+            }
         } catch (error) {
             console.error("Error following user:", error);
             console.log(error)
-            // alert("Error following user:");
         }
     }
 
@@ -55,18 +64,10 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                     {/* Profile Image */}
                     <div className='w-[128px] h-[128px] rounded-full border-4 border-white lg:w-[168px] lg:h-[168px] relative bg-zinc-600 overflow-hidden'>
                             <img 
-                                // src='https://fastly.picsum.photos/id/582/256/256.jpg?hmac=peqwFP3WuZEwg549dK3PuPyou-m-mCW6Hmd3d3bzlrA' 
                                 src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
                                 alt="Profile"
                                 className='w-full h-full object-cover'
                             />
-                        {/* <button 
-                            className='text-sm absolute bottom-[5px] right-[0px] p-1.5 bg-gray-200 rounded-full border-2 border-white lg:right-[5px] lg:bottom-[10px]'
-                        >
-                            <span className='text-[18px] lg:text-[22px]'>
-                                <GridiconsCamera/>
-                            </span>
-                        </button> */}
                     </div>
 
                     {/* Name and Other Details */}
@@ -118,13 +119,13 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                 ) : (
                     <div className='flex space-x-2'>
                         <button
-                            onClick={() => userInfo?._id && handleFollowUser(userInfo?._id)}
+                            onClick={handleFollowUser}
                             className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
                         >
                             <span className='text-[18px]'>
                                 <MdiPen/>
                             </span>
-                            <span className='text-sm font-medium'>Follow</span>
+                            <span className='text-sm font-medium'>{isFollowing ? 'Unfollow' : 'Follow'}</span>
                         </button>
                     </div>
                 )}

@@ -175,7 +175,6 @@ export default function NotificationContent({ getUserNotification }: propsNotifi
               </div>
               <div className="">
                 <span className="text-gray-400 text-center text-xs">
-                  {/* {notif.createdAt} */}
                   <TimeAgoPost 
                     timeStamp={notif.createdAt}
                   />
@@ -184,7 +183,7 @@ export default function NotificationContent({ getUserNotification }: propsNotifi
             </div>
           ))} 
 
-          {!showAllNotification && (
+          { getUserNotification && getUserNotification.length >= 6 && !showAllNotification && (
             <div className="block text-center px-4 py-2">
               <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
               <button

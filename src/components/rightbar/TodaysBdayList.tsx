@@ -6,9 +6,9 @@ export default function TodaysBdayList() {
 
     const { data: todaysBirthday, error: errorTodaysBirthday, isLoading: isLoadingTodaysBirthday } = useGetUserTodayBirthdayQuery();
 
-    if (isLoadingTodaysBirthday) return <div>Loading posts...</div>;
-    if (errorTodaysBirthday) return <div>Error loading posts</div>;
-    if (!todaysBirthday || todaysBirthday.countBirthday === 0) return <div>No birthday today.</div>;
+    if (isLoadingTodaysBirthday) return <div className='text-sm'>Loading posts...</div>;
+    if (errorTodaysBirthday) return <div className='text-sm'>Error loading posts</div>;
+    if (!todaysBirthday || todaysBirthday.countBirthday === 0) return <div className='text-sm'>No birthday today.</div>;
 
     return (
         <div className="bg-white p-1 rounded">

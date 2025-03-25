@@ -65,7 +65,6 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
     const [replyCommentId, setReplyCommentId] = useState<string | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    // const postId = post?._id
     const handleComment = async () => {
         if(replyComment.length === 0) return
         if(isReplyToComment) {
@@ -280,13 +279,6 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                 Reply
                                             </span>
                                         </div>
-                                        {/* {comment.createdAt != comment.updatedAt &&
-                                            (<div className='text-xs'>
-                                                <span>
-                                                    Edited
-                                                </span>
-                                            </div>)
-                                        } */}
                                         { comment.heart.length !== 0 && (
                                             <div className="text-xs flex items-center">
                                                 <span>{comment.heart.length}</span>

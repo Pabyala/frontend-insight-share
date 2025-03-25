@@ -1,38 +1,41 @@
 import { followerRequest } from "../../data/dummy-data";
 import { Avatar } from "@mui/material";
 import { MingcuteUserFollow2Fill } from "../others/CustomIcons";
+import { useGetSuggestedForYouQuery, useGetUserQuery } from "../../features/users/usersApiSlice";
+import { UserSearch } from "../../interface/user";
 
 export default function SuggestedFollowing() {
+
+  const { data: userInfo } = useGetUserQuery();
+  const { data: getSuggestedForYou, error: getSuggestedForYouError, isLoading: isGetSuggestedForYouLoading } = useGetSuggestedForYouQuery(userInfo?._id ?? "", {
+    skip: !userInfo || !userInfo._id, // Ensure userInfo exists and has an _id
+  });
+
   return (
-    <div className="bg-white p-1">
-      <p className="text-sm font-semibold mb-1 lg:text-base">Suggested for you</p>
-      <div className="overflow-x-hidden">
-        {followerRequest.map((follower) => (
+    <div className="bg-white p-1 rounded-sm">
+        {getSuggestedForYou?.map((user: UserSearch) => (
           <div
-            key={follower.followerUserId}
+            key={user._id}
             className="block px-1.5 cursor-pointer rounded py-1.5 text-xs text-gray-800 hover:bg-gray-300 lg:text-sm"
           >
-            {/* <Link
-              to={`/profile/${follower.username}/${follower._id}`}
-            > */}
               <div className="flex justify-between space-x-2">
                 <div className="profileandName flex items-center space-x-4">
                   <div className="flex" style={{ margin: "auto" }}>
                     <Avatar
                       sx={{ width: 38, height: 38 }}
                       alt="Remy Sharp"
-                      src={follower.avatarUrl}
+                      src={user.avatarUrl}
                     />
                   </div>
                   <div>
                     <div>
                       <span className="font-bold text-sm">
-                        {follower?.firstName} {follower?.middleName}{" "}
-                        {follower.lastName}
+                        {user?.firstName} {user?.middleName}{" "}
+                        {user.lastName}
                       </span>
                     </div>
                     <div>
-                      <span className="text-sm">{follower.username}</span>
+                      <span className="text-sm">{user.username}</span>
                     </div>
                   </div>
                 </div>
@@ -45,7 +48,6 @@ export default function SuggestedFollowing() {
             {/* </Link> */}
           </div>
         ))}
-      </div>
     </div>
   );
 }

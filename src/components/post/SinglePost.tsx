@@ -83,7 +83,6 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
         }
     }
 
-
     // handle for modal of post
     const handlePostModal = (postId: string) => {
         setSelectedPost(postId)
@@ -97,98 +96,98 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
 
     return (
         <>
-                <div key={post._id} className="w-full relative">
-                    <div className="bg-lightWhite p-3 rounded">
-                        {/* Profile and more option */}
-                        <div className="mb-1">
-                            <div className="flex justify-between">
-                                <div className="flex items-center space-x-3">
-                                    <Link
-                                        to={`/profile/${post.authorId.username}/${post.authorId._id}`}
-                                    >
-                                        <Avatar
-                                            sx={{ width: 38, height: 38 }}
-                                            alt={post.authorId.username}
-                                            src={post?.authorId?.avatarUrl}
-                                        />
-                                    </Link>
-                                    <div className="flex flex-col">
-                                        <div className="flex space-x-2">
-                                            <Link
-                                                to={`/profile/${post.authorId.username}/${post.authorId._id}`}
-                                                className="text-sm font-semibold text-black"
-                                            >
-                                                {post?.authorId?.firstName} {post?.authorId?.middleName}{" "}
-                                                {post?.authorId?.lastName}
-                                            </Link>
-                                        </div>
-                                        <p className="text-xs text-slate-600">
-                                            <TimeAgoPost timeStamp={post.createdAt} />
-                                        </p>
+            <div key={post._id} className="w-full relative">
+                <div className="bg-lightWhite p-3 rounded">
+                    {/* Profile and more option */}
+                    <div className="mb-1">
+                        <div className="flex justify-between">
+                            <div className="flex items-center space-x-3">
+                                <Link
+                                    to={`/profile/${post.authorId.username}/${post.authorId._id}`}
+                                >
+                                    <Avatar
+                                        sx={{ width: 38, height: 38 }}
+                                        alt={post.authorId.username}
+                                        src={post?.authorId?.avatarUrl}
+                                    />
+                                </Link>
+                                <div className="flex flex-col">
+                                    <div className="flex space-x-2">
+                                        <Link
+                                            to={`/profile/${post.authorId.username}/${post.authorId._id}`}
+                                            className="text-sm font-semibold text-black"
+                                        >
+                                            {post?.authorId?.firstName} {post?.authorId?.middleName}{" "}
+                                            {post?.authorId?.lastName}
+                                        </Link>
                                     </div>
+                                    <p className="text-xs text-slate-600">
+                                        <TimeAgoPost timeStamp={post.createdAt} />
+                                    </p>
                                 </div>
-                                <div id={`options-${post._id}`}>
-                                    <Tooltip title="Options">
-                                        <IconButton onClick={() => handleOption(post._id)}>
-                                            <MoreVertIcon />
-                                        </IconButton>   
-                                    </Tooltip>
-                                    {selectedPostId === post._id && (
-                                        <PostOptions
-                                            post={post}
-                                            userId={userId}
-                                            isSavedPost={isSavedPost}
-                                            setSelectedPostId={setSelectedPostId}
-                                        />
+                            </div>
+                            <div id={`options-${post._id}`}>
+                                <Tooltip title="Options">
+                                    <IconButton onClick={() => handleOption(post._id)}>
+                                        <MoreVertIcon />
+                                    </IconButton>   
+                                </Tooltip>
+                                {selectedPostId === post._id && (
+                                    <PostOptions
+                                        post={post}
+                                        userId={userId}
+                                        isSavedPost={isSavedPost}
+                                        setSelectedPostId={setSelectedPostId}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {/* Post content */}
+                    <div className="">
+                        <div className="flex">
+                            <div className="my-2">
+                            {post.captionPost.split("\n").map((line, index) => (
+                                <span key={index}>
+                                    {line}
+                                    {index < post.captionPost.split("\n").length - 1 && (
+                                        <br />
                                     )}
-                                </div>
+                                </span>
+                            ))}
                             </div>
                         </div>
-                        {/* Post content */}
-                        <div className="">
-                            <div className="flex">
-                                <div className="my-2">
-                                {post.captionPost.split("\n").map((line, index) => (
-                                    <span key={index}>
-                                        {line}
-                                        {index < post.captionPost.split("\n").length - 1 && (
-                                            <br />
-                                        )}
+                    </div>
+                    <ReactCommentShare post={post} />
+                    <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
+                    {/* react, comment */}
+                    <div className="pt-1">
+                        <div className="w-full flex justify-between">
+                            <div className="w-1/3 flex items-center justify-center space-x-1 relative group rounded-full hover:bg-slate-200 cursor-pointer">
+                                <div className="space-x-2 block h-[26px]">
+                                    <Reactions post={post} />
+                                </div>
+                                <div
+                                    className={`absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1`}
+                                >
+                                    <SelectOneReaction postId={post._id} />
+                                </div>
+                            </div>
+                            <div className="w-1/3 flex items-center justify-center">
+                                <div
+                                    data-dropdown-toggle="mega-menu-dropdown"
+                                    className="w-full flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200"
+                                    onClick={() => handlePostModal(post._id)}
+                                >
+                                    <span className="text-sm font-medium text-slate-500">
+                                    Comment
                                     </span>
-                                ))}
-                                </div>
-                            </div>
-                        </div>
-                        <ReactCommentShare post={post} />
-                        <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
-                        {/* react, comment */}
-                        <div className="pt-1">
-                            <div className="w-full flex justify-between">
-                                <div className="w-1/3 flex items-center justify-center space-x-1 relative group rounded-full hover:bg-slate-200 cursor-pointer">
-                                    <div className="space-x-2 block h-[26px]">
-                                        <Reactions post={post} />
-                                    </div>
-                                    <div
-                                        className={`absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1`}
-                                    >
-                                        <SelectOneReaction postId={post._id} />
-                                    </div>
-                                </div>
-                                <div className="w-1/3 flex items-center justify-center">
-                                    <div
-                                        data-dropdown-toggle="mega-menu-dropdown"
-                                        className="w-full flex items-center justify-center space-x-1 cursor-pointer relative group p-1.5 rounded-full hover:bg-slate-200"
-                                        onClick={() => handlePostModal(post._id)}
-                                    >
-                                        <span className="text-sm font-medium text-slate-500">
-                                        Comment
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </>
     );
 }

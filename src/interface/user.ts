@@ -91,3 +91,14 @@ export interface UserProfileDataDisplay {
     avatarUrl: string,
     coverPhotoUrl: string,
 }
+
+
+export interface UserSearch {
+    _id: string;
+    username: string;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    avatarUrl?: string;
+    coverPhotoUrl?: string;
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useGetUserTodayBirthdayQuery } from '../../features/birthday/birthdayApiSlice';
 import { StreamlineEmojisWrappedGift2 } from '../others/CustomIcons';
 
@@ -11,6 +11,15 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
     const { data: todaysBirthday, error: errorTodaysBirthday, isLoading: isLoadingTodaysBirthday } = useGetUserTodayBirthdayQuery();
 
     let content;
+
+    useEffect(() => {
+      // prevent scrolling when the modal is open
+        document.body.style.overflow = 'hidden';
+        return () => {
+          // restore body scroll behavior when modal is closed
+            document.body.style.overflow = '';
+        };
+    }, []);
     
     if (isLoadingTodaysBirthday){
         content = <div>Loading posts...</div>;

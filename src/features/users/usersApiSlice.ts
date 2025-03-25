@@ -71,6 +71,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['UserInfo'],
         }),
+        searchUser: builder.query({
+            query: (searchTerm) => ({
+                url: `/user/search/user?query=${searchTerm}`,
+                method: "GET",
+            }),
+        }),
+        getSuggestedForYou: builder.query({
+            query: (userId) => ({
+                url: `/user//suggested/${userId}`,
+                method: "GET",
+            }),
+        }),
     }),
 });
 export const { 
@@ -84,6 +96,8 @@ export const {
     useUploadBgPhotoMutation,
     useUpdateUserPersonalDetailsSettingsMutation,
     useUpdateUsernameAndNameMutation,
+    useSearchUserQuery,
+    useGetSuggestedForYouQuery,
 } = usersApiSlice; 
 
 // // creates memoized selector

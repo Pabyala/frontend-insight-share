@@ -46,12 +46,12 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
                         
                         <div className='flex justify-between pl-1'>
                             <div className='flex items-center space-x-2'>
-                                <p className='flex items-center' onClick={() => handleSelectTypeOfReaction('all')}>
+                                <p className='flex items-center cursor-pointer' onClick={() => handleSelectTypeOfReaction('all')}>
                                     All
                                 </p>
                                 { allReaction?.reactions.fire?.length !== 0 && (
                                     <p 
-                                        className='flex items-center' 
+                                        className='flex items-center cursor-pointer' 
                                         onClick={() => handleSelectTypeOfReaction('fire')}
                                     >
                                         <TwemojiFire /> 
@@ -63,7 +63,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
 
                                 { allReaction?.reactions.handsUp?.length !== 0 && (
                                     <p 
-                                        className='flex items-center' 
+                                        className='flex items-center cursor-pointer' 
                                         onClick={() => handleSelectTypeOfReaction('handsUp')}
                                     >
                                         <TwemojiRaisingHands />
@@ -75,7 +75,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
 
                                 { allReaction?.reactions.disLike?.length !== 0 && (
                                     <p 
-                                        className='flex items-center' 
+                                        className='flex items-center cursor-pointer' 
                                         onClick={() => handleSelectTypeOfReaction('disLike')}
                                     >
                                         <AntDesignDislikeFilled />
@@ -87,7 +87,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
 
                                 { allReaction?.reactions.heart?.length !== 0 && (
                                     <p 
-                                        className='flex items-center' 
+                                        className='flex items-center cursor-pointer' 
                                         onClick={() => handleSelectTypeOfReaction('heart')}
                                     >
                                         <NotoOrangeHeart />

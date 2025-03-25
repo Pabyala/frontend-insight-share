@@ -7,10 +7,17 @@ import { useGetFollowersQuery } from "../../features/FollowersFollowing/follower
 import { Link } from "react-router-dom";
 import BeatLoading from "../loading/BeatLoading";
 import ErrorComponent from "../alert/ErrorComponent";
+import { MyFollowers } from "../../interface/followers-type";
 
-export default function FollowersRequestContent() {
+interface FollowersRequestContentProps {
+  getFollowers?: MyFollowers;
+  errorGetFollowers?: any; 
+  isLoadingGetFollowers?: boolean;
+}
 
-  const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery();
+export default function FollowersRequestContent({ getFollowers, errorGetFollowers,isLoadingGetFollowers }: FollowersRequestContentProps) {
+
+  // const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery();
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const dropdownRef = useRef(null);
   const [showAllNotification, setShowAllNotification] = useState<boolean>(false);
@@ -83,7 +90,7 @@ export default function FollowersRequestContent() {
       )}
 
 
-      {!showAllNotification && (getFollowers?.followersYouDontFollowingBack?.length ?? 0) >= 15 && (
+      {!showAllNotification && (getFollowers?.followersYouDontFollowingBack?.length ?? 0) >= 10 && (
         <div className="block text-center px-2 py-2">
           <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
           <button

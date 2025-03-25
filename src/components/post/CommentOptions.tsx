@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useAddCommentToPostMutation, useDeleteAddReplyToCommentMutation, useDeleteCommentToPostMutation, useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
-import { FlatColorIconsFullTrash, FluentColorDocumentEdit20 } from '../others/CustomIcons';
+import { FlatColorIconsFullTrash, FluentColorDocumentEdit20, FluentColorWarning20 } from '../others/CustomIcons';
 import ConfirmAlert from '../alert/ConfirmAlert';
 import { toast } from 'react-toastify';
 import { showToast } from '../utils/ToastUtils';
@@ -70,6 +70,10 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
         setIsOpenCommentOption(false)
     }
 
+    const handleReportComment = () => {
+        showToast("Ongoing development", "warning")
+    }
+
     return (
         <div  className='fixed inset-0 z-51 drop-shadow-2xl flex items-center justify-center w-full h-full overflow-y-auto'>
             <div className='relative w-fit'>
@@ -121,6 +125,15 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
                                 <span>Delete comment</span>
                             </span>
                         )}
+                        <span 
+                            className='text-sm flex items-center space-x-2 p-1 hover:bg-gray-200 rounded cursor-pointer' 
+                            onClick={handleReportComment}
+                        >
+                            <span className='text-[20px]'>
+                                <FluentColorWarning20/>
+                            </span>
+                            <span>Report</span>
+                        </span>
                     </div>
                 </div>
             </div>

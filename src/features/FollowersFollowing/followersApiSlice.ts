@@ -24,10 +24,18 @@ export const followersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Following', 'Followers'],
         }),
+        unfollowUser: builder.mutation<FollowedUser, string>({
+            query: (userIdToUnFollow: string) => ({
+                url: `user/${userIdToUnFollow}/un-follow`, 
+                method: 'POST',
+            }),
+            invalidatesTags: ['Following', 'Followers'],
+        }),
     }),
 });
-export const { 
+export const {
     useGetFollowersQuery,
     useGetFollowingQuery,
     useFollowUserMutation,
-} = followersApiSlice; 
+    useUnfollowUserMutation,
+} = followersApiSlice;
