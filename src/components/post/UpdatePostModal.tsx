@@ -14,11 +14,9 @@ interface UpdatePostPropsInterface {
 
 export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPostId }: UpdatePostPropsInterface) {
 
-    const { data: post, error: errorPost, isLoading: isLoadingPost } = useGetPostByIdQuery(selectedPostId!, {
+    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPostId!, {
         skip: !selectedPostId, // skip the query if postId is falsy (undefined/null).
     }); 
-    console.log("SELECTED POST ID: ", selectedPostId)
-    console.log("SELECTED POST: ", post)
 
     // const { _id, captionPost, authorId } = selectedPostData || {}
     const [updatePost] = useUpdatePostMutation();
@@ -52,6 +50,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
             await updatePost({ postId: post?._id, updatedPost: { captionPost: caption } }).unwrap();
             onClose();
             setSelectedPostId('')
+            refreshPost();
         } catch (error) {
             console.error('Failed to update the post:', error);
         }
@@ -127,7 +126,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
                                 disabled={isBtnDisable}
                                 className={`bg-blue-500 w-full p-2.5 text-sm font-medium rounded text-white  ${isBtnDisable ? 'cursor-not-allowed' : 'hover:bg-blue-600'}`}
                             >
-                                Post
+                                Update
                             </button>
                         </div>
                 </div>

@@ -24,20 +24,17 @@ export default function SignIn() {
 
     const from = location.state?.from?.pathname || '/'; 
     const handleSubmit = async () => {
-
         if(email === '' || password === '') return alert('Email and password required')
         try {
             const userData = await login({email, password}).unwrap()
-            console.log("userData", userData)
             dispatch(setCredentials({ 
                 email: userData.email, 
                 accessToken: userData.accessToken,
                 id: userData._id
             }));
 
-            // Store the full user data in Redux once available
+            // store the full user data in Redux once available
             if (userData) {
-                console.log('Full user details:', userData);
                 dispatch(setUserDetails(userData));
             }
 
@@ -64,75 +61,75 @@ export default function SignIn() {
     }, [email, password])
 
     return (
-        <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100 pb-5">
-            <div className='container mx-auto'>
-            <div className="w-full flex flex-col justify-center mb-8">
-                <h2 className="text-2xl text-center font-bold text-blue-600 lg:text-3xl lg:mb-1">Insight Share</h2>
-                <p className="text-base text-gray-600 w-f text-center">
-                    Connect with friends and the world around you on Insight Share.
-                </p>
-            </div>
+        <div className='bg-gradient-to-b from-blue-200 to-white'>
+            <div className="w-full flex flex-col items-center justify-center min-h-screen  pb-5 bg-white/70 backdrop-blur-xl shadow-lg">
+                <div className='container mx-auto'>
+                    <div className="w-full flex flex-col justify-center mb-8">
+                        <h2 className="text-2xl text-center font-bold text-blue-600 lg:text-3xl lg:mb-1">Insight Share</h2>
+                        <p className="text-base text-gray-600 w-f text-center">
+                            Connect with friends and the world around you on Insight Share.
+                        </p>
+                    </div>
 
-            <div className="bg-white mx-auto p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
-                <input
-                    value={email}
-                    type="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email or Phone Number"
-                    className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
-                />
-                <div className='w-full relative'>
-                    <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
-                    />
-                    <button
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200"
-                    >
-                        <span>
-                            {password.length !== 0 && (
-                                showPassword ? <MdiEye/> : <MdiEyeOff/>
-                            )}
-                        </span>
-                    </button>
+                    <div className="bg-white mx-auto p-6 rounded-lg shadow-lg w-full max-w-md space-y-4">
+                        <input
+                            value={email}
+                            type="email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email or Phone Number"
+                            className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                        />
+                        <div className='w-full relative'>
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Password"
+                                className="text-sm w-full p-2.5 border border-gray-300 rounded focus:ring-customGray focus:bg-customGray focus:outline-none"
+                            />
+                            <button
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200"
+                            >
+                                <span>
+                                    {password.length !== 0 && (
+                                        showPassword ? <MdiEye/> : <MdiEyeOff/>
+                                    )}
+                                </span>
+                            </button>
+                        </div>
+                        <button 
+                            onClick={handleSubmit}
+                            disabled={disableBtn}
+                            // Log In
+                            className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn || isLoading ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
+                            {isLoading || isLoadingResendVerificationCode ? 'Logging in...' : 'Log In'}
+                        </button>
+
+                        <div className="text-center mt-4">
+                            <Link to='/reset-password-verify' className="text-blue-600 cursor-pointer text-sm">Forgot Password?</Link>
+                        </div>
+                        <label htmlFor="persist">
+                            <input 
+                                type="checkbox" 
+                                className='form_checkbox'
+                                id='persist'
+                                onChange={handleToggleCheck}
+                                checked={persist}
+                            />
+                        </label>
+
+                        <hr className="my-6" />
+
+                        <div className='flex justify-center items-center text-center'>
+                            <Link 
+                                to='/register' 
+                                className="w-full text-sm bg-green-500 text-white p-2.5 rounded font-semibold hover:bg-green-600 hover:text-white transition-colors">
+                                Create New Account
+                            </Link>
+                        </div>
+                    </div>
                 </div>
-                <button 
-                    onClick={handleSubmit}
-                    disabled={disableBtn}
-                    // className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
-                    // Log In
-                    className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn || isLoading ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
-                    {isLoading || isLoadingResendVerificationCode ? 'Logging in...' : 'Log In'}
-                </button>
-
-                <div className="text-center mt-4">
-                    <Link to='/reset-password-verify' className="text-blue-600 cursor-pointer text-sm">Forgot Password?</Link>
-                    {/* <Link to='/'>Page</Link> */}
-                </div>
-                <label htmlFor="persist">
-                    <input 
-                        type="checkbox" 
-                        className='form_checkbox'
-                        id='persist'
-                        onChange={handleToggleCheck}
-                        checked={persist}
-                    />
-                </label>
-
-                <hr className="my-6" />
-
-                <div className='flex justify-center items-center text-center'>
-                    <Link 
-                        to='/register' 
-                        className="w-full text-sm bg-green-500 text-white p-2.5 rounded font-semibold hover:bg-green-600 hover:text-white transition-colors">
-                        Create New Account
-                    </Link>
-                </div>
-            </div>
             </div>
         </div>
     );
