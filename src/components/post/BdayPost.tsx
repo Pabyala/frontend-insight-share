@@ -1,7 +1,7 @@
 export default function BdayPost({myName}: { myName: string | undefined }) {
 
     if (!myName) {
-        return <div>Name not available</div>;
+        return <div className="text-sm">Name not available</div>;
     }
 
     return (

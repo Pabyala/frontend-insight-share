@@ -5,6 +5,7 @@ import ModalPost from './ModalPost';
 import 'react-toastify/dist/ReactToastify.css';
 import SinglePost from './SinglePost';
 import socketSetup from '../../socket-io/socket-setup';
+import BeatLoadingModal from '../loading/BeatLoadingModal';
 
 interface PostsProps {
     posts: Post[]; 
@@ -29,7 +30,7 @@ export default function Posts({ posts, isLoading, error, refetch }: PostsProps) 
         })
     }, [])
 
-    if (isLoading) return <div className='text-sm'>Loading posts...</div>;
+    // if (isLoading) return <BeatLoadingModal/>;
     if (error) return <div className='text-sm'>Error loading posts</div>;
     if (!posts || posts.length === 0) return <div className='text-sm bg-white p-3'>No posts available</div>;
 

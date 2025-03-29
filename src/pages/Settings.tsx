@@ -11,8 +11,8 @@ export default function Settings() {
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const [openTab, setOpenTab] = useState<number>(1);
 
-    if (isUserInfoLoading) return <div>Loading...</div>;
-    if (userInfoError) return <div>Error fetching posts</div>;
+    if (isUserInfoLoading) return <div className='text-sm'>Loading...</div>;
+    if (userInfoError) return <div className='text-sm'>Error fetching posts</div>;
 
     return (
         <div className='flex flex-col pb-5'>
@@ -22,7 +22,7 @@ export default function Settings() {
                     userInfo={userInfo}
                 />
                 <div className='space-y-1.5 lg:space-y-3 lg:flex-row lg:justify-between'>
-                    <p className='text-base font-medium pt-1.5 lg:text-lg'>Account Setting</p>
+                    <p className='text-sm font-medium pt-1.5 md:text-base lg:text-lg'>Account Setting</p>
                     <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
                     <div className='flex flex-col space-y-2 w-full justify-between lg:flex-row lg:space-y-0'>
                         <div className='w-full h-fit bg-white rounded p-2 lg:w-[35%] lg:p-3'>

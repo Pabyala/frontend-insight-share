@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
@@ -7,10 +6,7 @@ import { useGetUserQuery } from '../features/users/usersApiSlice'
 
 export default function Following() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-
-    if (isUserInfoLoading) return <div>Loading...</div>;
-    if (userInfoError) return <div>Error fetching user data</div>;
+    const { data: userInfo } = useGetUserQuery();
 
     return (
         <div className='flex flex-col pb-5'>

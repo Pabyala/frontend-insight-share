@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { DropdownIcon, FeArrowRight, MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill, UpdownIcon } from '../../others/CustomIcons'
+import { MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons'
 import { v4 as uuidv4 } from 'uuid';
-import CustomDatePicker from '../../others/CustomDatePicker';
 import { useGetUserQuery, useUpdateUserPersonalDetailsSettingsMutation } from '../../../features/users/usersApiSlice';
 import { UserDetails } from '../../../interface/user';
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidUpArrow } from "react-icons/bi";
 import { dropdownValues, dropdownValuesStatus } from '../../../data/dropdown-values';
 import ConfirmAlert from '../../alert/ConfirmAlert';
+import { showToast } from '../../utils/ToastUtils';
 
 interface SocialLink {
     urlId: string;
@@ -16,7 +16,7 @@ interface SocialLink {
 
 export default function SettingsPersonalDetails() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refetchUserInfo } = useGetUserQuery();
+    const { data: userInfo, refetch: refetchUserInfo } = useGetUserQuery();
     console.log("CURRENT USER INFO: ", userInfo)
     // const [updateUserDetails] = useUpdateUserDetailsMutation();
     const [updateUserPersonalDetails] = useUpdateUserPersonalDetailsSettingsMutation();
@@ -27,7 +27,7 @@ export default function SettingsPersonalDetails() {
         locFrom: '',
         companyName: '',
         position: '',
-        birthday: '',
+        dateOfBirth: '',
         gender: '',
         phoneNumber: '',
         status: '',
@@ -54,7 +54,7 @@ export default function SettingsPersonalDetails() {
                 locFrom: userInfo.locFrom || '',
                 companyName: userInfo.workAt?.companyName || '',
                 position: userInfo.workAt?.position || '',
-                birthday: userInfo.dateOfBirth || '',
+                dateOfBirth: userInfo.dateOfBirth || '',
                 gender: userInfo.gender || '',
                 phoneNumber: userInfo.phoneNumber || '',
                 status: userInfo.userStatus || '',
@@ -68,7 +68,7 @@ export default function SettingsPersonalDetails() {
                 locFrom: userInfo.locFrom || '',
                 companyName: userInfo.workAt?.companyName || '',
                 position: userInfo.workAt?.position || '',
-                birthday: userInfo.dateOfBirth || '',
+                dateOfBirth: userInfo.dateOfBirth || '',
                 gender: userInfo.gender || '',
                 phoneNumber: userInfo.phoneNumber || '',
                 status: userInfo.userStatus || '',
@@ -122,7 +122,6 @@ export default function SettingsPersonalDetails() {
     
     const handleUpdate = (urlId: string) => {
         setIsUpdateLink(true)
-        console.log("Id that i update", urlId)
         const updateSocials = mySocials.find(soc => soc.urlId === urlId);
         if (updateSocials) {
             setNewSocialUrl(updateSocials.url);
@@ -137,22 +136,16 @@ export default function SettingsPersonalDetails() {
     }
 
     const handleSaveDetails = async () => {
-        // const updatedUserDetails = {
-        //     ...userDetailsInfo,
-        //     socials: mySocials,
-        // };
-        // console.log("DATA1: ", userDetailsInfo)
-        // console.log("DATA2: ", updatedUserDetails)
         try {
             const updatedUserDetails = {
                 ...userDetailsInfo,
+                dateOfBirth: userDetailsInfo.dateOfBirth,
                 socials: mySocials,
             };
-            console.log(userDetailsInfo)
             await updateUserPersonalDetails(updatedUserDetails).unwrap();
             refetchUserInfo();
         } catch (error) {
-            console.log(error)
+            showToast("Something went wrong. Please try again.", "error")
         }
         setShowConfirmAlert(false);
     }
@@ -291,8 +284,11 @@ export default function SettingsPersonalDetails() {
                                     className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
                                     type="date" 
                                     placeholder='Date'
-                                    value={userInfo?.dateOfBirth || ''}
-                                    name="" 
+                                    onChange={(e) => setUserDetailsInfo(prev => (
+                                        { ...prev, dateOfBirth: e.target.value }
+                                    ))}
+                                    value={userDetailsInfo.dateOfBirth}
+                                    name=""
                                     id=""
                                 />
                             </div>
@@ -420,7 +416,7 @@ export default function SettingsPersonalDetails() {
                                 value={newSocialUrl}
                                 onChange={(event) => setNewSocialUrl(event.target.value)}
                                 type="text" 
-                                placeholder='Enter your social'
+                                placeholder='Enter your social link'
                                 className='p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm w-[77%]'
                             />
                             {isUpdateLink ? (

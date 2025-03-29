@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ProfileListOfFollowers from './ProfileListOfFollowers';
-import { AntDesignSettingFilledWhite, GridiconsCamera, MdiPen } from '../../others/CustomIcons';
+import { AntDesignSettingFilledWhite, MdiPen } from '../../others/CustomIcons';
 import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
@@ -9,6 +9,7 @@ import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
 import { useFollowUserMutation, useGetFollowersQuery, useUnfollowUserMutation } from '../../../features/FollowersFollowing/followersApiSlice';
 import socketSetup from '../../../socket-io/socket-setup';
+import BeatLoadingModal from '../../loading/BeatLoadingModal';
 
 interface ProfileHeaderProps {
     userInfo: UserInfo | undefined;
@@ -43,19 +44,18 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
         }
     }
 
-    if (isUserInfoLoading) return <div>Loading...</div>;
+    // if (isUserInfoLoading) return <BeatLoadingModal/>;
     if (userInfoError) return <div>Error fetching posts</div>;
 
     return (
         <div className='w-full mx-auto flex flex-col bg-white rounded'>
             {/* Background Photo */}
             <div className='w-full h-[260px] overflow-hidden relative lg:h-[360px] xl:h-[463px] lg:w-full rounded'>
-                {/* <div className='w-full'> */}
-                    <img 
-                        src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
-                        alt="Background"
-                        className='w-full h-full object-cover rounded'
-                    />
+                <img 
+                    src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
+                    alt="Background"
+                    className='w-full h-full object-cover rounded'
+                />
             </div>
 
             {/* Profile Image and Details */}
@@ -63,11 +63,11 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                 <div className='flex flex-col items-center lg:flex-row lg:items-end lg:space-x-3'>
                     {/* Profile Image */}
                     <div className='w-[128px] h-[128px] rounded-full border-4 border-white lg:w-[168px] lg:h-[168px] relative bg-zinc-600 overflow-hidden'>
-                            <img 
-                                src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
-                                alt="Profile"
-                                className='w-full h-full object-cover'
-                            />
+                        <img 
+                            src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
+                            alt="Profile"
+                            className='w-full h-full object-cover'
+                        />
                     </div>
 
                     {/* Name and Other Details */}
@@ -78,11 +78,6 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                             <span> {userInfo?.lastName}</span>
                         </p>
                         <p className='text-sm text-black lg:text-base italic'>@{userInfo?.username}</p>
-                        <p className='text-sm text-gray-600 lg:text-base'>
-                            {/* {followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'} */}
-
-                        </p>
-                        {/* <p className='text-sm text-gray-600 lg:text-base'>{followersData?.totalFollowers ?? 0} {followersData?.totalFollowers === 1 ? 'follower' : 'followers'}</p> */}
                         <ProfileListOfFollowers
                             currentUserId={currentUserId}
                         />
@@ -99,7 +94,7 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                                 <span className='text-[18px]'>
                                     <MdiPen/>
                                 </span>
-                                <span className='text-sm font-medium'>Edit Profile</span>
+                                <span className='text-sm font-normal'>Edit Profile</span>
                             </button>
                             <Link 
                                 to={'/settings'}

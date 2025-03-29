@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { userGender } from "../data/app-data";
 import { Link, useNavigate } from "react-router-dom";
 import { MdiEye, MdiEyeOff } from "../components/others/CustomIcons";
+import { showToast } from "../components/utils/ToastUtils";
 
 export default function Register() {
 
@@ -40,11 +41,9 @@ export default function Register() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(isPasswordMatch(formData.password, confirmPassword)) {
-      console.log("Password is match")
-      console.log(formData);
       navigate('/login')
     } else {
-      console.log("Password not match")
+      showToast("Password not match", "error")
     }
     
   };

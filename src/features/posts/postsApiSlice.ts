@@ -1,5 +1,4 @@
 import { apiSlice } from '../../app/api/apiSlice';
-import { GetAllPostsByUserResponse, SavedPosts } from '../../interface/posts-type';
 import { AddPost, AllUserReactions, Post, TimelinePosts } from '../../interface/your-posts';
 
 // add post
@@ -10,14 +9,6 @@ interface RequiredPost {
 
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        // getUserPosts: builder.query<Post[], string>({
-        //     query: (userId) => `/post/your-post/${userId}`, // Update endpoint as needed
-        //     transformResponse: (response: PostsOfUser) => response.allPosts, // Update based on the response structure
-        // }),
-        // getUserAllPosts: builder.query<Post[], string>({
-        //     query: () => '/post/your-post', // Update endpoint as needed
-        //     transformResponse: (response: GetAllPostsByUserResponse) => response.yourAllPost,
-        // }),
         getUserAllPosts: builder.query<TimelinePosts, string | void>({
             // query: () => '/post/my-post', 
             query: (userId) => {
@@ -26,7 +17,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 return url;
             },
             transformResponse: (response: TimelinePosts) => {
-                console.log("API Response your all posts:", response);
                 return response}
             ,
             providesTags: ['UserPosts'],
@@ -34,7 +24,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         getPostsForTimeline: builder.query<TimelinePosts, void>({
             query: () => '/post/timeline', 
             transformResponse: (response: TimelinePosts) => {
-                console.log("API Response your timeline posts:", response);
                 return response
             },
             providesTags: ['TimelinePosts'],
@@ -65,7 +54,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         getSavedPost: builder.query<TimelinePosts, void>({
             query: () => '/post/saved', 
             transformResponse: (response: TimelinePosts) => {
-                console.log("API Response your timeline posts:", response);
                 return response
             },
             providesTags: ['SavedPost'],
@@ -92,16 +80,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['SavedPost', 'UserPosts', 'TimelinePosts', 'Notification'],
         }),
-        // getReactionOfPost: builder.query({
-        //     query: (postId: string) => ({
-        //         url: `/post/${postId}/reactions`,
-        //         method: 'GET'
-        //     })
-        // }),
         getPostById: builder.query<Post, string>({
             query: (postId) => `/post/my-post/${postId}`, 
             transformResponse: (response: Post) => {
-                console.log("API Response your timeline posts:", response);
                 return response;
             },
         }),
@@ -169,12 +150,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: { userId },
             }),
         }),
-        // getAllUserWhoReactToPost: builder.query<AllUserReactions, { postId: string }>({
-        //     query: ({ postId }) => ({
-        //         url: `/post/${postId}/reactions`,
-        //         method: 'GET',
-        //     }),
-        // }),
         getAllUserWhoReactToPost: builder.query<AllUserReactions, { postId: string }>({
             query: ({ postId }) => `/post/${postId}/reactions`, 
             transformResponse: (response: AllUserReactions) => {
@@ -186,8 +161,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { 
-    // useGetUserPostsQuery,
-    // useLazyGetUserAllPostsQuery,
     useGetUserAllPostsQuery,
     useGetPostsForTimelineQuery,
     useAddPostMutation,
@@ -197,19 +170,15 @@ export const {
     useUnsavedPostMutation,
     useGetSavedPostQuery,
     useReactPostMutation,
-    // useGetReactionOfPostQuery,
     useGetPostByIdQuery,
     useAddCommentToPostMutation,
     useDeleteCommentToPostMutation,
     useUpdateCommentToPostMutation,
-
     useAddReplyToCommentMutation,
     useUpdateAddReplyToCommentMutation,
     useDeleteAddReplyToCommentMutation,
-
     useAddOrRemoveHeartToCommentMutation,
     useAddOrRemoveHeartToReplyMutation,
-
     useGetAllUserWhoReactToPostQuery,
 } = usersApiSlice;
 

@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import { Avatar } from "@mui/material";
 import PostTextArea from "./PostTextarea";
-import { useSelector } from "react-redux";
-// import { useGetUserDataQuery } from "../../features/auth/authApiSlice";
-import { selectCurrentToken } from "../../features/auth/authSlice";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
-import { useAddPostMutation } from "../../features/posts/postsApiSlice";
 
 export default function CreatePost() {
     const [openPostTextAre, setOpenPostTextArea] = useState<boolean>(false);
 
-    const token = useSelector(selectCurrentToken)
-    const { data: userInfo, error: errorUserInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
-    // const { data: createPost, error: errorCreatePost, isLoading: isLoadingCreatePost } = useAddPostMutation();
-    // const [addPost] = useAddPostMutation();
+    const { data: userInfo } = useGetUserQuery();
     
     const toggleShowPostTextArea = () => {
         setOpenPostTextArea(!openPostTextAre);
@@ -24,7 +17,7 @@ export default function CreatePost() {
                 <div className="flex" style={{ margin: "auto" }}>
                     <Avatar
                         sx={{ width: 38, height: 38 }}
-                        alt="Remy Sharp"
+                        alt={userInfo?.username}
                         src={userInfo?.avatarUrl}
                     />
                 </div>

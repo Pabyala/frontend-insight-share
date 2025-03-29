@@ -6,7 +6,6 @@ export const birthdayApiSlice = apiSlice.injectEndpoints({
         getUserTodayBirthday: builder.query<TodaysBday, void>({
             query: () => '/birthday/today-birthday', 
             transformResponse: (response: TodaysBday) => {
-                console.log("API Response your today's birthday:", response);
                 return response}
             ,
             providesTags: ['UserBday'],

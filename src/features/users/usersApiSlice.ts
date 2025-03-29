@@ -1,8 +1,6 @@
-import { createSelector } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 import { AllUsersResponse, User } from "../../interface/types";
 import { Followers, UserDetails, UserInfo } from "../../interface/user";
-import { FetchBaseQueryError, fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -89,7 +87,6 @@ export const {
     useGetUsersQuery, 
     useGetUserQuery, 
     useGetUserByIdQuery,
-    // useGetUserFollowersQuery,
     useUpdateUserDetailsMutation,
     useUpdateUserProfilePictureMutation,  
     useUploadProfilePhotoMutation,  
@@ -99,13 +96,3 @@ export const {
     useSearchUserQuery,
     useGetSuggestedForYouQuery,
 } = usersApiSlice; 
-
-// // creates memoized selector
-// const selectUsersData = createSelector(
-//     selectUsersResult,
-//     usersResult = usersResult.data // normalized stat object with ids and entities
-// )
-
-// export const {
-//     selectAll: selectAll
-// }

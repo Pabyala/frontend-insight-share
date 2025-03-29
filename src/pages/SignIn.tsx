@@ -6,10 +6,11 @@ import { useDispatch } from 'react-redux';
 import { setCredentials, setUserDetails } from '../features/auth/authSlice';
 import usePersist from '../hooks/usePersist';
 import { useResendVerificationCodeMutation } from '../features/verify-email-reset-password/verify-email-reset-password';
+import { showToast } from '../components/utils/ToastUtils';
 
 export default function SignIn() {
 
-    const [resendVerificationCode, { isLoading: isLoadingResendVerificationCode, isError: isErrorResendVerificationCode, error: errorResendVerificationCode }] = useResendVerificationCodeMutation();
+    const [resendVerificationCode, { isLoading: isLoadingResendVerificationCode }] = useResendVerificationCodeMutation();
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('');
@@ -47,7 +48,7 @@ export default function SignIn() {
             }
             navigate(from, { replace: true });
         } catch (error) {
-            console.log(error)
+            showToast("Something went wrong. Please try again.", "error")
         }
         
     }

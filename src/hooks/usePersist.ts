@@ -4,7 +4,7 @@ export default function usePersist() {
     const [persist, setPersist] = useState<boolean>(() => {
         const storedPersist = localStorage.getItem("persist");
         // check if a value found in localStorage, return value true or false, else false
-        return storedPersist ? JSON.parse(storedPersist) : false; 
+        return storedPersist ? JSON.parse(storedPersist) : true; 
     });
 
     useEffect(() => {

@@ -1,44 +1,37 @@
 import React, { useState } from 'react'
-import { useFollowUserMutation, useGetFollowersQuery } from '../../features/FollowersFollowing/followersApiSlice'
+import { useGetFollowersQuery } from '../../features/FollowersFollowing/followersApiSlice'
 import DefaultImg from '../../asset/DefaultImg.jpg';
-import { notification } from '../../data/dummy-data';
 import { MaterialSymbolsMore } from '../others/CustomIcons';
 
 export default function FollowerList() {
-    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery()
-    console.log("My followers", getFollowers)
-    const [followUser] = useFollowUserMutation();
+    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers } = useGetFollowersQuery()
+    // const [followUser] = useFollowUserMutation();
 
     const myFollowers = getFollowers?.allFollowers
     const totalFollowers = getFollowers?.totalFollowers
     const myFollowersYouDontFollowingBack = getFollowers?.followersYouDontFollowingBack
     const totalFollowersYouDontFollowingBack = getFollowers?.totalOfFollowersYouDontFollowingBack
 
-    const followers = notification
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showAllFollowers, setShowAllFollowers] = useState<boolean>(false);
 
     const follower = showAllFollowers ? myFollowersYouDontFollowingBack : myFollowers
-    console.log("Show all: ", follower)
 
-    const handleFollowedUser = async (userIdToFollow: string) => {
-        console.log("Author id: ", userIdToFollow)
-        if(!userIdToFollow) return
-        try {
-            await followUser(userIdToFollow).unwrap();
-        } catch (error) {
-            console.log(error)
-        }
-    }  
+    // const handleFollowedUser = async (userIdToFollow: string) => {
+    //     if(!userIdToFollow) return
+    //     try {
+    //         await followUser(userIdToFollow).unwrap();
+    //     } catch (error) {
+    //         showToast("Something went wrong. Please try again.", "error")
+    //     }
+    // }  
 
     const handleShowModal = (type: string) => {
         if(!type) return
         if(type === 'Follower'){
-            console.log("Show all follower")
             setShowModal(!showModal)
             setShowAllFollowers(false)
         } else {
-            console.log("Show all user you dont followed back")
             setShowModal(!showModal)
             setShowAllFollowers(true)
         }

@@ -15,6 +15,8 @@ import ErrorComponent from "../alert/ErrorComponent";
 import { useGetFollowersQuery } from "../../features/FollowersFollowing/followersApiSlice";
 import { Avatar } from "@mui/material";
 import { UserSearch } from "../../interface/user";
+import InsightShareLogo from '../../asset/Insight Share.png'
+import SuggestedForYou from "../modals/SuggestedForYou";
 
 export default function Navbar() {
 
@@ -22,10 +24,10 @@ export default function Navbar() {
     const { data: getNotification, error: getNotificationError, isLoading: isGetNotificationLoading, refetch } = useGetNotificationQuery(userInfo?._id ?? "", {
         skip: !userInfo?._id, // Prevent calling API until `userId` is available
     });
-    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery();
+    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers } = useGetFollowersQuery();
     const [searchTerm, setSearchTerm] = useState("");
 
-    const { data: users, isLoading, refetch: refreshUser } = useSearchUserQuery(searchTerm, {
+    const { data: users, isLoading } = useSearchUserQuery(searchTerm, {
         skip: searchTerm.length < 1, // Skip fetching if input is empty
     });
 
@@ -34,6 +36,7 @@ export default function Navbar() {
     const [showNotificationMenu, setShowNotificationMenu] = useState<boolean>(false);
     const [showProfileMenu, setShowProfileMenu] = useState<boolean>(false);
     const [showBdayListModal, setShowBdayListModal] = useState<boolean>(false);
+    const [showSuggestedForYou, setShowSuggestedForYou] = useState(false)
 
     useEffect(() => {
             console.log('SOCKET IO', socketSetup)
@@ -61,11 +64,13 @@ export default function Navbar() {
                 console.log(follow)
                 refetch();
             })
-    }, [])
+    }, [refetch])
 
     const followerRef = useRef<HTMLDivElement>(null);
     const notificationRef = useRef<HTMLDivElement>(null);
     const profileRef = useRef<HTMLDivElement>(null);
+
+    const unreadCount = getNotification?.notifications?.filter(notif => !notif.isRead).length || 0;
 
     const handleShowFollower = () => {
         setShowFollowerMenu(!showFollowerMenu);
@@ -116,7 +121,13 @@ export default function Navbar() {
                 {/* logo and search */}
                 <div className='flex items-center space-x-2 md:space-x-3'>
                     <div className="text-black text-xl font-bold">
-                        <Link to='/' className="text-bas">Logo</Link>
+                        <Link to='/' className="text-bas">
+                        <img 
+                            src={InsightShareLogo} 
+                            alt="Insight Share Logo" 
+                            className="w-auto h-[35px] rounded" 
+                        />
+                        </Link>
                     </div>
                     {/* main div */}
                     <div className="relative flex flex-col items-center px-2 w-[220px] md:w-[300px]">
@@ -227,14 +238,15 @@ export default function Navbar() {
                                     <FluentEmojiBell/>
                                 </span>
                             </button>
-                            {getNotification?.notifications.length != 0 && (
+                            {unreadCount !== 0 ?
                                 <span className="absolute top-0.5 right-0.5 grid min-h-[18px] min-w-[18px] translate-x-2/4 -translate-y-2/4 place-items-center rounded-full bg-red-500 p-0.5 text-[12px] font-medium leading-none text-white content-['']">
-                                {getNotification?.notifications.length}
-                                </span>
-                            )}
+                                    {unreadCount}
+                                </span> : ''
+                            }
                             {showNotificationMenu && (  
                                 <NotificationContent
                                     getUserNotification={getNotification?.notifications || []}
+                                    refetch={refetch}
                                 />
                             )}
                         </div>
@@ -247,7 +259,7 @@ export default function Navbar() {
                         >
                             <div className="cursor-pointer" >
                                 <img
-                                    src={userInfo?.avatarUrl == '' ? DefaultImg : userInfo?.avatarUrl}
+                                    src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
                                     alt={userInfo?.username}
                                     className="relative inline-block h-[33px] w-[33px] !rounded-full object-cover object-center"
                                 />
@@ -255,6 +267,7 @@ export default function Navbar() {
                             {showProfileMenu && (
                                 <SubmenuProfile
                                     setShowBdayListModal={setShowBdayListModal}
+                                    setShowSuggestedForYou={setShowSuggestedForYou}
                                 />
                             )}
                         </div>
@@ -263,6 +276,9 @@ export default function Navbar() {
             </div>
             {showBdayListModal && (
                 <BirthdayListModal setShowBdayListModal={setShowBdayListModal}/>
+            )}
+            {showSuggestedForYou && (
+                <SuggestedForYou setShowSuggestedForYou={setShowSuggestedForYou}/>
             )}
         </div>
     )

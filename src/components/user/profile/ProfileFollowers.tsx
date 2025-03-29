@@ -32,9 +32,9 @@ export default function ProfileFollowers({ currentUserId }: ProfileFollowersProp
     return (
         <div className='bg-white rounded p-3 space-y-2'>
             <div className='px-1 flex justify-between'>
-                <p className='text-base font-semibold'>Followers</p>
-                <p className='text-base'>
-                    <Link to='/' className='text-sm text-[#0866FF]'>See all followers</Link>
+                <p className='text-sm font-semibold md:text-base'>Followers</p>
+                <p className='text-sm'>
+                    <Link to='/' className='text-sm text-[#0866FF] md:text-base'>See all followers</Link>
                 </p>
             </div>
             <div className="grid grid-cols-3 gap-4 md:grid-cols-4 md:gap-6 lg:gap-3 lg:grid-cols-3">

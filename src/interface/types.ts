@@ -9,7 +9,6 @@ export interface User {
     dateOfBirth: string;
     avatarUrl?: string; // Optional fields
     coverPhotoUrl?: string; // Optional fields
-    // Add other fields as needed
 }
 
 export interface AllUsersResponse {
@@ -49,14 +48,6 @@ export interface PostsOfUser {
 
 
 
-
-
-
-
-
-
-
-
 // types.ts
 export interface Reaction {
     like: string[];
@@ -85,5 +76,4 @@ export interface Post {
     __v: number;
 }
 
-// Assuming UserPost should extend Post
 export type UserPost = Post;

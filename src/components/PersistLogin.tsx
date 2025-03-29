@@ -4,6 +4,7 @@ import { selectCurrentToken } from '../features/auth/authSlice';
 import usePersist from '../hooks/usePersist';
 import { useRefreshTokenQuery } from '../features/auth/authApiSlice';
 import { Link, Outlet } from 'react-router-dom';
+import BeatLoadingModal from './loading/BeatLoadingModal';
 
 export default function PersistLogin() {
     const [persist] = usePersist();
@@ -20,7 +21,6 @@ export default function PersistLogin() {
     useEffect(() => { 
         // if query success, update the isRefreshed
         if (isSuccess) {
-            console.log('Refresh token verified successfully');
             setIsRefreshed(true);
         }
         // if query is field/error
@@ -35,7 +35,7 @@ export default function PersistLogin() {
             return <Outlet />;
         // if loading is true, refresh token is still in progress
         } else if (isLoading) {
-            return
+            return <BeatLoadingModal/>
         // if has error during refresh token process
         } else if (isError) {
             return (

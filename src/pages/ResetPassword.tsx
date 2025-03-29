@@ -3,10 +3,11 @@ import { useResetPasswordMutation } from "../features/verify-email-reset-passwor
 import { useNavigate } from "react-router-dom";
 import SuccessAlert from "../components/alert/SuccessAlert";
 import { FluentColorWarning20, SolarBillCheckBold } from "../components/others/CustomIcons";
+import { showToast } from "../components/utils/ToastUtils";
 
 export default function ResetPassword() {
 
-    const [resetPassword, { isLoading: isLoadingResetPassword, isError: isErrorResetPassword, error: errorResetPassword }] = useResetPasswordMutation();
+    const [resetPassword, { isLoading: isLoadingResetPassword }] = useResetPasswordMutation();
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('')
     const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -15,7 +16,7 @@ export default function ResetPassword() {
 
     const handleSendCode = async () => {
         if (!email) {
-            alert("Error: Email is required.");
+            showToast("Email is required.", "error")
             return;
         }
 
@@ -25,7 +26,6 @@ export default function ResetPassword() {
             setMessage('Congratulations! Your account is verified.')
             // show alert side
         } catch (error: any) {
-            console.error("Error resending verification email:", error);
             setMessage(error?.data?.message)
             setTypeOfError('errorSendEmail')
         }
@@ -46,8 +46,8 @@ export default function ResetPassword() {
     }
 
     return (
-        <>
-            <div className="flex items-center justify-center w-full h-screen">
+        <div className="bg-gradient-to-b from-blue-200 to-white">
+            <div className="flex items-center justify-center w-full h-screen bg-white/70 backdrop-blur-xl shadow-lg">
                 <div className="p-4 w-full max-w-sm">
                     <div className="bg-white rounded shadow dark:bg-gray-700 p-3 space-y-3 lg:p-4">
                         <h3 className="text-lg font-semibold text-center">
@@ -86,6 +86,6 @@ export default function ResetPassword() {
                     icon={typeOfError === "successSendEmail" ? <SolarBillCheckBold /> : <FluentColorWarning20 />}
                 />
             )}
-        </>
+        </div>
     );
 }

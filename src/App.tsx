@@ -1,13 +1,11 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Layout from "./components/Layout";
-import Welcome from "./components/Welcome";
 import RequiredAuth from "./components/RequiredAuth";
-import Welcomeuser from "./components/Welcomeuser";
 import Logout from "./components/loguot/Logout";
 import Settings from "./pages/Settings";
 import Followers from "./pages/Followers";
@@ -22,21 +20,9 @@ import ResetPassword from "./pages/ResetPassword";
 import SetNewPassword from "./pages/SetNewPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./app/store";
-import { useEffect } from "react";
-// import { initializeSocket } from "./app/api/apiSlice";
 
 function App() {
-  // const dispatch = useDispatch();
-  //   // const userId = useSelector((state: RootState) => state.auth.user?.id);
-  //   const userId = useSelector((state: RootState) => state.auth.id);
 
-  //   useEffect(() => {
-  //       if (userId) {
-  //           initializeSocket(userId, dispatch);
-  //       }
-  //   }, [userId, dispatch]);
   return (
     <>
     
@@ -67,8 +53,8 @@ function App() {
 
                   {/* for demo */}
                   <Route path="/upload-img" element={<UploadProfileImg />} />
-                  <Route path="/welcome" element={<Welcome />} />
-                  <Route path="/userlist" element={<Welcomeuser />} />
+                  {/* <Route path="/welcome" element={<Welcome />} /> */}
+                  {/* <Route path="/userlist" element={<Welcomeuser />} /> */}
                   <Route path="/logout" element={<Logout />} />
                 </Route>
               </Route>

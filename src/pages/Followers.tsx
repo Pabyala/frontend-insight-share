@@ -7,10 +7,7 @@ import { useGetUserQuery } from '../features/users/usersApiSlice'
 
 export default function Followers() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    
-    if (isUserInfoLoading) return <div>Loading...</div>;
-    if (userInfoError) return <div>Error fetching user data</div>;
+    const { data: userInfo } = useGetUserQuery();
 
     return (
         <div className='flex flex-col pb-5'>

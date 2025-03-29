@@ -6,6 +6,7 @@ import Posts from '../components/post/Posts'
 import { useGetUserQuery } from '../features/users/usersApiSlice'
 import BdayPost from '../components/post/BdayPost'
 import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
+import BeatLoadingModal from '../components/loading/BeatLoadingModal'
 
 export default function Profile() {
 
@@ -40,7 +41,7 @@ export default function Profile() {
         refetchYourPosts();
     }, [refetchYourPosts]);
 
-    if (isUserInfoLoading) return <div>Loading...</div>;
+    // if (isUserInfoLoading) return <BeatLoadingModal/>;
     if (userInfoError) return <div>Error fetching posts</div>;
     console.log(userInfoError)
 

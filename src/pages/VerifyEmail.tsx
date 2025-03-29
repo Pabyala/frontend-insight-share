@@ -3,13 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SuccessAlert from "../components/alert/SuccessAlert";
 import { useResendVerificationCodeMutation, useResetPasswordMutation, useVerifyEmailUserMutation, useVerifyTokenResetPassMutation } from "../features/verify-email-reset-password/verify-email-reset-password";
 import { FluentColorWarning20, SolarBillCheckBold } from "../components/others/CustomIcons";
+import { showToast } from "../components/utils/ToastUtils";
 
 export default function VerifyEmail() {
 
-    const [verifyEmail, { isLoading: isLoadingSignUp, isError: isErrorSignUp, error: errorSignUp }] = useVerifyEmailUserMutation();
-    const [resendVerificationCode, { isLoading: isLoadingResendVerificationCode, isError: isErrorResendVerificationCode, error: errorResendVerificationCode }] = useResendVerificationCodeMutation();
-    const [verifyTokenResetPass, { isLoading: isLoadingVerifyTokenResetPass, isError: isErrorVerifyTokenResetPass, error: errorVerifyTokenResetPass }] = useVerifyTokenResetPassMutation();
-    const [resetPassword, { isLoading: isLoadingResetPassword, isError: isErrorResetPassword, error: errorResetPassword }] = useResetPasswordMutation();
+    const [verifyEmail, { isLoading: isLoadingSignUp }] = useVerifyEmailUserMutation();
+    const [resendVerificationCode, { isLoading: isLoadingResendVerificationCode }] = useResendVerificationCodeMutation();
+    const [verifyTokenResetPass, { isLoading: isLoadingVerifyTokenResetPass }] = useVerifyTokenResetPassMutation();
+    const [resetPassword ] = useResetPasswordMutation();
     const navigate = useNavigate();
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
     const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -71,7 +72,6 @@ export default function VerifyEmail() {
             }
         } catch (error: any) {
             const errorMessage = error?.data?.message || "Something went wrong. Please try again.";
-            console.log("ERROR: ", errorMessage)
             setTypeOfError('error');
             setMessage(errorMessage);
             setShowSuccess(true)
@@ -106,18 +106,18 @@ export default function VerifyEmail() {
                 await resendVerificationCode({ email }).unwrap();
             } else if(typeOfCode === 'reset'){
                 await resetPassword({ email }).unwrap();
-                console.log("Sending token for reset password"); 
+                showToast('The verification token has been successfully sent to your email.', 'success');
             } else if(typeOfCode === 'verifyToLogin') {
                 await resendVerificationCode({ email }).unwrap();
             }
         } catch (error) {
-            console.error("Error resending verification email:", error);
+            showToast("Error resending verification email.", "error")
         }
     };
 
     return (
-        <>
-            <div className="flex items-center justify-center w-full h-screen">
+        <div className="bg-gradient-to-b from-blue-200 to-white">
+            <div className="flex items-center justify-center w-full h-screen bg-white/70 backdrop-blur-xl shadow-lg">
                 <div className="p-4 w-full max-w-sm">
                     <div className="bg-white rounded shadow dark:bg-gray-700 p-3 space-y-3 lg:p-4">
                         <h3 className="text-lg font-semibold text-center">Verify Your Email</h3>
@@ -168,6 +168,6 @@ export default function VerifyEmail() {
                     icon={typeOfError === "success" || 'success-reset' ? <SolarBillCheckBold /> : <FluentColorWarning20 />}
                 />
             )}
-        </>
+        </div>
     );
 }

@@ -1,43 +1,54 @@
 import { Avatar } from '@mui/material'
-import { AntDesignSettingFilled, ClarityUserSolid, EmojioneV1Newspaper, FluentColorPeople48, FluentPersonArrowBack24Filled, IconoirPostSolid, IonLogOut, MdiGift, MingcuteUserFollow2Fill, StreamlineEmojisWrappedGift2 } from '../others/CustomIcons'
+import { AntDesignSettingFilled, ClarityUserSolid, EmojioneV1Newspaper, FluentColorPeople48, FluentColorStarSettings32, IonLogOut, LsiconUserLikeFilled, StreamlineEmojisWrappedGift2 } from '../others/CustomIcons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut, selectCurrentToken } from '../../features/auth/authSlice'
 import { useGetUserQuery } from '../../features/users/usersApiSlice'
 import { useLogoutUserMutation } from '../../features/auth/authApiSlice'
+import { apiSlice } from '../../app/api/apiSlice'
+import { showToast } from '../utils/ToastUtils'
+import BeatLoading from '../loading/BeatLoading'
 
 interface SubmenuProfileProps {
     setShowBdayListModal: (value: boolean) => void;
+    setShowSuggestedForYou: (value: boolean) => void;
 }
 
-export default function SubmenuProfile({setShowBdayListModal}: SubmenuProfileProps) {
+export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedForYou}: SubmenuProfileProps) {
 
     const navigate = useNavigate()
     const token = useSelector(selectCurrentToken)
-    const { data: userInfo, error, isLoading } = useGetUserQuery();
+    const { data: userInfo } = useGetUserQuery();
     const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const userId = userInfo?._id
 
-
     const handleLogout = async () => {
         if (!token) {
-            console.error("Token is missing. Cannot log out.");
+            showToast("Token is missing. Cannot log out.", 'error');
             return;
         }
+
         try {
             await logoutUser().unwrap();
             dispatch(logOut());
-            console.log("Successfully logged out");
+            dispatch(apiSlice.util.resetApiState());
+            showToast("Successfully logged out", "success");
             navigate('/login', { replace: true });
         } catch (error) {
-            console.error("Logout failed:", error);
+            showToast("Logout failed.", 'error');
         }
     }
 
     const handleShowBdayModal = () => {
         setShowBdayListModal(true)
     }
+
+    const handleShowSuggestedForYou = () => {
+        setShowSuggestedForYou(true)
+    }
+
+    if (isLoadingLogout) return <div className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-10'><BeatLoading/></div>;
 
     return (
         <>
@@ -93,6 +104,16 @@ export default function SubmenuProfile({setShowBdayListModal}: SubmenuProfilePro
 
                     </div>
                 </Link>
+                <div className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:hidden" >
+                    <div onClick={handleShowSuggestedForYou} className='flex items-center space-x-2'>
+                        <div>
+                            <LsiconUserLikeFilled className='text-2xl' />
+                        </div>
+                        <span>
+                            Suggested for you
+                        </span>
+                    </div>
+                </div>
                 <Link to="/my-post" className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
@@ -112,17 +133,17 @@ export default function SubmenuProfile({setShowBdayListModal}: SubmenuProfilePro
                 <Link to="/settings" className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
-                            <AntDesignSettingFilled className='text-2xl' />
+                            <FluentColorStarSettings32 className='text-2xl' />
                         </div>
                         <span>Settings</span>
                     </div>
                 </Link>
-                <div className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
+                <div onClick={handleLogout} className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
                             <IonLogOut className='text-2xl' />
                         </div>
-                        <span onClick={handleLogout}>Logout</span>
+                        <span>Logout</span>
                     </div>
                 </div>
             </div>

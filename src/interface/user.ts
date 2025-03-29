@@ -75,7 +75,7 @@ export interface UserDetails {
     companyName: string;
     position: string;
     isDateBirthShow?: boolean;
-    birthday?: string;
+    dateOfBirth?: string;
     gender?: string;
     phoneNumber?: string;
     status?: string;

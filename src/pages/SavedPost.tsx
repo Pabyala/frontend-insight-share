@@ -13,15 +13,12 @@ export default function SavedPost() {
     const { data: savedPosts, error: errorSavedPosts, isLoading: isLoadingSavedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery()
     const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
-    console.log(savedPosts)
 
     useEffect(() => {
         socketSetup.on('deletedPost', (currentPostId: string)=> {
-            console.log(currentPostId)
             refetchSavedPosts()
         })
-        console.log("Refresh the page.")
-    }, [])
+    }, [refetchSavedPosts])
 
     useEffect(() => {
         if (mySavedPosts) {
@@ -30,8 +27,8 @@ export default function SavedPost() {
         }
     }, [mySavedPosts]);
 
-    if (isLoadingSavedPosts || isUserInfoLoading) return <div>Loading...</div>;
-    if (errorSavedPosts || userInfoError) return <div>Error fetching posts</div>;
+    if (isLoadingSavedPosts || isUserInfoLoading) return <div className='text-sm'>Loading...</div>;
+    if (errorSavedPosts || userInfoError) return <div className='text-sm'>Error fetching posts</div>;
 
     return (
         <div className='flex flex-col pb-5'>

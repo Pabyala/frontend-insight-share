@@ -3,10 +3,11 @@ import { userGender } from "../data/app-data";
 import { Link, useNavigate } from "react-router-dom";
 import { MdiEye, MdiEyeOff } from "../components/others/CustomIcons";
 import { useSignUpMutation } from "../features/auth/authApiSlice";
+import { showToast } from "../components/utils/ToastUtils";
 
 export default function SignUp() {
 
-    const [signUp, { isLoading: isLoadingSignUp, isError: isErrorSignUp, error: errorSignUp }] = useSignUpMutation();
+    const [signUp, { isLoading: isLoadingSignUp }] = useSignUpMutation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
@@ -22,7 +23,6 @@ export default function SignUp() {
     const [isSelected, setIsSelected] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
-    const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -48,7 +48,7 @@ export default function SignUp() {
             await signUp(formData).unwrap();
             navigate("/verify-email", { state: { email: formData.email, typeOfCode: 'verify'} });
         } catch (error) {
-            console.error("Something went wrong. Please try again.", error);
+            showToast("Something went wrong. Please try again.", "error");
         }
     };
 
@@ -199,7 +199,7 @@ export default function SignUp() {
                                             className="absolute right-2 top-1/2 rounded-full p-1 transform -translate-y-1/2 text-gray-600 focus:outline-none hover:bg-gray-200"
                                         >
                                             <span className="text-base">
-                                                {password.length !== 0 && (showPassword ? <MdiEye /> : <MdiEyeOff />)}
+                                                {formData.password.length !== 0 && (showPassword ? <MdiEye /> : <MdiEyeOff />)}
                                             </span>
                                         </button>
                                     </div>

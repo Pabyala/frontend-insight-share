@@ -1,5 +1,3 @@
-import { ResolvedTypeReferenceDirectiveWithFailedLookupLocations } from "typescript";
-
 // types/PostTypes.ts
 export interface UserReact {
     _id: string;

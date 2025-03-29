@@ -8,6 +8,7 @@ import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import { Followers, UserDetails, UserInfo } from '../../../interface/user';
 import BdayFormater from '../../helper/BdayFormater';
 import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import BeatLoadingModal from '../../loading/BeatLoadingModal';
 
 interface ProfileIntroProps {
     userInfo: UserInfo | undefined;
@@ -21,19 +22,18 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
     const authenticatedUserId = authenticatedUserInfo?._id
     const currentUserId = userInfo?._id
 
-
-    if (isUserInfoLoading) return <div>Loading...</div>;
+    // if (isUserInfoLoading) return <BeatLoadingModal/>;
     if (userInfoError) return <div>Error fetching posts</div>;
 
     return (
         <div className='w-full flex flex-col space-y-1.5 lg:space-y-2.5'>
             <div className='bg-white rounded p-3'>
-                <p className='text-base font-semibold px-1'>Intro</p>
+                <p className='text-sm font-semibold px-1 md:text-base'>Intro</p>
                 <div className='flex flex-col px-1 space-y-2'>
                     {/* bio */}
                     <div className='flex flex-col w-full'>
                         {/* {showInputBio} */}
-                        <span className='text-sm font-semibold w-full text-center'>My bio</span>
+                        <span className='text-sm font-semibold   w-full text-center'>My bio</span>
                         <div className='w-full text-center h-fit flex flex-col'>
                                 <span className='text-sm text-center pb-3 pt-1'>{userInfo?.bio}</span>
                         </div>
@@ -99,7 +99,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                             </div>
                         )}
                         
-                        {userInfo?.workAt  && (
+                        {userInfo?.workAt  && userInfo?.workAt.companyName && userInfo?.workAt.position && (
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
