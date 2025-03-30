@@ -1,5 +1,5 @@
 import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons'
-import { useReactPostMutation } from '../../features/posts/postsApiSlice';
+import { useGetPostByIdQuery, useReactPostMutation } from '../../features/posts/postsApiSlice';
 import { useSelector } from 'react-redux';
 import { selectCurrentId } from '../../features/auth/authSlice';
 import socketSetup from '../../socket-io/socket-setup';
@@ -14,12 +14,16 @@ interface SelectOneReactionProps {
 
 export default function SelectOneReaction({ postId } : SelectOneReactionProps) {
 
+    const { refetch: refreshPost } = useGetPostByIdQuery(postId!, {
+            skip: !postId,
+    });
     const [reactToPost] = useReactPostMutation();
     const userId = useSelector(selectCurrentId)
 
     const handleReactType = async (reactionType: string) => {
         try {
             await reactToPost({postId, userId, reactionType})
+            refreshPost()
             socketSetup.emit('addReactPost', reactionType);
         } catch (error) {
             showToast('An error occurred. Please reload the page and try again.', 'error')
