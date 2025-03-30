@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import ProfileIntro from '../components/user/profile/ProfileIntro'
 import Posts from '../components/post/Posts'
 import { useGetUserQuery } from '../features/users/usersApiSlice'
 import BdayPost from '../components/post/BdayPost'
-import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
-import BeatLoadingModal from '../components/loading/BeatLoadingModal'
+import { useGetUserAllPostsQuery } from '../features/posts/postsApiSlice'
+import BeatLoading from '../components/loading/BeatLoading'
 
 export default function Profile() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: userInfo } = useGetUserQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
 
     const posts = yourPosts ? yourPosts.dataPost : [];
@@ -24,26 +23,6 @@ export default function Profile() {
         
         return today.getDate() === birthDate.getDate() && today.getMonth() === birthDate.getMonth();
     };
-
-    const { data: savedPosts } = useGetSavedPostQuery()
-
-    const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
-    const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
-
-    useEffect(() => {
-        if (mySavedPosts && mySavedPosts.length > 0) {
-            const allPostIds = mySavedPosts.map(post => post._id);
-            setAllSavedPostId(allPostIds);
-        }
-    }, [mySavedPosts]);
-
-    useEffect(() => {
-        refetchYourPosts();
-    }, [refetchYourPosts]);
-
-    // if (isUserInfoLoading) return <BeatLoadingModal/>;
-    if (userInfoError) return <div>Error fetching posts</div>;
-    console.log(userInfoError)
 
     return (
         <div className='flex flex-col pb-5'>
@@ -62,14 +41,17 @@ export default function Profile() {
                         {isTodayBirthday() && (
                             <BdayPost myName={userInfo?.firstName} />
                         )}
-                        <Posts 
-                            posts={posts} 
-                            isLoading={isLoadingYourPosts} 
-                            error={errorYourPosts}
-                            // savedPostIds={allSavedPostId}
-                            // userId={userId}
-                            refetch={refetchYourPosts}
-                        />
+                        { isLoadingYourPosts ? 
+                            <BeatLoading/> :
+                            <Posts 
+                                posts={posts} 
+                                // isLoading={isLoadingYourPosts} 
+                                error={errorYourPosts}
+                                // savedPostIds={allSavedPostId}
+                                // userId={userId}
+                                refetch={refetchYourPosts}
+                            />
+                        }
                     </div>
                 </div>
             </div>

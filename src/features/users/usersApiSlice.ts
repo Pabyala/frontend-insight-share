@@ -37,7 +37,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: formData, 
             }),
-            invalidatesTags: ['UserInfo'],
+            invalidatesTags: ['UserInfo', 'TimelinePosts', 'Notification', 'SavedPost', 'Followers', 'Following',],
         }),
         uploadProfilePhoto: builder.mutation({
             query: (formData) => ({
@@ -45,6 +45,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
+            invalidatesTags: ['UserInfo', 'TimelinePosts', 'Notification', 'SavedPost', 'Followers', 'Following',],
         }),
         uploadBgPhoto: builder.mutation({
             query: (formData) => ({
@@ -52,6 +53,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
+            invalidatesTags: ['UserInfo', 'TimelinePosts', 'Notification', 'SavedPost', 'Followers', 'Following',],
         }),
         updateUserPersonalDetailsSettings: builder.mutation<UserDetails, Partial<UserDetails>>({
             query: (userDetails) => ({

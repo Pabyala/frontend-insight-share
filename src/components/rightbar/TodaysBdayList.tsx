@@ -1,12 +1,13 @@
 import React from 'react'
 import { StreamlineEmojisWrappedGift2 } from '../others/CustomIcons'
 import { useGetUserTodayBirthdayQuery } from '../../features/birthday/birthdayApiSlice';
+import BeatLoading from '../loading/BeatLoading';
 
 export default function TodaysBdayList() {
 
     const { data: todaysBirthday, error: errorTodaysBirthday, isLoading: isLoadingTodaysBirthday } = useGetUserTodayBirthdayQuery();
 
-    if (isLoadingTodaysBirthday) return <div className='text-sm'>Loading posts...</div>;
+    if(isLoadingTodaysBirthday) return <BeatLoading/>
     if (errorTodaysBirthday) return <div className='text-sm'>Error loading posts</div>;
     if (!todaysBirthday || todaysBirthday.countBirthday === 0) return <div className='text-sm'>No birthday today.</div>;
 

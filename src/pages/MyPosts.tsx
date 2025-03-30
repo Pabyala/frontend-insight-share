@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'
-import { useGetSavedPostQuery, useGetUserAllPostsQuery } from '../features/posts/postsApiSlice';
+import { useGetUserAllPostsQuery } from '../features/posts/postsApiSlice';
 import Posts from '../components/post/Posts';
 import { useGetUserQuery } from '../features/users/usersApiSlice';
+import BeatLoading from '../components/loading/BeatLoading';
 
 export default function MyPosts() {
 
     const { data: userInfo } = useGetUserQuery();
     const { data: yourPosts, error: errorYourPosts, isLoading: isLoadingYourPosts, refetch: refetchYourPosts } = useGetUserAllPostsQuery();
-    const { data: savedPosts } = useGetSavedPostQuery()
-
     const posts = yourPosts ? yourPosts.dataPost : [];
-
-    const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
-    const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
-
-    useEffect(() => {
-        if (mySavedPosts) {
-            const allPostIds = mySavedPosts.map(post => post._id);
-            setAllSavedPostId(allPostIds);
-        }
-    }, [mySavedPosts]); 
 
     return (
         <div className='flex flex-col pb-5'>
@@ -36,12 +24,15 @@ export default function MyPosts() {
                         <MenuListLeftBar />
                     </div>
                     <div className='lg:w-[56%]'>
-                        <Posts
-                            posts={posts} 
-                            isLoading={isLoadingYourPosts} 
-                            error={errorYourPosts}
-                            refetch={refetchYourPosts}
-                        />
+                        { isLoadingYourPosts ? 
+                            <BeatLoading/> :
+                            <Posts
+                                posts={posts} 
+                                // isLoading={isLoadingYourPosts} 
+                                error={errorYourPosts}
+                                refetch={refetchYourPosts}
+                            />
+                        }
                     </div>
                 </div>
             </div>

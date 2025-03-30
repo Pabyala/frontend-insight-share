@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CommentFrom, PostComment } from '../../interface/your-posts';
 import { FluentSend28Filled, FluentSend28FilledColored } from '../others/CustomIcons';
 import { useGetPostByIdQuery, useUpdateAddReplyToCommentMutation, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
 import socketSetup from '../../socket-io/socket-setup';
+import BeatLoadingModal from '../loading/BeatLoadingModal';
+import ErrorAlertModal from '../alert/ErrorAlertModal';
+import { showToast } from '../utils/ToastUtils';
 
 interface PropsUpdateCommentTextArea {
     typeOfUpdate: string
@@ -18,16 +20,12 @@ interface PropsUpdateCommentTextArea {
 
 export default function UpdateCommentTextArea({ comment, commentId, replyId, userId, setIsUpdatingComment, setIsOpenCommentOption, postId, typeOfUpdate }: PropsUpdateCommentTextArea) {
 
-    const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, error: errorUpdateComment }] = useUpdateCommentToPostMutation();
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-    const [updateAddReplyToComment, { isLoading: isLoadingUpdateReply, isError: isErrorUpdateReply, error: errorUpdateReply }] = useUpdateAddReplyToCommentMutation();
-
-
-
-    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
+    const [updateCommentToPost, { isLoading: isLoadingUpdateComment, isError: isErrorUpdateComment, reset: resetUpdateCommentToPost }] = useUpdateCommentToPostMutation();
+    const [updateAddReplyToComment, { isLoading: isLoadingUpdateReply, isError: isErrorUpdateReply, reset: resetUpdateAddReplyToComment }] = useUpdateAddReplyToCommentMutation();
+    const { refetch: refreshPost } = useGetPostByIdQuery(postId!,{
         skip: !postId, // skip the query if postId is falsy (undefined/null).
     });
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [commentContext, setCommentContext] = useState<string>(comment);
 
@@ -55,11 +53,9 @@ export default function UpdateCommentTextArea({ comment, commentId, replyId, use
                 refreshPost();
                 setIsUpdatingComment(false);
                 setIsOpenCommentOption(false);
-            } else {
-                console.log("Unknown typeOfUpdate:", typeOfUpdate);
-            }
+            } 
         } catch (error) {
-            console.log("Error updating:", error);
+            showToast('An error occurred. Please reload the page and try again.', 'error')
         }
     }
 
@@ -68,17 +64,17 @@ export default function UpdateCommentTextArea({ comment, commentId, replyId, use
         setIsOpenCommentOption(false)
     }
 
-    const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const target = e.target;
-        setCommentContext(target.value);
+    // const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    //     const target = e.target;
+    //     setCommentContext(target.value);
 
-        // Reset height to auto for recalculating
-        target.style.height = 'auto';
-        target.style.height = `${target.scrollHeight}px`;
+    //     // Reset height to auto for recalculating
+    //     target.style.height = 'auto';
+    //     target.style.height = `${target.scrollHeight}px`;
 
-        // Set height based on scrollHeight, but with a max height
-        // target.style.height = `${Math.min(target.scrollHeight, 300)}px`; // Max height of 150px
-    };
+    //     // Set height based on scrollHeight, but with a max height
+    //     // target.style.height = `${Math.min(target.scrollHeight, 300)}px`; // Max height of 150px
+    // };
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -93,6 +89,15 @@ export default function UpdateCommentTextArea({ comment, commentId, replyId, use
             textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, minHeight), maxHeight)}px`; // Set height, respecting min and max height
         }
     }, [commentContext]);
+
+    if(isLoadingUpdateComment || isLoadingUpdateReply ) return <BeatLoadingModal/>
+    if(isErrorUpdateComment || isErrorUpdateReply) return <ErrorAlertModal 
+        message='An error occurred. Please reload the page and try again.' 
+        onClose={() => {
+            if (isErrorUpdateComment) resetUpdateCommentToPost();
+            if (isErrorUpdateReply) resetUpdateAddReplyToComment();
+        }} 
+    />
 
     return (
         <div className='w-full'>

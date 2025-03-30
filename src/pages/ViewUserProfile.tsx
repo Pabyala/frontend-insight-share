@@ -6,6 +6,7 @@ import Navbar from '../components/navbar/Navbar';
 import ProfileHeader from '../components/user/profile/ProfileHeader';
 import ProfileIntro from '../components/user/profile/ProfileIntro';
 import Posts from '../components/post/Posts';
+import BeatLoading from '../components/loading/BeatLoading';
 
 export default function ViewUserProfile() {
     const { userId } = useParams();
@@ -28,14 +29,17 @@ export default function ViewUserProfile() {
                         />
                     </div>
                     <div className='lg:w-[56%]'>
-                        <Posts
-                            posts={posts} 
-                            isLoading={isLoadingYourPosts} 
-                            error={errorYourPosts}
-                            // savedPostIds={allSavedPostId}
-                            // userId={userId}
-                            refetch={refetchYourPosts}
-                        />
+                        { isLoadingYourPosts ? 
+                            <BeatLoading/> :
+                            <Posts
+                                posts={posts} 
+                                // isLoading={isLoadingYourPosts} 
+                                error={errorYourPosts}
+                                // savedPostIds={allSavedPostId}
+                                // userId={userId}
+                                refetch={refetchYourPosts}
+                            />
+                        }
                     </div>
                 </div>
             </div>

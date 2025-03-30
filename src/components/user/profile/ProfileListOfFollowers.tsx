@@ -1,7 +1,7 @@
 import React from 'react'
-import { followerRequest } from '../../../data/dummy-data'
 import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
 import DefaultImg from '../../../asset/DefaultImg.jpg';
+import BeatLoading from '../../loading/BeatLoading';
 
 interface ProfileListOfFollowersProps {
     currentUserId: string | undefined;
@@ -9,10 +9,10 @@ interface ProfileListOfFollowersProps {
 
 export default function ProfileListOfFollowers({ currentUserId }: ProfileListOfFollowersProps) {
 
-    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery(currentUserId)
+    const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers } = useGetFollowersQuery(currentUserId)
     
     if (isLoadingGetFollowers) {
-        return <p className='text-sm'>Loading followers...</p>;
+        return <BeatLoading/>;
     }
 
     if (errorGetFollowers) {
@@ -22,8 +22,6 @@ export default function ProfileListOfFollowers({ currentUserId }: ProfileListOfF
     if (getFollowers?.totalFollowers === 0) {
         return <p className='text-sm'>No followers</p>
     }
-
-    const displayedFollowers = getFollowers?.allFollowers.slice(0, 9);
 
     const setFollowers = getFollowers?.allFollowers.slice(0, 6);
 

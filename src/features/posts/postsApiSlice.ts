@@ -153,7 +153,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         getAllUserWhoReactToPost: builder.query<AllUserReactions, { postId: string }>({
             query: ({ postId }) => `/post/${postId}/reactions`, 
             transformResponse: (response: AllUserReactions) => {
-                console.log("API Response your timeline posts:", response);
                 return response
             },
         }),

@@ -4,10 +4,8 @@ import { BeatLoader } from 'react-spinners';
 export default function BeatLoadingModal() {
 
     useEffect(() => {
-        // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';
         return () => {
-            // restore body scroll behavior when modal is closed
             document.body.style.overflow = '';
         };
     }, []);

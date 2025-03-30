@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { MdiCloseThick } from '../others/CustomIcons'
 import { Avatar } from '@mui/material';
 import DefaultImg from '../../asset/DefaultImg.jpg'
-import { Post } from '../../interface/your-posts';
 import { useGetPostByIdQuery, useUpdatePostMutation } from '../../features/posts/postsApiSlice';
+import { showToast } from '../utils/ToastUtils';
+import BeatLoadingModal from '../loading/BeatLoadingModal';
 
 interface UpdatePostPropsInterface {
     onClose: () => void;
@@ -17,13 +17,9 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPostId!, {
         skip: !selectedPostId, // skip the query if postId is falsy (undefined/null).
     }); 
-
-    // const { _id, captionPost, authorId } = selectedPostData || {}
     const [updatePost] = useUpdatePostMutation();
     const myCaptionPost = post?.captionPost;
-    console.log(myCaptionPost) // has value
     const [caption, setCaption] = useState<string | undefined>(myCaptionPost);
-    console.log("MY CAPTION POST: ", caption) // undefined
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(true);
 
     useEffect(() => {
@@ -37,10 +33,8 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
     }, [caption]);
 
     useEffect(() => {
-        // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';
         return () => {
-            // restore body scroll behavior when modal is closed
             document.body.style.overflow = '';
         };
     }, []);
@@ -52,7 +46,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
             setSelectedPostId('')
             refreshPost();
         } catch (error) {
-            console.error('Failed to update the post:', error);
+            showToast('An error occurred. Please reload the page and try again.', 'error')
         }
     }
 
@@ -61,7 +55,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
         setSelectedPostId('')
     }
 
-    if (isLoadingPost) return <div>Loading posts...</div>;
+    if (isLoadingPost) return <BeatLoadingModal/>;
     if (errorPost) return <div>Error loading posts</div>;
     if (!post) return <div>No posts available</div>;
 

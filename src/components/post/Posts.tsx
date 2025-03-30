@@ -5,18 +5,17 @@ import ModalPost from './ModalPost';
 import 'react-toastify/dist/ReactToastify.css';
 import SinglePost from './SinglePost';
 import socketSetup from '../../socket-io/socket-setup';
-import BeatLoadingModal from '../loading/BeatLoadingModal';
 
 interface PostsProps {
     posts: Post[]; 
-    isLoading: boolean;
+    // isLoading: boolean;
     error: any;
     // savedPostIds: string[];
     // userId: string | undefined;
     refetch: () => Promise<any>;
 }
 
-export default function Posts({ posts, isLoading, error, refetch }: PostsProps) {
+export default function Posts({ posts, error, refetch }: PostsProps) {
 
     const [openPostModal, setOpenPostModal] = useState<boolean>(false); 
     const [openPostTextArea, setOpenPostTextArea] = useState<boolean>(false);
@@ -24,11 +23,10 @@ export default function Posts({ posts, isLoading, error, refetch }: PostsProps) 
     const [selectedPost, setSelectedPost] = useState<string | null>(null);
 
     useEffect(() => {
-        socketSetup.on('deletedPost', (currentPostId: string)=> {
-            console.log(currentPostId)
+        socketSetup.on('deletedPost', ()=> {
             refetch()
         })
-    }, [])
+    }, [refetch])
 
     // if (isLoading) return <BeatLoadingModal/>;
     if (error) return <div className='text-sm'>Error loading posts</div>;

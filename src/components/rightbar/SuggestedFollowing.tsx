@@ -1,15 +1,17 @@
-import { followerRequest } from "../../data/dummy-data";
 import { Avatar } from "@mui/material";
 import { MingcuteUserFollow2Fill } from "../others/CustomIcons";
 import { useGetSuggestedForYouQuery, useGetUserQuery } from "../../features/users/usersApiSlice";
 import { UserSearch } from "../../interface/user";
+import BeatLoading from "../loading/BeatLoading";
 
 export default function SuggestedFollowing() {
 
   const { data: userInfo } = useGetUserQuery();
-  const { data: getSuggestedForYou, error: getSuggestedForYouError, isLoading: isGetSuggestedForYouLoading } = useGetSuggestedForYouQuery(userInfo?._id ?? "", {
+  const { data: getSuggestedForYou, isLoading: isGetSuggestedForYouLoading } = useGetSuggestedForYouQuery(userInfo?._id ?? "", {
     skip: !userInfo || !userInfo._id, // Ensure userInfo exists and has an _id
   });
+
+  if(isGetSuggestedForYouLoading) return <BeatLoading/>
 
   return (
     <div className="bg-white p-1 rounded-sm">

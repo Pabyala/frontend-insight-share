@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import ProfileHeader from '../components/user/profile/ProfileHeader'
 import MenuListLeftBar from '../components/leftbar/MenuListLeftBar'

@@ -19,10 +19,8 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
     const authorId: string = userInfo?._id || '';
 
     useEffect(() => {
-        // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';
         return () => {
-            // restore body scroll behavior when modal is closed
             document.body.style.overflow = '';
         };
     }, []);

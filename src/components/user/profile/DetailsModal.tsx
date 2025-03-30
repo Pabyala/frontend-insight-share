@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill, SolarCloseSquareBoldDuotone } from '../../others/CustomIcons';
+import { useEffect, useState } from 'react'
+import { MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons';
 import { v4 as uuidv4 } from 'uuid';
-import { Followers, UserDetails, UserInfo } from '../../../interface/user';
+import { UserDetails } from '../../../interface/user';
 import { useGetUserQuery, useUpdateUserDetailsMutation } from '../../../features/users/usersApiSlice';
 import BdayFormater from '../../helper/BdayFormater';
+import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
+import { showToast } from '../../utils/ToastUtils';
 
 interface DetailsPropsInterface {
     onClose: () => void;
@@ -18,11 +20,9 @@ interface SocialLink {
 
 export default function DetailsModal({ onClose }:DetailsPropsInterface) {
 
-    // const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    // const { data: followersData, isLoading, isError, refetch: refetchUserInfo } = useGetUserFollowersQuery();
     const [updateUserDetails] = useUpdateUserDetailsMutation();
     const { data: userInfo, refetch: refetchUserInfo } = useGetUserQuery();
-    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
+    const { data: followersData } = useGetFollowersQuery();
     
     const [userDetailsInfo, setUserDetailsInfo] = useState<UserDetails>({
         livesIn: '',
@@ -92,7 +92,6 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
 
     const handleUpdate = (urlId: string) => {
         setIsUpdateLink(true)
-        console.log("Id that i update", urlId)
         const updateSocials = mySocials.find(soc => soc.urlId === urlId);
         if (updateSocials) {
             setNewSocialUrl(updateSocials.url);
@@ -112,12 +111,11 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                 ...userDetailsInfo,
                 socials: mySocials,
             };
-            console.log(userDetailsInfo)
             await updateUserDetails(updatedUserDetails).unwrap();
             refetchUserInfo();
             onClose()
         } catch (error) {
-            console.log(error)
+            showToast('Error saving data.', 'error')
         }
     }
 
@@ -212,7 +210,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                 />
                                 <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-0 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                                 <p className='ms-3 text-sm'> Followed by
-                                    {/* <span className='font-semibold text-sm'> {followersData?.totalFollowers} </span>{followersData?.totalFollowers !== 1 ? 'people' : 'peoples'} */}
+                                    <span className='font-semibold text-sm'> {followersData?.totalFollowers} </span>people
                                 </p>
                                 </label>
                             </div>

@@ -1,5 +1,5 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { FollowedUser, MyFollowers, YourFollowers, YourFollowing } from "../../interface/followers-type";
+import { FollowedUser, MyFollowers, YourFollowing } from "../../interface/followers-type";
 
 export const followersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

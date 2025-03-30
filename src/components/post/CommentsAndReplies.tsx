@@ -7,7 +7,7 @@ import CommentOptions from './CommentOptions';
 import TimeAgoPost from './TimeAgoPost';
 import UpdateCommentTextArea from './UpdateCommentTextArea';
 import { Link } from 'react-router-dom';
-import { showErrorToast, showLoadingToast } from '../utils/ToastUtils';
+import { showErrorToast, showLoadingToast, showToast } from '../utils/ToastUtils';
 import { toast } from 'react-toastify';
 import socketSetup from '../../socket-io/socket-setup';
 
@@ -28,10 +28,10 @@ interface PropsPost {
 
 export default function CommentsAndReplies({ userId, selectedPost, postId, post, refetch }: PropsPost) {
 
-    const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost, error: errorAddCommentToPost }] = useAddCommentToPostMutation()
-    const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment, error: errorAddReplyToComment }] = useAddReplyToCommentMutation()
-    const [addOrRemoveHeartToComment, { isLoading: isLoadingReactionToComment, isError: isErrorReactionToComment, error: errorReactionToComment }] = useAddOrRemoveHeartToCommentMutation()
-    const [addOrRemoveHeartToReply, { isLoading: isLoadingReactionToReply, isError: isErrorReactionToReply, error: errorReactionToReply }] = useAddOrRemoveHeartToReplyMutation()
+    const [addCommentToPost, { isLoading: isLoadingAddCommentToPost, isError: isErrorAddCommentToPost }] = useAddCommentToPostMutation()
+    const [addReplyToComment, { isLoading: isLoadingAddReplyToComment, isError: isErrorAddReplyToComment }] = useAddReplyToCommentMutation()
+    const [addOrRemoveHeartToComment, { isLoading: isLoadingReactionToComment, isError: isErrorReactionToComment }] = useAddOrRemoveHeartToCommentMutation()
+    const [addOrRemoveHeartToReply, { isLoading: isLoadingReactionToReply, isError: isErrorReactionToReply }] = useAddOrRemoveHeartToReplyMutation()
 
     useEffect(() => {
         if (isLoadingAddCommentToPost || isLoadingAddReplyToComment || isLoadingReactionToComment || isLoadingReactionToReply) {
@@ -73,7 +73,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                 refetch()
                 setReplyComment('');
             } catch (error) {
-                console.log(error)
+                showToast('An error occurred. Please reload the page and again.', 'error')
             }
         } else {
             try {
@@ -82,7 +82,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                 setReplyComment('');
                 socketSetup.emit('addCommentToPost', userId);
             } catch (error) {
-                console.log(error)
+                showToast('An error occurred. Please reload the page and again.', 'error')
             }
         }
         setIsReplyToComment(false)
@@ -140,7 +140,6 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
         } else {
             setIsUpdate(false)
             setIsDelete(false)
-            console.log("Unknown type of option")
         }
         
     }
@@ -171,7 +170,6 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
     
             if (typeOfReaction === 'replyReaction' && replyId) {
                 await addOrRemoveHeartToReply({ commentId, replyId, userId });
-                console.log(commentId, replyId, userId);
                 socketSetup.emit('addRemoveReactToReply', 'addHeartReply');
             }
     
@@ -376,7 +374,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                                                             onClick={() => commentReplyReaction('replyReaction', comment._id, reply._id)}
                                                         >Heart</span>
                                                     </div>
-                                                    {reply.createdAt != reply.updatedAt &&
+                                                    {reply.createdAt !== reply.updatedAt &&
                                                         (<div className='text-xs'>
                                                             <span>
                                                                 Edited

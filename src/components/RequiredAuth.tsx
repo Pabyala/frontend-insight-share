@@ -8,9 +8,6 @@ export default function RequiredAuth() {
     const token = useSelector(selectCurrentToken)
     const location = useLocation()
 
-    // const decoded = token ? jwtDecode(token) : undefined
-    // console.log("Decoded token", decoded)
-
     return (
         token ? <Outlet/> : <Navigate to={'/login'} state={{from: location}} replace />
     )

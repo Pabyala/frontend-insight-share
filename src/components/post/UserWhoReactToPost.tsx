@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useGetAllUserWhoReactToPostQuery } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
 import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
@@ -18,10 +18,8 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
     const { data: allReaction, error: errorAllReaction, isLoading: isLoadingAllReaction } = useGetAllUserWhoReactToPostQuery({ postId });
 
     useEffect(() => {
-        // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';
         return () => {
-            // restore body scroll behavior when modal is closed
             document.body.style.overflow = '';
         };
     }, []);
@@ -31,8 +29,6 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
     };
 
     const users = allReaction ? allReaction.reactions[typeOfReaction] || [] : [];
-    console.log("User who react", users)
-    console.log("User who react1", allReaction)
     
     if (isLoadingAllReaction) return <BeatLoadingModal/>;
     if (errorAllReaction) return <ErrorAlert message='Error reactions.' onClose={onClose} />;
@@ -41,9 +37,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
         <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto">
             <div className="relative p-4 w-full max-w-[450px] max-h-full">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    {/* <p>Hello world</p> */}
                     <div className='p-4 space-y-2'>
-                        
                         <div className='flex justify-between pl-1'>
                             <div className='flex items-center space-x-2'>
                                 <p className='flex items-center cursor-pointer' onClick={() => handleSelectTypeOfReaction('all')}>
@@ -124,14 +118,12 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
                         </div>
                         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
                         <div className='flex flex-col space-y-2'>
-                            {/* {allReaction?.reactions?.all?.map(user => ( */}
                             {users.map(user => (
                                 <div key={user._id} className='flex items-center justify-between'>
                                     <div className='flex items-center space-x-2'>
                                         <Avatar
                                             sx={{ width: 38, height: 38 }}
-                                            // alt={comment.from.username}
-                                            // src={'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
+                                            alt={user.username}
                                             src={user.avatarUrl}
                                         />
                                         <p className='text-sm font-semibold'>

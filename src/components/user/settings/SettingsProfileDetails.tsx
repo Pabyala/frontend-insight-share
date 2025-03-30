@@ -4,10 +4,12 @@ import DefaultImg from '../../../asset/DefaultImg.jpg'
 import DefaultBg from '../../../asset/DefaultBg.png'
 import { UserProfileDataDisplay } from '../../../interface/user';
 import ConfirmAlert from '../../alert/ConfirmAlert';
+import { showToast } from '../../utils/ToastUtils';
+import BeatLoading from '../../loading/BeatLoading';
 
 export default function SettingsProfileDetails() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refetchUserInfo } = useGetUserQuery();
+    const { data: userInfo, refetch: refetchUserInfo } = useGetUserQuery();
     const [updateUsernameAndName] = useUpdateUsernameAndNameMutation();
     const [uploadProfilePhoto, { isLoading: updateProfilePhotoLoading }] = useUploadProfilePhotoMutation();
     const [uploadBgPhoto, { isLoading: updateBgPhotoLoading }] = useUploadBgPhotoMutation();
@@ -104,20 +106,18 @@ export default function SettingsProfileDetails() {
     const handleSave = async (type: 'profile' | 'background') => {
         try {
             if (type === 'profile' && profileFile) {
-                const response = await uploadProfilePhoto({image: profilePreviewUrl}).unwrap();
-                console.log("Upload profile photo success:", response);
+                await uploadProfilePhoto({image: profilePreviewUrl}).unwrap();
                 refetchUserInfo();
                 setIsUpdatingProfile(false);
-                console.log("Profile picture updated successfully");
+                showToast("Updated successfully", 'success')
             } else if (type === 'background' && backgroundFile) {
-                const response = await uploadBgPhoto({image: backgroundPreviewUrl}).unwrap();
-                console.log("Upload background photo success:", response);
+                await uploadBgPhoto({image: backgroundPreviewUrl}).unwrap();
                 refetchUserInfo();
                 setIsUpdatingBackground(false);
-                console.log("Background picture updated successfully");
+                showToast("Updated successfully", 'success')
             }
         } catch (error) {
-            console.error("Error updating image:", error);
+            showToast('An error occurred. Please try again later.', 'error')
         }
     };
 
@@ -133,7 +133,7 @@ export default function SettingsProfileDetails() {
             }).unwrap();
             refetchUserInfo();
         } catch (error) {
-            console.log(error)
+            showToast('An error occurred. Please try again later.', 'error')
         }
         setShowConfirmAlert(false);
     }
@@ -172,13 +172,18 @@ export default function SettingsProfileDetails() {
                                 disabled={isUpdatingBackground}
                             />
                         </div>
-                        <div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-gray-300 lg:w-[168px] lg:h-[168px] mx-auto'>
-                            <img 
-                                src={profilePreviewUrl}
-                                alt="Profile"
-                                className='w-full h-full object-cover'
-                            />
-                        </div>
+                        {updateProfilePhotoLoading ?
+                            (<div className='flex justify-center items-center w-[128px] h-[128px] lg:w-[168px] lg:h-[168px] mx-auto'>
+                                <BeatLoading/>
+                            </div>) 
+                            : (<div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-gray-300 lg:w-[168px] lg:h-[168px] mx-auto'>
+                                <img 
+                                    src={profilePreviewUrl}
+                                    alt="Profile"
+                                    className='w-full h-full object-cover'
+                                />
+                            </div>)
+                        }
                         {isUpdatingProfile && (
                             <div className='flex space-x-2 justify-center'>
                                 <button 
@@ -212,13 +217,18 @@ export default function SettingsProfileDetails() {
                                 disabled={isUpdatingProfile}
                             />
                         </div>
-                        <div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px] dark:bg-gray-700'>
-                            <img 
-                                src={backgroundPreviewUrl}
-                                alt="Background"
-                                className='w-full h-full object-cover rounded'
-                            />
-                        </div>
+                        {updateBgPhotoLoading ?
+                            (<div className='flex justify-center items-center h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full'>
+                                    <BeatLoading/>
+                            </div>)
+                            : (<div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px] dark:bg-gray-700'>
+                                <img 
+                                    src={backgroundPreviewUrl}
+                                    alt="Background"
+                                    className='w-full h-full object-cover rounded'
+                                />
+                            </div>)
+                        }
                         {isUpdatingBackground && (
                             <div className='flex space-x-2 justify-center'>
                                 <button 

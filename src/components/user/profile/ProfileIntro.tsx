@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { FluentPeopleTeam48Filled, IconParkSolidBirthdayCake, MaterialSymbolsSchoolRounded, MaterialSymbolsWorkHistory, MdiInternet, MingcuteLocation2Fill, TablerHomeFilled } from '../../others/CustomIcons'
-import { Link } from 'react-router-dom'
-import { followerRequest } from '../../../data/dummy-data';
+import React, { useState } from 'react'
+import { EmojioneSchool, FluentColorHome16, FluentColorLocationRipple16, FluentColorPeople48, MaterialIconThemeFolderJobOpen, MdiInternet, StreamlineEmojisBirthdayCake1 } from '../../others/CustomIcons'
 import DetailsModal from './DetailsModal';
 import ProfileFollowers from './ProfileFollowers';
 import { useGetUserQuery } from '../../../features/users/usersApiSlice';
-import { Followers, UserDetails, UserInfo } from '../../../interface/user';
+import { UserInfo } from '../../../interface/user';
 import BdayFormater from '../../helper/BdayFormater';
 import { useGetFollowersQuery } from '../../../features/FollowersFollowing/followersApiSlice';
-import BeatLoadingModal from '../../loading/BeatLoadingModal';
 
 interface ProfileIntroProps {
     userInfo: UserInfo | undefined;
@@ -16,9 +13,10 @@ interface ProfileIntroProps {
 
 export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
 
+    const { data: followersData } = useGetFollowersQuery();
     const [showInputDetails, setShowInputDetails] = useState<boolean>(false)
     const formattedDate = BdayFormater(userInfo?.dateOfBirth);
-    const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: authenticatedUserInfo, error: userInfoError } = useGetUserQuery();
     const authenticatedUserId = authenticatedUserInfo?._id
     const currentUserId = userInfo?._id
 
@@ -45,7 +43,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
-                                        <TablerHomeFilled/>
+                                        <FluentColorHome16/>
                                     </span>
                                 </div>
                                 <div className='flex'>
@@ -59,7 +57,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
-                                        <MingcuteLocation2Fill/>
+                                        <FluentColorLocationRipple16/>
                                     </span>
                                 </div>
                                 <div className='flex'>
@@ -67,30 +65,26 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                                 </div>
                             </div>
                         )}
-                        {userInfo?.isFollowedShow && (
+                        {userInfo?.isFollowedShow && followersData?.totalFollowers !== 0 && (
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
-                                        <FluentPeopleTeam48Filled/>
+                                        <FluentColorPeople48/>
                                     </span>
                                 </div>
                                 <div className='flex'>
-                                    <p className='text-sm'>Followed by 
-                                        <span className='font-semibold'>   
-                                            {/* {followersData?.totalFollowers}  */}
-                                        </span>
-                                        {/* {followersData?.totalFollowers !== 1 ? 'people' : 'peoples'} */}
-                                    </p>
+                                <p className='text-sm'>Followed by
+                                    <span className='font-semibold text-sm'> {followersData?.totalFollowers} </span>people
+                                </p>
                                 </div>
                             </div>
                         )}
-                        
 
                         {userInfo?.studyAt && (
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
-                                        <MaterialSymbolsSchoolRounded/>
+                                        <EmojioneSchool/>
                                     </span>
                                 </div>
                                 <div className='flex'>
@@ -103,7 +97,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
-                                        <MaterialSymbolsWorkHistory/>
+                                        <MaterialIconThemeFolderJobOpen/>
                                     </span>
                                 </div>
                                 <div className='flex'>
@@ -121,7 +115,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
-                                        <IconParkSolidBirthdayCake />
+                                        <StreamlineEmojisBirthdayCake1 />
                                     </span>
                                 </div>
                                 <div className='flex'>

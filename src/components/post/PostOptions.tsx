@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Post } from '../../interface/your-posts';
-import { useDeletePostMutation, useGetSavedPostQuery, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
+import { useDeletePostMutation, useSavedPostMutation, useUnsavedPostMutation } from '../../features/posts/postsApiSlice';
 import { FlatColorIconsFolder, MdiPenColored, MingcuteDelete2Fill } from '../others/CustomIcons';
 import UpdatePostModal from './UpdatePostModal';
 import ConfirmAlert from '../alert/ConfirmAlert';
 import socketSetup from '../../socket-io/socket-setup';
+import { showToast } from '../utils/ToastUtils';
 
 interface PropsPostOptions {
     post: Post;
@@ -38,6 +39,7 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
             await deletePost(currentPostId).unwrap();
             setSelectedPostId('');
             socketSetup.emit('deletedPost', currentPostId);
+            showToast('Deleted successfully', 'success')
         } catch (error) {
             alert(error)
         }
@@ -58,8 +60,9 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         try {
             await savedPost(postId).unwrap();
             setSelectedPostId('');
+            showToast('Post saved successfully', 'success')
         } catch (error) {
-            console.log(error)
+            showToast('An error occurred. Please try again later.', 'error')
         }
     }
 
@@ -70,8 +73,9 @@ export default function PostOptions({post, userId, isSavedPost, setSelectedPostI
         try {
             await unsavedPost(postId).unwrap();
             setSelectedPostId('');
+            showToast('Post unsaved successfully', 'success')
         } catch (error) {
-            console.log(error)
+            showToast('An error occurred. Please try again later.', 'error')
         }
     }
 

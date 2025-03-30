@@ -1,9 +1,7 @@
-import { followerRequest } from "../../data/dummy-data";
 import { Avatar } from "@mui/material";
 import { FluentPersonArrowBack24Filled, MingcuteUserRemove2Fill } from "../others/CustomIcons";
 import { useEffect, useRef, useState } from "react";
 import '../style/Style.css'
-import { useGetFollowersQuery } from "../../features/FollowersFollowing/followersApiSlice";
 import { Link } from "react-router-dom";
 import BeatLoading from "../loading/BeatLoading";
 import ErrorComponent from "../alert/ErrorComponent";
@@ -17,7 +15,6 @@ interface FollowersRequestContentProps {
 
 export default function FollowersRequestContent({ getFollowers, errorGetFollowers,isLoadingGetFollowers }: FollowersRequestContentProps) {
 
-  // const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers, refetch: refetchGetFollowers } = useGetFollowersQuery();
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const dropdownRef = useRef(null);
   const [showAllNotification, setShowAllNotification] = useState<boolean>(false);

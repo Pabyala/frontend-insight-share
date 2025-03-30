@@ -30,7 +30,6 @@ export default function Navbar() {
     const { data: users, isLoading } = useSearchUserQuery(searchTerm, {
         skip: searchTerm.length < 1, // Skip fetching if input is empty
     });
-
     const countFollower = getFollowers?.totalOfFollowersYouDontFollowingBack ?? 0;
     const [showFollowerMenu, setShowFollowerMenu] = useState<boolean>(false);
     const [showNotificationMenu, setShowNotificationMenu] = useState<boolean>(false);
@@ -40,28 +39,22 @@ export default function Navbar() {
 
     useEffect(() => {
             console.log('SOCKET IO', socketSetup)
-            socketSetup.on('addReactPost', (newReact: string)=> {
-                console.log(newReact)
+            socketSetup.on('addReactPost', ()=> {
                 refetch()
             })
-            socketSetup.on('deletedPost', (currentPostId: string)=> {
-                console.log(currentPostId)
+            socketSetup.on('deletedPost', ()=> {
                 refetch()
             })
-            socketSetup.on('addCommentToPost', (currentPostId: string)=> {
-                console.log(currentPostId)
+            socketSetup.on('addCommentToPost', ()=> {
                 refetch()
             })
-            socketSetup.on('addRemoveReactToComment', (addRemoveHeartReact: string)=> {
-                console.log(addRemoveHeartReact)
+            socketSetup.on('addRemoveReactToComment', ()=> {
                 refetch();
             })
-            socketSetup.on('addRemoveReactToReply', (addRemoveHeartReact: string)=> {
-                console.log(addRemoveHeartReact)
+            socketSetup.on('addRemoveReactToReply', ()=> {
                 refetch();
             })
-            socketSetup.on('newFollower', (follow: string)=> {
-                console.log(follow)
+            socketSetup.on('newFollower', ()=> {
                 refetch();
             })
     }, [refetch])

@@ -9,6 +9,7 @@ import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
 import { useFollowUserMutation, useGetFollowersQuery, useUnfollowUserMutation } from '../../../features/FollowersFollowing/followersApiSlice';
 import socketSetup from '../../../socket-io/socket-setup';
+import { showToast } from '../../utils/ToastUtils';
 
 interface ProfileHeaderProps {
     userInfo: UserInfo | undefined;
@@ -17,7 +18,7 @@ interface ProfileHeaderProps {
 export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
 
     const [showUpdateProfileModal, setShowUpdateProfileModal] = useState<boolean>(false);
-    const { data: authenticatedUserInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: authenticatedUserInfo, error: userInfoError } = useGetUserQuery();
     const { data: followersData } = useGetFollowersQuery(userInfo?._id);
     const [followUser] = useFollowUserMutation();
     const [unfollowUser] = useUnfollowUserMutation();
@@ -38,12 +39,10 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
                 socketSetup.emit('newFollower', 'follow');
             }
         } catch (error) {
-            console.error("Error following user:", error);
-            console.log(error)
+            showToast('Error following user', 'error');
         }
     }
 
-    // if (isUserInfoLoading) return <BeatLoadingModal/>;
     if (userInfoError) return <div>Error fetching posts</div>;
 
     return (

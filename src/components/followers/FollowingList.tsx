@@ -1,15 +1,13 @@
-import React from 'react'
 import { useGetFollowingQuery } from '../../features/FollowersFollowing/followersApiSlice'
 import DefaultImg from '../../asset/DefaultImg.jpg';
+import BeatLoading from '../loading/BeatLoading';
 
 export default function FollowingList() {
-    const { data: getFollowing, error: errorGtFollowing, isLoading: isLoadingGtFollowing, refetch: refetchGetFollowers } = useGetFollowingQuery()
-    console.log("My following", getFollowing)
-
+    const { data: getFollowing, error: errorGtFollowing, isLoading: isLoadingGtFollowing } = useGetFollowingQuery()
     const myFollowing = getFollowing?.youFollowed
     const totalFollowing = getFollowing?.totalFollowing
 
-    if (isLoadingGtFollowing) return <p className='text-sm'>Loading following...</p>;
+    if (isLoadingGtFollowing) return <BeatLoading/>;
     if (errorGtFollowing) return <p className='text-sm'>Failed to load following.</p>;
     if (totalFollowing === 0) return <p className='text-sm bg-white p-3'>No following</p>;
     

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useGetFollowersQuery } from '../../features/FollowersFollowing/followersApiSlice'
 import DefaultImg from '../../asset/DefaultImg.jpg';
 import { MaterialSymbolsMore } from '../others/CustomIcons';
+import BeatLoading from '../loading/BeatLoading';
 
 export default function FollowerList() {
     const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers } = useGetFollowersQuery()
@@ -37,7 +38,7 @@ export default function FollowerList() {
         }
     }
 
-    if (isLoadingGetFollowers) return <p className='text-sm'>Loading followers...</p>;
+    if (isLoadingGetFollowers) return <BeatLoading/>;
     if (errorGetFollowers) return <p className='text-sm'>Failed to load followers.</p>;
     if (totalFollowers === 0 || totalFollowersYouDontFollowingBack === 0) return <p className='text-sm bg-white p-3'>No followers</p>;
 

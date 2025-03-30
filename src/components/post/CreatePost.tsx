@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Avatar } from "@mui/material";
 import PostTextArea from "./PostTextarea";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";

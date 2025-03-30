@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import Sponsored from "./Sponsored";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import MenuListLeftBar from "./MenuListLeftBar";
 

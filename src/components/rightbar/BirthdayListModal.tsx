@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useGetUserTodayBirthdayQuery } from '../../features/birthday/birthdayApiSlice';
 import { StreamlineEmojisWrappedGift2 } from '../others/CustomIcons';
+import BeatLoading from '../loading/BeatLoading';
 
 interface BirthdayListModalProps {
     setShowBdayListModal: (value: boolean) => void;
@@ -13,16 +14,14 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
     let content;
 
     useEffect(() => {
-      // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';
         return () => {
-          // restore body scroll behavior when modal is closed
             document.body.style.overflow = '';
         };
     }, []);
     
     if (isLoadingTodaysBirthday){
-        content = <div>Loading posts...</div>;
+        content = <BeatLoading/> ;
     } else if (errorTodaysBirthday) {
         content = <p>Error loading birthdays. Please reload the page.</p>;
     } else if (!todaysBirthday || todaysBirthday.countBirthday === 0) {

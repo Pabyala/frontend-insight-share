@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
 import { Post } from '../../interface/your-posts';
 import UserWhoReactToPost from './UserWhoReactToPost';
-import BeatLoading from '../loading/BeatLoading';
-
-interface PostNumberOfComment {
-    totalCommets: number; 
-    totolReplies: number;  
-}
 
 interface PropsPost {
     post: Post;

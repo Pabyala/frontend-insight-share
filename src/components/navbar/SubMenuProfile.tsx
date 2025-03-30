@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material'
-import { AntDesignSettingFilled, ClarityUserSolid, EmojioneV1Newspaper, FluentColorPeople48, FluentColorStarSettings32, IonLogOut, LsiconUserLikeFilled, StreamlineEmojisWrappedGift2 } from '../others/CustomIcons'
+import { EmojioneV1Newspaper, FluentColorCalendarPeople20, FluentColorPeopleHome16, FluentColorPeopleList32, FluentColorPeopleSync20, FluentColorStarSettings32, NotoOutboxTray, StreamlineEmojisWrappedGift2 } from '../others/CustomIcons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut, selectCurrentToken } from '../../features/auth/authSlice'
@@ -22,7 +22,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
     const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const userId = userInfo?._id
-
+    
     const handleLogout = async () => {
         if (!token) {
             showToast("Token is missing. Cannot log out.", 'error');
@@ -78,7 +78,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
                 <Link to={`/profile/id/${userId}`} className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
-                            <ClarityUserSolid className='text-2xl' />
+                            <FluentColorPeopleHome16 className='text-2xl' />
                         </div>
                         <span>Profile</span>
                     </div>
@@ -86,7 +86,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
                 <Link to="/followers" className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
-                            <FluentColorPeople48 className='text-2xl' />
+                            <FluentColorPeopleList32 className='text-2xl' />
                         </div>
                         <span>
                             Followers
@@ -96,7 +96,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
                 <Link to="/following" className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
-                            <FluentColorPeople48 className='text-2xl' />
+                            <FluentColorPeopleSync20 className='text-2xl' />
                         </div>
                         <span>
                             Following
@@ -107,7 +107,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
                 <div className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:hidden" >
                     <div onClick={handleShowSuggestedForYou} className='flex items-center space-x-2'>
                         <div>
-                            <LsiconUserLikeFilled className='text-2xl' />
+                            <FluentColorCalendarPeople20 className='text-2xl' />
                         </div>
                         <span>
                             Suggested for you
@@ -141,7 +141,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
                 <div onClick={handleLogout} className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>
                         <div>
-                            <IonLogOut className='text-2xl' />
+                            <NotoOutboxTray className='text-2xl' />
                         </div>
                         <span>Logout</span>
                     </div>

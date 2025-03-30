@@ -81,7 +81,7 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
                 showToast("Updated successfully", 'success')
             }
         } catch (error) {
-            showToast("Error updating image", 'error')
+            showToast("Error updating image. Please try again.", 'error')
         }
     };
     
@@ -123,16 +123,16 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
                             />
                         </div>
                         {updateProfilePhotoLoading  ?  
-                            <div className='flex justify-center items-center w-[128px] h-[128px] lg:w-[168px] lg:h-[168px] mx-auto'>
+                            (<div className='flex justify-center items-center w-[128px] h-[128px] lg:w-[168px] lg:h-[168px] mx-auto'>
                                     <BeatLoading/>
-                            </div> 
-                            : <div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-gray-300 lg:w-[168px] lg:h-[168px] mx-auto'>
+                            </div>)
+                            : (<div className='w-[128px] h-[128px] rounded-full overflow-hidden border-4 border-gray-300 lg:w-[168px] lg:h-[168px] mx-auto'>
                                 <img 
                                     src={profilePreviewUrl}
                                     alt="Profile"
                                     className='w-full h-full object-cover'
                                 />
-                            </div> 
+                            </div>)
                         }
                         {isUpdatingProfile && (
                             <div className='flex space-x-2 justify-center'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Post } from "../../interface/your-posts";
 import ReactCommentShare from "./ReactCommentShare";
 import Reactions from "./Reactions";
@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import TimeAgoPost from "./TimeAgoPost";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
-import { useGetPostByIdQuery } from "../../features/posts/postsApiSlice";
+import { useGetPostByIdQuery, useGetSavedPostQuery } from "../../features/posts/postsApiSlice";
 import socketSetup from "../../socket-io/socket-setup";
 import ErrorComponent from "../alert/ErrorComponent";
 import BeatLoading from "../loading/BeatLoading";
@@ -27,7 +27,7 @@ interface PostProps {
     postId: string;
 }
 
-export default function SinglePost({ openPostModal, openPostTextArea, isSavedPost, selectedPost, setOpenPostModal, setOpenPostTextArea, setIsSavedPost, setSelectedPost, postId }: PostProps) {
+export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModal, setIsSavedPost, setSelectedPost, postId }: PostProps) {
 
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
@@ -36,26 +36,23 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
     const userId = userInfo?._id
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
+    const { data: savedPosts } = useGetSavedPostQuery()
 
     useEffect(() => {
         console.log('SOCKET IO', socketSetup)
-        socketSetup.on('addReactPost', (newReact: string)=> {
-            console.log(newReact)
+        socketSetup.on('addReactPost', ()=> {
             refreshPost();
         })
-        socketSetup.on('addCommentToPost', (newComment: string)=> {
-            console.log(newComment)
+        socketSetup.on('addCommentToPost', ()=> {
             refreshPost();
         })
-        socketSetup.on('addRemoveReactToComment', (addRemoveHeartReact: string)=> {
-            console.log(addRemoveHeartReact)
+        socketSetup.on('addRemoveReactToComment', ()=> {
             refreshPost();
         })
-        socketSetup.on('addRemoveReactToReply', (addRemoveHeartReact: string)=> {
-            console.log(addRemoveHeartReact)
+        socketSetup.on('addRemoveReactToReply', ()=> {
             refreshPost();
         })
-    }, [])
+    }, [refreshPost])
 
     // to close the modal
     useEffect(() => {
@@ -70,7 +67,13 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [selectedPostId]);
+    }, [selectedPostId, setIsSavedPost]);
+
+    // Update saved post IDs when `mySavedPosts` changes
+    useEffect(() => {
+        const mySavedPosts = savedPosts ? savedPosts.savedPosts : [];
+        setAllSavedPostId(mySavedPosts.map((post) => post._id)); 
+    }, [savedPosts]); 
 
     // to check if the post is already saved
     const handleOption = (postId: string) => {
@@ -90,7 +93,6 @@ export default function SinglePost({ openPostModal, openPostTextArea, isSavedPos
     }
 
     if (!post) return null;
-
     if (isLoadingPost || isUserInfoLoading) return <BeatLoading/>;
     if (errorPost || userInfoError) return <ErrorComponent/>;
 

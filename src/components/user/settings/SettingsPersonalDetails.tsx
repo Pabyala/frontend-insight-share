@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MaterialSymbolsDelete, MdiCloseThick, MdiPen, MingcuteCheck2Fill } from '../../others/CustomIcons'
 import { v4 as uuidv4 } from 'uuid';
 import { useGetUserQuery, useUpdateUserPersonalDetailsSettingsMutation } from '../../../features/users/usersApiSlice';
@@ -17,8 +17,6 @@ interface SocialLink {
 export default function SettingsPersonalDetails() {
 
     const { data: userInfo, refetch: refetchUserInfo } = useGetUserQuery();
-    console.log("CURRENT USER INFO: ", userInfo)
-    // const [updateUserDetails] = useUpdateUserDetailsMutation();
     const [updateUserPersonalDetails] = useUpdateUserPersonalDetailsSettingsMutation();
 
     const [userDetailsInfo, setUserDetailsInfo] = useState<UserDetails>({

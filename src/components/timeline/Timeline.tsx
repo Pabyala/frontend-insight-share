@@ -18,7 +18,7 @@ export default function Timeline() {
             <CreatePost/>
             <Posts 
                 posts={posts}
-                isLoading={isLoadingTimelinePosts}
+                // isLoading={isLoadingTimelinePosts}
                 error={errorTimelinePosts}
                 refetch={refetchTimelinePosts}
             />

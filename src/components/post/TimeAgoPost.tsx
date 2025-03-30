@@ -1,5 +1,4 @@
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
-import React from 'react'
 
 interface TimeAgoPostProps {
     timeStamp: string | undefined;

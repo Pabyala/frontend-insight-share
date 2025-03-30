@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Datepicker from "react-tailwindcss-datepicker";
 import '.././style/Style.css'
 

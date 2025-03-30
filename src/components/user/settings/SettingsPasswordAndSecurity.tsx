@@ -1,21 +1,10 @@
-import React, { useState } from 'react';
-import { FeArrowRight } from '../../others/CustomIcons';
+import { useState } from 'react';
 import { useGetUserQuery } from '../../../features/users/usersApiSlice';
 import UpdatePasswordOrEmail from '../../modals/UpdatePasswordOrEmail';
 
 export default function SettingsPasswordAndSecurity() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    // const { data: followersData, isLoading, isError } = useGetUserFollowersQuery();
-
-    const [activeElement, setActiveElement] = useState<string | null>(null);
-
-    const toggleAccordion = (section: string) => {
-        setActiveElement((prevSection) => (prevSection === section ? null : section));
-    };
-
-    console.log(userInfo)
-
+    const { data: userInfo } = useGetUserQuery();
     const [showModalPasswordEmail, setShowModalPasswordEmail] = useState<boolean>(false);
     
     const toggleModal = () => {
@@ -26,8 +15,6 @@ export default function SettingsPasswordAndSecurity() {
         <div className='bg-white rounded lg:p-2'>
             <p className='p-2 text-sm font-semibold lg:text-base'>Password and Security</p>
             <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
-
-            
             <div className='space-y-1 p-2 lg:space-y-2'>
                 <div className='w-full'>
                     <p className='text-sm font-medium mb-1'>Email</p>
@@ -48,9 +35,6 @@ export default function SettingsPasswordAndSecurity() {
                         <input 
                             type="password" 
                             value={'sadsadasdasd'}
-                            // onChange={(e) => setUserProfileDetails(prev => (
-                            //     { ...prev, firstName: e.target.value }
-                            // ))}
                             placeholder='Enter your first name'
                             className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
                         />

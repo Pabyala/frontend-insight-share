@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
-import { useAddCommentToPostMutation, useDeleteAddReplyToCommentMutation, useDeleteCommentToPostMutation, useGetPostByIdQuery, useUpdateCommentToPostMutation } from '../../features/posts/postsApiSlice';
+import { useState } from 'react'
+import { useDeleteAddReplyToCommentMutation, useDeleteCommentToPostMutation, useGetPostByIdQuery } from '../../features/posts/postsApiSlice';
 import { FlatColorIconsFullTrash, FluentColorDocumentEdit20, FluentColorWarning20 } from '../others/CustomIcons';
 import ConfirmAlert from '../alert/ConfirmAlert';
-import { toast } from 'react-toastify';
 import { showToast } from '../utils/ToastUtils';
+import BeatLoadingModal from '../loading/BeatLoadingModal';
+import ErrorAlertModal from '../alert/ErrorAlertModal';
 
 interface PropsCommentOptions {
     isUpdate: boolean;
@@ -20,9 +21,9 @@ interface PropsCommentOptions {
 
 export default function CommentOptions({ userId, isUpdate, isDelete, postId, setIsUpdatingComment, setCommentIdUpdating, commentId, replyId, setIsOpenCommentOption, typeOfUpdate }: PropsCommentOptions) {
 
-    const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, error: errorDeleteComment }] = useDeleteCommentToPostMutation();
-    const [deleteAddReplyToComment, { isLoading: isLoadingDeleteReply, isError: isErrorDeleteReply, error: errorDeleteReply }] = useDeleteAddReplyToCommentMutation();
-    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
+    const [deleteCommentToPost, { isLoading: isLoadingDeleteComment, isError: isErrorDeleteComment, reset: resetDeleteComment }] = useDeleteCommentToPostMutation();
+    const [deleteAddReplyToComment, { isLoading: isLoadingDeleteReply, isError: isErrorDeleteReply, reset: resetDeleteReply }] = useDeleteAddReplyToCommentMutation();
+    const { refetch: refreshPost } = useGetPostByIdQuery(postId!,{
         skip: !postId, // skip the query if postId is falsy (undefined/null).
     });
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
@@ -39,7 +40,7 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
 
     const handleDeleteComment = async (commentId: string) => {
         if (!commentId || !userId) {
-            alert('Missing required parameters.')
+            showToast('Missing required parameters', 'warning')
             return;
         }
         setShowDeleteModal(true)
@@ -59,8 +60,7 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
                 refreshPost()
             }
         } catch (error) {
-            console.error("Error deleting comment:", error);
-            alert(error);
+            showToast('Error deleting comment', 'error');
         }
         setIsOpenCommentOption(false)
     }
@@ -73,6 +73,15 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
     const handleReportComment = () => {
         showToast("Ongoing development", "warning")
     }
+
+    if(isLoadingDeleteComment || isLoadingDeleteReply ) return <BeatLoadingModal/>
+    if(isErrorDeleteComment || isErrorDeleteReply) return <ErrorAlertModal 
+        message='An error occurred. Please reload the page.' 
+        onClose={() => {
+            if (isErrorDeleteComment) resetDeleteComment();
+            if (isErrorDeleteReply) resetDeleteReply();
+        }} 
+    />
 
     return (
         <div  className='fixed inset-0 z-51 drop-shadow-2xl flex items-center justify-center w-full h-full overflow-y-auto'>

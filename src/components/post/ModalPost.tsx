@@ -18,13 +18,6 @@ interface PostModalInterface {
     isSavedPost: boolean;
 }
 
-interface CommentDetails {
-    commentId: string;
-    firstName: string;
-    middleName: string | undefined;
-    lastName: string;
-}
-
 export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostModalInterface) {
 
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
@@ -41,19 +34,14 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
         }
     }, [selectedPost, refreshPost]);
 
-    console.log("POST BY ID: ", post)
-
     useEffect(() => {
-      // prevent scrolling when the modal is open
         document.body.style.overflow = 'hidden';
         return () => {
-          // restore body scroll behavior when modal is closed
             document.body.style.overflow = '';
         };
     }, []);
 
     const handleOption = (postId: string) => {
-        console.log("POST ID: ", postId)
         // setOpenOption(true)
         setSelectedPostId(postId)
     }

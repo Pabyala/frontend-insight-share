@@ -1,19 +1,11 @@
-import React from 'react'
-import { logOut, selectCurrentId, selectCurrentToken, selectCurrentUser } from '../../features/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '../../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutUserMutation } from '../../features/auth/authApiSlice';
+import { showToast } from '../utils/ToastUtils';
 
 export default function Logout() {
-    const username = useSelector(selectCurrentUser)
-    const token = useSelector(selectCurrentToken)
-    const id = useSelector(selectCurrentId)
-
-    console.log("Username:", username);
-    console.log("Token:", token); 
-    console.log("My Id:", id); 
-    // const [logout, { isLoading }] = useLogoutMutation();
-    const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
+    const [ logoutUser ] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -26,7 +18,7 @@ export default function Logout() {
             // Redirect to login page
             navigate('/login', { replace: true });
         } catch (error) {
-            console.error('Failed to log out:', error);
+            showToast('Failed to log out', 'error')
         }
     };
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { EmojioneV1Newspaper, FlatColorIconsFolder, FluentColorPeople48 } from '../others/CustomIcons'
 import { Link } from 'react-router-dom'
 import { useGetFollowersQuery, useGetFollowingQuery } from '../../features/FollowersFollowing/followersApiSlice'
@@ -13,15 +13,13 @@ export default function MenuListLeftBar() {
     const { data: savedPosts, refetch: refetchSavedPosts } = useGetSavedPostQuery();
 
     useEffect(() => {
-        socketSetup.on('deletedPost', (currentPostId: string)=> {
-            console.log(currentPostId)
+        socketSetup.on('deletedPost', () => {
             refetchSavedPosts()
         })
-        socketSetup.on('newFollower', (follow: string)=> {
-            console.log(follow)
+        socketSetup.on('newFollower', ()=> {
             refetchGetFollowers();
         })
-    }, [])
+    })
 
     return (
         <div className="flex flex-col bg-white rounded mb-3 p-1.5">
