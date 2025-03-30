@@ -9,7 +9,6 @@ import ProfileUpdateModal from './ProfileUpdateModal';
 import { Link } from 'react-router-dom';
 import { useFollowUserMutation, useGetFollowersQuery, useUnfollowUserMutation } from '../../../features/FollowersFollowing/followersApiSlice';
 import socketSetup from '../../../socket-io/socket-setup';
-import BeatLoadingModal from '../../loading/BeatLoadingModal';
 
 interface ProfileHeaderProps {
     userInfo: UserInfo | undefined;
