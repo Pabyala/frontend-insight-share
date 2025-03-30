@@ -1,8 +1,9 @@
 import { Avatar } from "@mui/material";
-import { MingcuteUserFollow2Fill } from "../others/CustomIcons";
+import { GravityUiPersonPlus, MingcuteUserFollow2Fill } from "../others/CustomIcons";
 import { useGetSuggestedForYouQuery, useGetUserQuery } from "../../features/users/usersApiSlice";
 import { UserSearch } from "../../interface/user";
 import BeatLoading from "../loading/BeatLoading";
+import { Link } from "react-router-dom";
 
 export default function SuggestedFollowing() {
 
@@ -11,6 +12,10 @@ export default function SuggestedFollowing() {
     skip: !userInfo || !userInfo._id, // Ensure userInfo exists and has an _id
   });
 
+  const handleFollow = () => {
+    console.log('first')
+  }
+
   if(isGetSuggestedForYouLoading) return <BeatLoading/>
 
   return (
@@ -18,11 +23,11 @@ export default function SuggestedFollowing() {
         {getSuggestedForYou?.map((user: UserSearch) => (
           <div
             key={user._id}
-            className="block px-1.5 cursor-pointer rounded py-1.5 text-xs text-gray-800 hover:bg-gray-300 lg:text-sm"
+            className="block text-xs lg:text-sm"
           >
-              <div className="flex justify-between space-x-2">
-                <div className="profileandName flex items-center space-x-4">
-                  <div className="flex" style={{ margin: "auto" }}>
+            <div className="flex justify-between space-x-2">
+                <Link to={`/profile/${user.username}/${user._id}`} className=" w-full flex space-x-2 text-gray-800 hover:bg-gray-300 p-1.5 cursor-pointer rounded">
+                  <div className="flex" style={{ margin: "" }}>
                     <Avatar
                       sx={{ width: 38, height: 38 }}
                       alt="Remy Sharp"
@@ -40,14 +45,13 @@ export default function SuggestedFollowing() {
                       <span className="text-sm">{user.username}</span>
                     </div>
                   </div>
-                </div>
-                <div className="flex justify-between space-x-2">
+                </Link>
+                <div className="flex justify-between items-center space-x-2 text-gray-800 hover:bg-gray-300 p-1.5 cursor-pointer rounded" onClick={handleFollow}>
                     <span className="text-3xl cursor-pointer">
-                      <MingcuteUserFollow2Fill />
+                      <GravityUiPersonPlus />
                     </span>
                 </div>
-              </div>
-            {/* </Link> */}
+            </div>
           </div>
         ))}
     </div>
