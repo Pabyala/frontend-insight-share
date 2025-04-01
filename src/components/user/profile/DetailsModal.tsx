@@ -125,7 +125,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
             className='fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50'
         >
             <div className='relative p-4 w-full max-w-2xl max-h-full'>
-                <div className='relative bg-white rounded-lg shadow dark:bg-gray-700 p-5 space-y-3 lg:p-6'>
+                <div className='relative bg-white rounded-lg shadow p-5 space-y-3 lg:p-6'>
                     <div className='flex justify-between'>
                         <div className='flex items-center'>
                             <p className='text-base font-semibold text-center'>Update your details</p>
@@ -140,7 +140,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                             </button>
                         </div>
                     </div>
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
 
                     <div className='w-full'>
                         <p className='text-sm font-medium mb-1'>Set your bio</p>
@@ -208,7 +208,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                     ))}
                                     checked={userDetailsInfo.isFollowedShow} 
                                 />
-                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-0 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-0 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 <p className='ms-3 text-sm'> Followed by
                                     <span className='font-semibold text-sm'> {followersData?.totalFollowers} </span>people
                                 </p>
@@ -282,8 +282,8 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                     ))}
                                     checked={userDetailsInfo.isDateBirthShow} 
                                 />
-                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-0 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{formattedDate}</span>
+                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-0 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                <span className="ms-3 text-sm font-medium text-gray-900">{formattedDate}</span>
                                 </label>
                             </div>
                         </div>
@@ -364,7 +364,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                             
                         </div>
                     </div>
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
                     <div className='w-full flex justify-center'>
                         <button 
                             onClick={handleSaveDetails}

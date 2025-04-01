@@ -1,26 +1,46 @@
 import { Avatar } from "@mui/material";
-import { GravityUiPersonPlus, MingcuteUserFollow2Fill } from "../others/CustomIcons";
+import { FluentPersonArrowBack24Filled } from "../others/CustomIcons";
 import { useGetSuggestedForYouQuery, useGetUserQuery } from "../../features/users/usersApiSlice";
 import { UserSearch } from "../../interface/user";
 import BeatLoading from "../loading/BeatLoading";
 import { Link } from "react-router-dom";
+import { useFollowUserMutation } from "../../features/FollowersFollowing/followersApiSlice";
+import { showLoadingToast, showToast } from "../utils/ToastUtils";
+import socketSetup from "../../socket-io/socket-setup";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function SuggestedFollowing() {
 
   const { data: userInfo } = useGetUserQuery();
-  const { data: getSuggestedForYou, isLoading: isGetSuggestedForYouLoading } = useGetSuggestedForYouQuery(userInfo?._id ?? "", {
-    skip: !userInfo || !userInfo._id, // Ensure userInfo exists and has an _id
+  const { data: getSuggestedForYou, isLoading: isGetSuggestedForYouLoading, refetch: refreshGetSuggestedForYou } = useGetSuggestedForYouQuery(userInfo?._id ?? "", {
+    skip: !userInfo || !userInfo._id,
   });
+  const [followUser, { isLoading: isLoadingFollowUser}] = useFollowUserMutation();
 
-  const handleFollow = () => {
-    console.log('first')
+  useEffect(() => {
+      if (isLoadingFollowUser) {
+          const loadingToast = showLoadingToast("Processing request...");
+  
+        return () => toast.dismiss(loadingToast); 
+      }
+  }, [isLoadingFollowUser]);
+
+  const handleFollow = async (followUserId: string) => {
+    if(!followUserId) return
+    try {
+      await followUser(followUserId).unwrap();
+      socketSetup.emit('newFollower', 'follow');
+      refreshGetSuggestedForYou();
+    } catch(error) {
+      showToast('An error occurred. Please reload the page and try again.');
+    }
   }
-
-  if(isGetSuggestedForYouLoading) return <BeatLoading/>
 
   return (
     <div className="bg-white p-1 rounded-sm">
-        {getSuggestedForYou?.map((user: UserSearch) => (
+        {isGetSuggestedForYouLoading && <BeatLoading/>}
+        {!isGetSuggestedForYouLoading && getSuggestedForYou?.map((user: UserSearch) => (
           <div
             key={user._id}
             className="block text-xs lg:text-sm"
@@ -30,7 +50,7 @@ export default function SuggestedFollowing() {
                   <div className="flex" style={{ margin: "" }}>
                     <Avatar
                       sx={{ width: 38, height: 38 }}
-                      alt="Remy Sharp"
+                      alt={user.username}
                       src={user.avatarUrl}
                     />
                   </div>
@@ -46,9 +66,12 @@ export default function SuggestedFollowing() {
                     </div>
                   </div>
                 </Link>
-                <div className="flex justify-between items-center space-x-2 text-gray-800 hover:bg-gray-300 p-1.5 cursor-pointer rounded" onClick={handleFollow}>
+                <div 
+                  className="flex justify-between items-center space-x-2 text-gray-800 hover:bg-gray-300 p-1.5 cursor-pointer rounded" 
+                  onClick={() => handleFollow(user._id)}
+                >
                     <span className="text-3xl cursor-pointer">
-                      <GravityUiPersonPlus />
+                      <FluentPersonArrowBack24Filled />
                     </span>
                 </div>
             </div>

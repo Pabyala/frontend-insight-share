@@ -5,6 +5,7 @@ import ConfirmAlert from '../alert/ConfirmAlert';
 import { showToast } from '../utils/ToastUtils';
 import BeatLoadingModal from '../loading/BeatLoadingModal';
 import ErrorAlertModal from '../alert/ErrorAlertModal';
+import socketSetup from '../../socket-io/socket-setup';
 
 interface PropsCommentOptions {
     isUpdate: boolean;
@@ -55,9 +56,11 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
             if(typeOfUpdate === 'comment'){
                 await deleteCommentToPost({ commentId, userId }).unwrap(); 
                 refreshPost()
+                socketSetup.emit('deletedComment', commentId);
             } else if (typeOfUpdate === 'reply'){
                 await deleteAddReplyToComment({ commentId, replyId, userId }).unwrap();
                 refreshPost()
+                socketSetup.emit('deletedCommentReply', 'dCommentReply');
             }
         } catch (error) {
             showToast('Error deleting comment', 'error');
@@ -86,12 +89,12 @@ export default function CommentOptions({ userId, isUpdate, isDelete, postId, set
     return (
         <div  className='fixed inset-0 z-51 drop-shadow-2xl flex items-center justify-center w-full h-full overflow-y-auto'>
             <div className='relative w-fit'>
-                <div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
-                    <div className='flex items-center justify-between p-1.5 px-3 border-b rounded-t dark:border-gray-600'>
+                <div className='relative bg-white rounded-lg shadow'>
+                    <div className='flex items-center justify-between p-1.5 px-3 border-b rounded-t '>
                         <p className='text-sm font-medium'>Update</p>
                         <button
                             type="button"
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-7 h-7 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-7 h-7 ms-auto inline-flex justify-center items-center"
                             onClick={handleCloseCommentModal}
                         >
                             <svg

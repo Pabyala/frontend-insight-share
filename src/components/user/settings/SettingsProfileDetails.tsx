@@ -153,7 +153,7 @@ export default function SettingsProfileDetails() {
         <>
             <div className='bg-white rounded lg:p-2'>
                 <p className='p-2 text-sm font-semibold lg:text-base'>Profile Details</p>
-                <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr className="h-px mx-2 bg-gray-200 border-0" />
                 <div className='space-y-1 p-2 lg:space-y-2'>
 
                     {/* Profile picture */}
@@ -221,7 +221,7 @@ export default function SettingsProfileDetails() {
                             (<div className='flex justify-center items-center h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full'>
                                     <BeatLoading/>
                             </div>)
-                            : (<div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px] dark:bg-gray-700'>
+                            : (<div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px]'>
                                 <img 
                                     src={backgroundPreviewUrl}
                                     alt="Background"
@@ -319,7 +319,7 @@ export default function SettingsProfileDetails() {
                         </button>
                     </div>
 
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
                 </div>
             </div>
             {showConfirmAlert && (

@@ -41,7 +41,11 @@ export default function SignUp() {
         e.preventDefault();
 
         if (!isPasswordMatch(formData.password, confirmPassword)) {
-            alert("Password does not match");
+            return showToast("Password does not match", 'warning');
+        }
+
+        if (formData.password.length < 8 || confirmPassword.length < 8) {
+            return showToast("Password must be morethan 8 character.", 'warning');
         }
 
         try {

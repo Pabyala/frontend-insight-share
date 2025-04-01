@@ -90,7 +90,7 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
             className='fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50'
         >
             <div className='relative p-4 w-full max-w-2xl max-h-full'>
-                <div className='relative bg-white rounded-lg shadow dark:bg-gray-700 p-5 space-y-3 lg:p-6'>
+                <div className='relative bg-white rounded-lg shadow p-5 space-y-3 lg:p-6'>
                     <div className='flex justify-between'>
                         <div className='flex items-center'>
                             <p className='text-base font-semibold text-center'>Update your profile</p>
@@ -105,7 +105,7 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
                             </button>
                         </div>
                     </div>
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
                     {/* Profile picture */}
                     <div className='flex flex-col w-full space-y-4'>
                         <div className='w-full flex justify-between'>
@@ -143,8 +143,9 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
                                     Cancel
                                 </button>
                                 <button 
-                                    className='py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
+                                    className={`py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 ${updateProfilePhotoLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     onClick={() => handleSave('profile')}
+                                    disabled={updateProfilePhotoLoading}
                                 >
                                     Save
                                 </button>
@@ -171,7 +172,7 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
                             <div className='flex justify-center items-center h-[230px] lg:h-[280px] xl:h-[300px] lg:w-full mx-auto'>
                                 <BeatLoading/>
                             </div> :
-                            <div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px] dark:bg-gray-700'>
+                            <div className='w-full h-[230px] overflow-hidden relative lg:h-[280px] xl:h-[300px] lg:w-full rounded border-[1px]'>
                                 <img 
                                     src={backgroundPreviewUrl}
                                     alt="Background"
@@ -188,8 +189,9 @@ export default function ProfileUpdateModal({onClose}: ProfilePropsInterface) {
                                     Cancel
                                 </button>
                                 <button 
-                                    className='py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700'
+                                    className={`py-1.5 px-3.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 ${updateProfilePhotoLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     onClick={() => handleSave('background')}
+                                    disabled={updateBgPhotoLoading}
                                 > 
                                     Save
                                 </button>

@@ -62,13 +62,13 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
     return (
       <div
         ref={dropdownRef}
-        className="notif-cont absolute top-full right-[-44px] mt-[12px] w-[392px] bg-white rounded-md shadow-lg py-2 px-2.5"
+        className="notif-cont absolute top-full right-[-44px] mt-[18px] w-[392px] bg-white rounded-md shadow-lg py-2 px-2.5"
         style={{ maxHeight: `${windowHeight - 100}px`, overflowY: "auto", zIndex: '2'}}
       >
         <div className="custom-scroll-bar max-h-none">
           <div className="block py-2 text-gray-800 ">
             <span className="text-sm font-semibold">Notifications</span>
-            <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
+            <hr className="h-px mt-1 mb-1 bg-gray-200 border-0" />
           </div>
 
           <div className="space-y-1">
@@ -87,7 +87,6 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
               >
                 <div 
                   className="flex justify-between space-x-2"
-                  onClick={() => handleMarkAsRead(notif._id)}
                 >
                   <div className="profileAndDisc flex items-center space-x-2">
                     <div className="flex" style={{ margin: "auto" }}>
@@ -210,12 +209,23 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
                     )}
                   </div>
                 </div>
-                <div className="">
-                  <span className="text-gray-400 text-center text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-400 text-center text-xs flex items-center">
                     <TimeAgoPost 
                       timeStamp={notif.createdAt}
                     />
                   </span>
+                  <div>
+                    <span 
+                      className={
+                        notif.isRead
+                          ? "text-gray-400 text-xs" : "text-blue-600 text-xs font-medium hover:underline"
+                      }
+                      onClick={() => handleMarkAsRead(notif._id)}
+                    >
+                      Mark as read
+                    </span>
+                  </div>
                 </div>
               </div>
             ))} 
@@ -224,7 +234,7 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
 
           { getUserNotification && getUserNotification.length >= 6 && !showAllNotification && (
             <div className="block text-center px-4 py-2">
-              <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
+              <hr className="h-px mt-1 mb-1 bg-gray-200 border-0" />
               <button
                 onClick={handleShowMoreNotif}
                 className="text-blue-500 text-sm font-semibold hover:underline"

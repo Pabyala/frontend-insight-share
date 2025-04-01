@@ -51,7 +51,7 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50'>
             <div className='relative p-4 w-full max-w-lg max-h-full'>
-                <div className='relative bg-white rounded-lg shadow dark:bg-gray-700 p-5 space-y-3 lg:p-6'>
+                <div className='relative bg-white rounded-lg shadow p-5 space-y-3 lg:p-6'>
                     <div className='flex justify-between'>
                         <div className='flex items-center'>
                             <p className='text-base font-semibold text-center'>Followings' Birthday's</p>
@@ -59,7 +59,7 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
                         <div className='flex justify-end items-center'>
                             <button
                                 type="button"
-                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                                 onClick={() => setShowBdayListModal(false)}
                             >
                                 <svg
@@ -80,7 +80,7 @@ export default function BirthdayListModal({ setShowBdayListModal }: BirthdayList
                             </button>
                         </div>
                     </div>
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
                     <div className='flex flex-col space-y-2'>
                         {content}
                     </div>

@@ -5,6 +5,7 @@ import ModalPost from './ModalPost';
 import 'react-toastify/dist/ReactToastify.css';
 import SinglePost from './SinglePost';
 import socketSetup from '../../socket-io/socket-setup';
+import ErrorComponent from '../alert/ErrorComponent';
 
 interface PostsProps {
     posts: Post[]; 
@@ -28,8 +29,6 @@ export default function Posts({ posts, error, refetch }: PostsProps) {
         })
     }, [refetch])
 
-    // if (isLoading) return <BeatLoadingModal/>;
-    if (error) return <div className='text-sm'>Error loading posts</div>;
     if (!posts || posts.length === 0) return <div className='text-sm bg-white p-3'>No posts available</div>;
 
     const handleClosePostModal = () => {
@@ -40,7 +39,11 @@ export default function Posts({ posts, error, refetch }: PostsProps) {
 
     return (
         <div className='flex flex-col pb-3 space-y-2 lg:space-y-3'>
-            {posts && posts?.map((post) => (
+            {error ? (
+                <div className='px-2'>
+                    <ErrorComponent/>
+                </div>
+            ) : (posts && posts?.map((post) => (
                 <div key={post._id}>
                     <SinglePost
                         openPostModal={openPostModal}
@@ -55,7 +58,7 @@ export default function Posts({ posts, error, refetch }: PostsProps) {
                         postId={post._id}
                     />
                 </div>
-            ))}
+            )))}
                 { openPostModal && 
                     (<ModalPost
                         selectedPost={selectedPost} 

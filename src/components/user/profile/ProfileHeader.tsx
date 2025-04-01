@@ -33,7 +33,7 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
         try {
             if (isFollowing) {
                 await unfollowUser(currentUserId).unwrap();
-                socketSetup.emit('newFollower', 'unfollow');
+                socketSetup.emit('unFollowed', 'unfollow');
             } else {
                 await followUser(currentUserId).unwrap();
                 socketSetup.emit('newFollower', 'follow');

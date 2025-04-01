@@ -33,10 +33,10 @@ export default function LeftBar() {
                         </div>
                     </Link>
                 </div>
-                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr className="h-px bg-gray-200 border-0" />
                 <MenuListLeftBar/>
                 
-                <hr className="h-px mb-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr className="h-px mb-2 bg-gray-200 border-0" />
                 <Sponsored/>
             </div>
         </div>

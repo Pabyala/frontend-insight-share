@@ -10,8 +10,6 @@ import DefaultImg from '../../asset/DefaultImg.jpg'
 import BirthdayListModal from "../rightbar/BirthdayListModal";
 import { useGetNotificationQuery } from "../../features/notification/notificationApiSlice";
 import socketSetup from "../../socket-io/socket-setup";
-import BeatLoading from "../loading/BeatLoading";
-import ErrorComponent from "../alert/ErrorComponent";
 import { useGetFollowersQuery } from "../../features/FollowersFollowing/followersApiSlice";
 import { Avatar } from "@mui/material";
 import { UserSearch } from "../../interface/user";
@@ -20,8 +18,8 @@ import SuggestedForYou from "../modals/SuggestedForYou";
 
 export default function Navbar() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
-    const { data: getNotification, error: getNotificationError, isLoading: isGetNotificationLoading, refetch } = useGetNotificationQuery(userInfo?._id ?? "", {
+    const { data: userInfo } = useGetUserQuery();
+    const { data: getNotification, isLoading: isGetNotificationLoading, refetch } = useGetNotificationQuery(userInfo?._id ?? "", {
         skip: !userInfo?._id, // Prevent calling API until `userId` is available
     });
     const { data: getFollowers, error: errorGetFollowers, isLoading: isLoadingGetFollowers } = useGetFollowersQuery();
@@ -38,26 +36,63 @@ export default function Navbar() {
     const [showSuggestedForYou, setShowSuggestedForYou] = useState(false)
 
     useEffect(() => {
-            console.log('SOCKET IO', socketSetup)
-            socketSetup.on('addReactPost', ()=> {
-                refetch()
-            })
-            socketSetup.on('deletedPost', ()=> {
-                refetch()
-            })
-            socketSetup.on('addCommentToPost', ()=> {
-                refetch()
-            })
-            socketSetup.on('addRemoveReactToComment', ()=> {
-                refetch();
-            })
-            socketSetup.on('addRemoveReactToReply', ()=> {
-                refetch();
-            })
-            socketSetup.on('newFollower', ()=> {
-                refetch();
-            })
-    }, [refetch])
+        if (userInfo?._id) {
+            socketSetup.on('addReactPost', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('deletedPost', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('addCommentToPost', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('addRemoveReactToComment', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('addRemoveReactToReply', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('newFollower', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('unFollowed', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+            socketSetup.on('deletedComment', () => {
+                if (!isGetNotificationLoading) {
+                    refetch();
+                }
+            });
+        }
+    
+        // Clean up socket listeners when component unmounts or when userInfo changes
+        return () => {
+            if (socketSetup) {
+                socketSetup.off('addReactPost');
+                socketSetup.off('deletedPost');
+                socketSetup.off('addCommentToPost');
+                socketSetup.off('addRemoveReactToComment');
+                socketSetup.off('addRemoveReactToReply');
+                socketSetup.off('newFollower');
+                socketSetup.off('unFollowed');
+                socketSetup.off('deletedComment');
+            }
+        };
+    }, [userInfo?._id, refetch, isGetNotificationLoading]);
 
     const followerRef = useRef<HTMLDivElement>(null);
     const notificationRef = useRef<HTMLDivElement>(null);
@@ -101,8 +136,8 @@ export default function Navbar() {
         };
     }, []);
 
-    if (isUserInfoLoading || isGetNotificationLoading) return <BeatLoading/>;
-    if (userInfoError || getNotificationError) return <ErrorComponent/>;
+    // if (isUserInfoLoading || isGetNotificationLoading) return <BeatLoading/>;
+    // if (userInfoError || getNotificationError) return <ErrorComponent/>;
 
     return (
         <div 

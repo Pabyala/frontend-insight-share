@@ -183,7 +183,7 @@ export default function SettingsPersonalDetails() {
         <>
             <div className='bg-white rounded lg:p-2'>
                 <p className='p-2 text-sm font-semibold lg:text-base'>Personal Details</p>
-                <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr className="h-px mx-2 bg-gray-200 border-0" />
                 <div className='space-y-1 p-2 lg:space-y-2'>
                     
                     <div className='w-full'>
@@ -450,7 +450,7 @@ export default function SettingsPersonalDetails() {
                         </div>
                     </div>
 
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
 
                     <div className='w-full flex space-x-4'>
                         <button 

@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom"
+
 export default function Sponsored() {
     return (
         <div className=''>
             <p className='text-sm font-semibold mb-1.5 lg:text-base'>Sponsored</p>
                 <div className='flex flex-col space-y-3'>
-                    <div className='flex bg-white rounded-lg overflow-hidden'>
+                    <Link to='/' role="link"  className='flex bg-white rounded-lg overflow-hidden'>
                         <div className='w-2/5 flex'>
                             <img 
                                 className='h-auto max-w-full'
@@ -12,11 +14,11 @@ export default function Sponsored() {
                             />
                         </div>
                         <div className='w-3/5 p-2 flex flex-col justify-center'>
-                            <p className='text-sm font-semibold'>Get extra 30% off. Birthday Sale!</p>
-                            <a href="https://www.lipsum.com/" className='text-xs text-slate-500'>lipson</a>
+                            <p className='text-sm font-semibold'>Looking for sponsored</p>
+                            <p className='text-xs text-slate-500'>LF</p>
                         </div>
-                    </div>
-                    <div className='flex bg-white rounded-lg overflow-hidden'>
+                    </Link>
+                    <Link to='/' role="link" className='flex bg-white rounded-lg overflow-hidden'>
                         <div className='w-2/5 flex'>
                             <img 
                                 className='h-auto max-w-full'
@@ -25,10 +27,10 @@ export default function Sponsored() {
                             />
                         </div>
                         <div className='w-3/5 p-2 flex flex-col justify-center'>
-                            <p className='text-sm font-semibold'>Learn Full Stack Developer</p>
-                            <a href="https://www.lipsum.com/" className='text-xs text-slate-500'>lipson</a>
+                            <p className='text-sm font-semibold'>Looking for sponsored</p>
+                            <p className='text-xs text-slate-500'>LF</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
         </div>
     )

@@ -72,6 +72,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                 await addReplyToComment({commentId: commentDetails.commentId, userId, reply: replyComment})
                 refetch()
                 setReplyComment('');
+                socketSetup.emit('addCommentToPost', userId);
             } catch (error) {
                 showToast('An error occurred. Please reload the page and again.', 'error')
             }
@@ -405,7 +406,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                     <p className='text-xs cursor-pointer'>Replying to <span className='font-bold'>{commentDetails.firstName} {commentDetails.middleName} {commentDetails.lastName}</span> - <span onClick={handelCloseReply}>Cancel</span></p>
                 </div>
             )}
-            <div className="flex justify-between bg-gray-200 dark:bg-gray-700 rounded-lg">
+            <div className="flex justify-between bg-gray-200 rounded-lg">
                 <div className="w-[97%] flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg">
                     <textarea 
                         ref={textareaRef}
@@ -414,7 +415,7 @@ export default function CommentsAndReplies({ userId, selectedPost, postId, post,
                         onChange={(e) => setReplyComment(e.target.value)}
                         placeholder="Write a comment..."
                         value={replyComment}
-                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
+                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 text-sm"
                     />
                 </div>
                 <div className="p-2 w-[5%] flex justify-end items-center">

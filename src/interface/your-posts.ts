@@ -127,6 +127,7 @@ export interface UserReact {
     avatarUrl: string;
     coverPhotoUrl?: string;
     firstName: string;
+    middleName?: string;
     lastName: string;
     reactionType: string;
     username: string;

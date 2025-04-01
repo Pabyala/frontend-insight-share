@@ -11,7 +11,6 @@ export default function Timeline() {
     const posts = timelinePosts ? timelinePosts.dataPost : []
 
     if (isLoadingTimelinePosts) return <BeatLoading/>;
-    if (errorTimelinePosts) return <ErrorComponent/>;
 
     return (
         <div className='flex w-full flex-col lg:w-[55%] xl:w-[45%]'>

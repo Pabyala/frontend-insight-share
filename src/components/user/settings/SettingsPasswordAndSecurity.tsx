@@ -14,7 +14,7 @@ export default function SettingsPasswordAndSecurity() {
     return (
         <div className='bg-white rounded lg:p-2'>
             <p className='p-2 text-sm font-semibold lg:text-base'>Password and Security</p>
-            <hr className="h-px mx-2 bg-gray-200 border-0 dark:bg-gray-700" />
+            <hr className="h-px mx-2 bg-gray-200 border-0" />
             <div className='space-y-1 p-2 lg:space-y-2'>
                 <div className='w-full'>
                     <p className='text-sm font-medium mb-1'>Email</p>
@@ -54,7 +54,7 @@ export default function SettingsPasswordAndSecurity() {
                     </button>
                 </div>
 
-                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr className="h-px bg-gray-200 border-0" />
             </div>
 
             {showModalPasswordEmail && 

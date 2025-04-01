@@ -21,7 +21,7 @@ interface PostModalInterface {
 export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostModalInterface) {
 
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(selectedPost!, {
-        skip: !selectedPost, // skip the query if postId is falsy (undefined/null).
+        skip: !selectedPost,
     });
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const userId = userInfo?._id
@@ -57,16 +57,16 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                 marginTop: '0px'
             }}
         >
-            <div className="relative p-4 w-full max-w-2xl max-h-full">
-                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div className="relative p-4 w-full max-w-2xl max-h-full ">
+                <div className="relative bg-white rounded-lg shadow">
                     {/* header: name of post and close btn */}
-                    <div className="flex items-center justify-between px-3 py-2.5 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h4 className="text-base font-semibold text-center text-black dark:text-white">
+                    <div className="flex items-center justify-between px-3 py-2.5 md:p-5 border-b rounded-t">
+                        <h4 className="text-base font-semibold text-center text-black">
                             {post?.authorId.firstName} {post?.authorId.middleName} {post?.authorId.lastName}'s Post
                         </h4>
                         <button
                             type="button"
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                             onClick={onClose}
                         >
                             <svg
@@ -146,7 +146,7 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                         <ReactCommentShare 
                             post={post}
                         />
-                        <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+                        <hr className="h-px my-1 bg-gray-200 border-0" />
                         {/* react, comment, share */}
                         <div className='pt-1'>
                             <div  className='w-full flex justify-between'>
@@ -179,7 +179,7 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                             </div>
                         </div>
 
-                        <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+                        <hr className="h-px my-1 bg-gray-200 border-0" />
                         <div className='py-1.5'>
                             <CommentsAndReplies
                                 userId={userId}

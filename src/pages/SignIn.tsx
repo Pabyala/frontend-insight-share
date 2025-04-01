@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdiEye, MdiEyeOff } from '../components/others/CustomIcons';
 import { useLoginMutation } from '../features/auth/authApiSlice';
 import { useDispatch } from 'react-redux';
 import { setCredentials, setUserDetails } from '../features/auth/authSlice';
-import usePersist from '../hooks/usePersist';
 import { useResendVerificationCodeMutation } from '../features/verify-email-reset-password/verify-email-reset-password';
 import { showToast } from '../components/utils/ToastUtils';
 
@@ -19,9 +18,9 @@ export default function SignIn() {
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
     const location = useLocation();
-    const [persist, setPersist] = usePersist();
+    // const [persist, setPersist] = usePersist();
     
-    const handleToggleCheck = () => setPersist(prev => !prev)
+    // const handleToggleCheck = () => setPersist(prev => !prev)
 
     const from = location.state?.from?.pathname || '/'; 
     const handleSubmit = async () => {
@@ -110,15 +109,15 @@ export default function SignIn() {
                         <div className="text-center mt-4">
                             <Link to='/reset-password-verify' className="text-blue-600 cursor-pointer text-sm">Forgot Password?</Link>
                         </div>
-                        <label htmlFor="persist">
+                        {/* <label htmlFor="persist">
                             <input 
                                 type="checkbox" 
                                 className='form_checkbox'
                                 id='persist'
-                                onChange={handleToggleCheck}
-                                checked={persist}
+                                // onChange={handleToggleCheck}
+                                // checked={persist}
                             />
-                        </label>
+                        </label> */}
 
                         <hr className="my-6" />
 

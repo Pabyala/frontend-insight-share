@@ -7,12 +7,12 @@ import ErrorAlert from '../alert/ErrorAlert';
 
 type ReactionKeys = 'all' | 'like' | 'fire' | 'handsUp' | 'disLike' | 'heart';
 
-interface UserReactions {
+interface UserReactionsProps {
     postId: string;
     onClose: () => void;
 }
 
-export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
+export default function UserWhoReactToPost({ postId, onClose }: UserReactionsProps) {
 
     const [typeOfReaction, setTypeOfReaction] = useState<ReactionKeys>('all');
     const { data: allReaction, error: errorAllReaction, isLoading: isLoadingAllReaction } = useGetAllUserWhoReactToPostQuery({ postId });
@@ -34,9 +34,13 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
     if (errorAllReaction) return <ErrorAlert message='Error reactions.' onClose={onClose} />;
 
     return (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto">
-            <div className="relative p-4 w-full max-w-[450px] max-h-full">
-                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div 
+            className="fixed inset-0 z-50 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center w-full h-full overflow-y-auto"
+        >
+            <div 
+                className="relative p-4 w-full max-w-[450px] max-h-full"
+            >
+                <div className="relative bg-white rounded-lg shadow">
                     <div className='p-4 space-y-2'>
                         <div className='flex justify-between pl-1'>
                             <div className='flex items-center space-x-2'>
@@ -95,7 +99,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
                             <div>
                                 <button
                                     type="button"
-                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-6 h-6 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-6 h-6 ms-auto inline-flex justify-center items-center"
                                     onClick={onClose}
                                 >
                                     <svg
@@ -116,7 +120,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
                                 </button>
                             </div>
                         </div>
-                        <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                        <hr className="h-px bg-gray-200 border-0" />
                         <div className='flex flex-col space-y-2'>
                             {users.map(user => (
                                 <div key={user._id} className='flex items-center justify-between'>
@@ -127,7 +131,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactions) {
                                             src={user.avatarUrl}
                                         />
                                         <p className='text-sm font-semibold'>
-                                            {user.firstName} {user.lastName}
+                                        {user.firstName} {user.middleName} {user.lastName}
                                         </p>
                                     </div>
                                     <div className='items-center'>

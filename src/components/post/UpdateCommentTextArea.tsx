@@ -102,7 +102,7 @@ export default function UpdateCommentTextArea({ comment, commentId, replyId, use
     return (
         <div className='w-full'>
             {/* <div className='flex justify-between'> */}
-            <div className='flex justify-between flex-col bg-gray-200 dark:bg-gray-700 rounded-lg'>
+            <div className='flex justify-between flex-col bg-gray-200 rounded-lg'>
                 <div className="w-full flex flex-col flex-grow cursor-pointer bg-slate-200 rounded-lg">
                     <textarea 
                         ref={textareaRef}
@@ -117,7 +117,7 @@ export default function UpdateCommentTextArea({ comment, commentId, replyId, use
                         // onInput={handleInput}
                         placeholder="Write a comment..."
                         value={commentContext}
-                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 dark:bg-gray-700 text-sm"
+                        className="w-full p-2 rounded-md border outline-none resize-none overflow-y-auto bg-gray-200 text-sm"
                     />
                 </div>
                 <div className="p-2 w-full flex justify-end">

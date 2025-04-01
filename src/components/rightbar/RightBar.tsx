@@ -28,7 +28,7 @@ export default function RightBar() {
             >
                 {/* This section stays fixed at the top */}
                 <TodaysBdayList />
-                <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                <hr className="h-px bg-gray-200 border-0" />
                     <p className="text-sm font-semibold mb-1">Suggested for you</p>
                     <div className="overflow-y-auto rounded-sm">
                         <SuggestedFollowing />

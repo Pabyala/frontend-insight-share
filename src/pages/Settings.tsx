@@ -23,7 +23,7 @@ export default function Settings() {
                 />
                 <div className='space-y-1.5 lg:space-y-3 lg:flex-row lg:justify-between'>
                     <p className='text-sm font-medium pt-1.5 md:text-base lg:text-lg'>Account Setting</p>
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
                     <div className='flex flex-col space-y-2 w-full justify-between lg:flex-row lg:space-y-0'>
                         <div className='w-full h-fit bg-white rounded p-2 lg:w-[35%] lg:p-3'>
                             <ul

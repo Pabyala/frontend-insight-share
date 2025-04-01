@@ -45,7 +45,7 @@ export default function SetNewPassword() {
         <div className='bg-gradient-to-b from-blue-200 to-white'>
             <div className="flex items-center justify-center w-full h-screen bg-white/70 backdrop-blur-xl shadow-lg">
                 <div className="p-4 w-full max-w-sm">
-                    <div className="bg-white rounded shadow dark:bg-gray-700 p-3 space-y-3 lg:p-4">
+                    <div className="bg-white rounded shadow p-3 space-y-3 lg:p-4">
                         <h3 className="text-lg font-semibold text-center">
                             Forgot your password?
                         </h3>

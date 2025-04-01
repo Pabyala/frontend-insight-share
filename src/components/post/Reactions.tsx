@@ -1,4 +1,3 @@
-import React from 'react'
 import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
 import { Post } from '../../interface/your-posts';
 import { useSelector } from 'react-redux';

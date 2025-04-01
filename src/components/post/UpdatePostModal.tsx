@@ -62,7 +62,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50' >
             <div className='relative p-4 w-full max-w-2xl max-h-full'>
-                <div className='relative bg-white rounded-lg shadow dark:bg-gray-700 p-5 space-y-3 lg:p-6'>
+                <div className='relative bg-white rounded-lg shadow p-5 space-y-3 lg:p-6'>
                     <div className='flex justify-between'>
                         <div className='flex items-center'>
                             <p className='text-base font-semibold text-center'>Update your post</p>
@@ -70,7 +70,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
                         <div className='flex justify-end items-center'>
                             <button
                                 type="button"
-                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                                 onClick={handleCloseModal}
                             >
                                 <svg
@@ -91,7 +91,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
                             </button>
                         </div>
                     </div>
-                    <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px bg-gray-200 border-0" />
                     <div className="flex space-x-4 mb-3">
                             <Avatar
                                 sx={{ width: 40, height: 40 }}
@@ -111,7 +111,7 @@ export default function UpdatePostModal({ onClose, selectedPostId, setSelectedPo
                                 name="" 
                                 id=""
                                 onChange={(e) => setCaption(e.target.value)}
-                                className="w-full text-base p-2 rounded-md border outline-none resize-none max-h-32 overflow-y-auto h-[150px] bg-gray-200 dark:bg-gray-700"
+                                className="w-full text-base p-2 rounded-md border outline-none resize-none max-h-32 overflow-y-auto h-[150px] bg-gray-200"
                                 placeholder={`What's on your mind, ${post?.authorId.firstName}?`}
                                 value={caption}
                             />

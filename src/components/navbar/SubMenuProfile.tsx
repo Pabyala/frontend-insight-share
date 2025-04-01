@@ -18,7 +18,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
 
     const navigate = useNavigate()
     const token = useSelector(selectCurrentToken)
-    const { data: userInfo } = useGetUserQuery();
+    const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
     const [logoutUser, { isLoading: isLoadingLogout}] = useLogoutUserMutation();
     const dispatch = useDispatch();
     const userId = userInfo?._id
@@ -52,7 +52,8 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
 
     return (
         <>
-            <div className="absolute top-full right-[0px] mt-[11px] w-[392px] bg-white rounded-md shadow-lg p-2">
+            <div className="absolute top-full right-[0px] mt-[16px] w-[392px] bg-white rounded-md shadow-lg p-2">
+                {isLoadingUserInfo && <BeatLoading/>}
                 <div className='block px-2 py-2 text-gray-800 hover:bg-gray-300 rounded'>
                     <Link to={`/profile/id/${userId}`} className=''>
                         <div className="flex items-center">
@@ -73,7 +74,7 @@ export default function SubmenuProfile({setShowBdayListModal, setShowSuggestedFo
                     </Link>
                 </div>
                 <div className="block px-2">
-                    <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px mt-1 mb-1 bg-gray-200 border-0" />
                 </div>
                 <Link to={`/profile/id/${userId}`} className="block px-2 py-1.5 text-sm text-gray-800 hover:bg-gray-300 rounded lg:text-sm" >
                     <div className='flex items-center space-x-2'>

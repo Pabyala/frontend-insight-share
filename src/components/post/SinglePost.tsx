@@ -11,8 +11,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import { useGetPostByIdQuery, useGetSavedPostQuery } from "../../features/posts/postsApiSlice";
 import socketSetup from "../../socket-io/socket-setup";
-import ErrorComponent from "../alert/ErrorComponent";
 import BeatLoading from "../loading/BeatLoading";
+import ErrorAlertModal from "../alert/ErrorAlertModal";
 
 interface PostProps {
     post: Post;
@@ -29,14 +29,15 @@ interface PostProps {
 
 export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModal, setIsSavedPost, setSelectedPost, postId }: PostProps) {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refreshUserInfo } = useGetUserQuery();
     const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
-            skip: !postId, // skip the query if postId is falsy (undefined/null).
+            skip: !postId,
     });
     const userId = userInfo?._id
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
     const [allSavedPostId, setAllSavedPostId] = useState<string[]>([]);
     const { data: savedPosts } = useGetSavedPostQuery()
+
 
     useEffect(() => {
         console.log('SOCKET IO', socketSetup)
@@ -94,7 +95,17 @@ export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModa
 
     if (!post) return null;
     if (isLoadingPost || isUserInfoLoading) return <BeatLoading/>;
-    if (errorPost || userInfoError) return <ErrorComponent/>;
+    if (errorPost || userInfoError) {
+        return (
+            <ErrorAlertModal 
+                message="An error occurred while fetching data. Please try again." 
+                onClose={() => {
+                    if (errorPost) refreshPost();  
+                    if (userInfoError) refreshUserInfo(); 
+                }} 
+            />
+        );
+    }
 
     return (
         <>
@@ -161,7 +172,7 @@ export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModa
                         </div>
                     </div>
                     <ReactCommentShare post={post} />
-                    <hr className="h-px mt-1 mb-1 bg-gray-200 border-0 dark:bg-gray-700" />
+                    <hr className="h-px mt-1 mb-1 bg-gray-200 border-0" />
                     {/* react, comment */}
                     <div className="pt-1">
                         <div className="w-full flex justify-between">

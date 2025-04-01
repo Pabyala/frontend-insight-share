@@ -119,7 +119,7 @@ export default function VerifyEmail() {
         <div className="bg-gradient-to-b from-blue-200 to-white">
             <div className="flex items-center justify-center w-full h-screen bg-white/70 backdrop-blur-xl shadow-lg">
                 <div className="p-4 w-full max-w-sm">
-                    <div className="bg-white rounded shadow dark:bg-gray-700 p-3 space-y-3 lg:p-4">
+                    <div className="bg-white rounded shadow p-3 space-y-3 lg:p-4">
                         <h3 className="text-lg font-semibold text-center">Verify Your Email</h3>
                         <p className="text-sm text-gray-600 text-center">
                             Please check your email or spam for the verification code.
@@ -133,7 +133,7 @@ export default function VerifyEmail() {
                                     value={digit}
                                     onChange={(e) => handleChange(index, e.target.value)}
                                     onKeyDown={(e) => handleKeyDown(index, e)}
-                                    className="w-12 h-12 text-center border rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-600 dark:text-white"
+                                    className="w-12 h-12 text-center border rounded-lg text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     maxLength={1}
                                     autoComplete="off"
                                 />
