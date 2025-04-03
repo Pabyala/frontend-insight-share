@@ -34,7 +34,7 @@ export default function Posts({ posts, error, refetch }: PostsProps) {
     const handleClosePostModal = () => {
         setSelectedPost(null)
         setOpenPostModal(false)
-        refetch()
+        // refetch()
     };
 
     return (

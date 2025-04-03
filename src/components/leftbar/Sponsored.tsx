@@ -14,7 +14,7 @@ export default function Sponsored() {
                             />
                         </div>
                         <div className='w-3/5 p-2 flex flex-col justify-center'>
-                            <p className='text-sm font-semibold'>Looking for sponsored</p>
+                            <p className='text-sm font-semibold'>Looking for sponsors</p>
                             <p className='text-xs text-slate-500'>LF</p>
                         </div>
                     </Link>
@@ -27,7 +27,7 @@ export default function Sponsored() {
                             />
                         </div>
                         <div className='w-3/5 p-2 flex flex-col justify-center'>
-                            <p className='text-sm font-semibold'>Looking for sponsored</p>
+                            <p className='text-sm font-semibold'>Looking for sponsors</p>
                             <p className='text-xs text-slate-500'>LF</p>
                         </div>
                     </Link>

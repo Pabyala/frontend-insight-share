@@ -29,6 +29,7 @@ export default function SavedPost() {
             <div className='container mx-auto flex flex-col justify-between pt-[63px] lg:pt-[65px] xl:pt-[68px] relative overflow-hidden space-y-1.5 lg:space-y-3'>
                 <ProfileHeader 
                     userInfo={userInfo}
+                    isLoading={isUserInfoLoading}
                 />
                 <div className='flex flex-col space-y-1.5 lg:space-y-0 lg:flex-row lg:justify-between'>
                     <div className='lg:w-[42%]'>

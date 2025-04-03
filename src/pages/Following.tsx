@@ -6,7 +6,7 @@ import { useGetUserQuery } from '../features/users/usersApiSlice'
 
 export default function Following() {
 
-    const { data: userInfo } = useGetUserQuery();
+    const { data: userInfo, isLoading: isLoadingUserInfo } = useGetUserQuery();
 
     return (
         <div className='flex flex-col pb-5'>
@@ -14,6 +14,7 @@ export default function Following() {
             <div className='container mx-auto flex flex-col justify-between pt-[63px] lg:pt-[65px] xl:pt-[68px] relative overflow-hidden space-y-1.5 lg:space-y-3'>
                 <ProfileHeader 
                     userInfo={userInfo}
+                    isLoading={isLoadingUserInfo}
                 />
                 <div className='flex flex-col space-y-1.5 lg:space-y-0 lg:flex-row lg:justify-between'>
                     <div className='lg:w-[42%]'>

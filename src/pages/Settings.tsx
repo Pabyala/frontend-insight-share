@@ -8,10 +8,10 @@ import { useGetUserQuery } from '../features/users/usersApiSlice';
 
 export default function Settings() {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
+    const { data: userInfo, error: userInfoError, isLoading: isLoadingUserInfo } = useGetUserQuery();
     const [openTab, setOpenTab] = useState<number>(1);
 
-    if (isUserInfoLoading) return <div className='text-sm'>Loading...</div>;
+    if (isLoadingUserInfo) return <div className='text-sm'>Loading...</div>;
     if (userInfoError) return <div className='text-sm'>Error fetching posts</div>;
 
     return (
@@ -20,6 +20,7 @@ export default function Settings() {
             <div className='container mx-auto flex flex-col justify-between pt-[63px] lg:pt-[65px] xl:pt-[68px] relative overflow-hidden space-y-1.5 lg:space-y-3'>
                 <ProfileHeader 
                     userInfo={userInfo}
+                    isLoading={isLoadingUserInfo}
                 />
                 <div className='space-y-1.5 lg:space-y-3 lg:flex-row lg:justify-between'>
                     <p className='text-sm font-medium pt-1.5 md:text-base lg:text-lg'>Account Setting</p>

@@ -19,6 +19,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SetNewPassword from "./pages/SetNewPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./pages/NotFound";
 
 function App() {
 
@@ -46,10 +47,10 @@ function App() {
                   <Route path="/profile/id/:userId" element={<Profile />} />
                   <Route path="/profile/:username/:userId" element={<ViewUserProfile />} />
                   <Route path="/settings" element={<Settings />} />
-
                   <Route path="/logout" element={<Logout />} />
                 </Route>
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
       </div>

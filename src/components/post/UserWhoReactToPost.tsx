@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useGetAllUserWhoReactToPostQuery } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
-import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
+import { AntDesignDislikeFilled, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
 import BeatLoadingModal from '../loading/BeatLoadingModal';
 import ErrorAlert from '../alert/ErrorAlert';
 
@@ -76,7 +76,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactionsPro
                                         className='flex items-center cursor-pointer' 
                                         onClick={() => handleSelectTypeOfReaction('disLike')}
                                     >
-                                        <AntDesignDislikeFilled />
+                                        <NotoSadButRelievedFace className='text-[18px]' />
                                         <span className='ml-[5px]'>
                                             {allReaction?.reactions.disLike?.length}
                                         </span>
@@ -138,7 +138,7 @@ export default function UserWhoReactToPost({ postId, onClose }: UserReactionsPro
                                         <span className='text-[25px]'>
                                             {user.reactionType === 'fire' && <TwemojiFire />}
                                             {user.reactionType === 'handsUp' && <TwemojiRaisingHands />}
-                                            {user.reactionType === 'disLike' && <AntDesignDislikeFilled />}
+                                            {user.reactionType === 'disLike' && <NotoSadButRelievedFace />}
                                             {user.reactionType === 'heart' && <NotoOrangeHeart />}
                                         </span>
                                     </div>

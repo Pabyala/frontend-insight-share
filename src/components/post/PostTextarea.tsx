@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import { useAddPostMutation } from "../../features/posts/postsApiSlice";
+import { useAddPostMutation, useGetPostsForTimelineQuery } from "../../features/posts/postsApiSlice";
 import { useEffect, useState } from "react";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import DefaultImg from '../../asset/DefaultImg.jpg'
@@ -13,6 +13,7 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
 
     const { data: userInfo } = useGetUserQuery();
     const [addPost] = useAddPostMutation();
+    const { data: timelinePosts, error: errorTimelinePosts, isLoading: isLoadingTimelinePosts, refetch: refetchTimelinePosts } = useGetPostsForTimelineQuery();
 
     const [captionPost, setCaptionPost] = useState<string>('')
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(false)
@@ -42,6 +43,7 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
 
         try {
             addPost({ captionPost, authorId }).unwrap();
+            refetchTimelinePosts()
             onClose();
             showToast("Your thought has been shared with the world!", "success")
         } catch (error) {

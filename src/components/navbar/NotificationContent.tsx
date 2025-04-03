@@ -190,7 +190,7 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
                           <NotoAngryFace className="text-orange-500 text-4xl text-blue-600/100" />
                         )}
                         {notif.typeOfNotification === "disLike" && (
-                          <AntDesignDislikeFilled className="text-orange-500 text-4xl text-blue-600/100" />
+                          <NotoSadButRelievedFace className="text-orange-500 text-4xl text-blue-600/100" />
                         )}
                       </>
                     )}

@@ -94,7 +94,7 @@ export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModa
     }
 
     if (!post) return null;
-    if (isLoadingPost || isUserInfoLoading) return <BeatLoading/>;
+    // if (isLoadingPost || isUserInfoLoading) return <BeatLoading/>;
     if (errorPost || userInfoError) {
         return (
             <ErrorAlertModal 

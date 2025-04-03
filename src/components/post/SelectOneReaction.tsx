@@ -1,4 +1,4 @@
-import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons'
+import { EmojioneSadButRelievedFace, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons'
 import { useGetPostByIdQuery, useReactPostMutation } from '../../features/posts/postsApiSlice';
 import { useSelector } from 'react-redux';
 import { selectCurrentId } from '../../features/auth/authSlice';
@@ -55,7 +55,7 @@ export default function SelectOneReaction({ postId } : SelectOneReactionProps) {
                 onClick={() => handleReactType('disLike')}
                 >
                     <span className="flex items-center">
-                        <AntDesignDislikeFilled />
+                        <NotoSadButRelievedFace className='text-[18px]'/>
                     </span>
                 </div>
             </div>

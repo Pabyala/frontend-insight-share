@@ -10,12 +10,14 @@ import { Link } from 'react-router-dom';
 import { useFollowUserMutation, useGetFollowersQuery, useUnfollowUserMutation } from '../../../features/FollowersFollowing/followersApiSlice';
 import socketSetup from '../../../socket-io/socket-setup';
 import { showToast } from '../../utils/ToastUtils';
+import BeatLoading from '../../loading/BeatLoading';
 
 interface ProfileHeaderProps {
     userInfo: UserInfo | undefined;
+    isLoading: boolean;
 }
 
-export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
+export default function ProfileHeader({ userInfo, isLoading }: ProfileHeaderProps) {
 
     const [showUpdateProfileModal, setShowUpdateProfileModal] = useState<boolean>(false);
     const { data: authenticatedUserInfo, error: userInfoError } = useGetUserQuery();
@@ -47,82 +49,85 @@ export default function ProfileHeader({ userInfo }: ProfileHeaderProps) {
 
     return (
         <div className='w-full mx-auto flex flex-col bg-white rounded'>
-            {/* Background Photo */}
-            <div className='w-full h-[260px] overflow-hidden relative lg:h-[360px] xl:h-[463px] lg:w-full rounded'>
-                <img 
-                    src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
-                    alt="Background"
-                    className='w-full h-full object-cover rounded'
-                />
-            </div>
-
-            {/* Profile Image and Details */}
-            <div className='relative flex flex-col items-center -mt-16 pb-5 lg:flex-row lg:px-7 lg:items-end lg:-mt-8 lg:justify-between lg:pb-6 xl:px-12 xl:pb-7'>
-                <div className='flex flex-col items-center lg:flex-row lg:items-end lg:space-x-3'>
-                    {/* Profile Image */}
-                    <div className='w-[128px] h-[128px] rounded-full border-4 border-white lg:w-[168px] lg:h-[168px] relative bg-zinc-600 overflow-hidden'>
-                        <img 
-                            src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
-                            alt="Profile"
-                            className='w-full h-full object-cover'
-                        />
-                    </div>
-
-                    {/* Name and Other Details */}
-                    <div className='mt-1 text-center flex flex-col mb-1.5 lg:items-start lg:m-0 lg:mb-[2px]'>
-                        <p className='text-xl font-semibold lg:text-2xl'>
-                            <span>{userInfo?.firstName} </span> 
-                            <span>{userInfo?.middleName} </span> 
-                            <span> {userInfo?.lastName}</span>
-                        </p>
-                        <p className='text-sm text-black lg:text-base italic'>@{userInfo?.username}</p>
-                        <ProfileListOfFollowers
-                            currentUserId={currentUserId}
-                        />
-                    </div>
+            {isLoading ? <BeatLoading/> 
+            : ( <>
+                {/* Background Photo */}
+                <div className='w-full h-[260px] overflow-hidden relative lg:h-[360px] xl:h-[463px] lg:w-full rounded'>
+                    <img 
+                        src={userInfo?.coverPhotoUrl === '' ? DefaultBg : userInfo?.coverPhotoUrl}
+                        alt="Background"
+                        className='w-full h-full object-cover rounded'
+                    />
                 </div>
 
-                {authenticatedUserId === currentUserId ? (
-                    <>
+                {/* Profile Image and Details */}
+                <div className='relative flex flex-col items-center -mt-16 pb-5 lg:flex-row lg:px-7 lg:items-end lg:-mt-8 lg:justify-between lg:pb-6 xl:px-12 xl:pb-7'>
+                    <div className='flex flex-col items-center lg:flex-row lg:items-end lg:space-x-3'>
+                        {/* Profile Image */}
+                        <div className='w-[128px] h-[128px] rounded-full border-4 border-white lg:w-[168px] lg:h-[168px] relative bg-zinc-600 overflow-hidden'>
+                            <img 
+                                src={userInfo?.avatarUrl === '' ? DefaultImg : userInfo?.avatarUrl}
+                                alt="Profile"
+                                className='w-full h-full object-cover'
+                            />
+                        </div>
+
+                        {/* Name and Other Details */}
+                        <div className='mt-1 text-center flex flex-col mb-1.5 lg:items-start lg:m-0 lg:mb-[2px]'>
+                            <p className='text-xl font-semibold lg:text-2xl'>
+                                <span>{userInfo?.firstName} </span> 
+                                <span>{userInfo?.middleName} </span> 
+                                <span> {userInfo?.lastName}</span>
+                            </p>
+                            <p className='text-sm text-black lg:text-base italic'>@{userInfo?.username}</p>
+                            <ProfileListOfFollowers
+                                currentUserId={currentUserId}
+                            />
+                        </div>
+                    </div>
+
+                    {authenticatedUserId === currentUserId ? (
+                        <>
+                            <div className='flex space-x-2'>
+                                <button 
+                                    onClick={() => setShowUpdateProfileModal(true)}
+                                    className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
+                                >
+                                    <span className='text-[18px]'>
+                                        <MdiPen/>
+                                    </span>
+                                    <span className='text-sm font-normal'>Edit Profile</span>
+                                </button>
+                                <Link 
+                                    to={'/settings'}
+                                    className='bg-blue-600 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-blue-700 lg:mb-[7px]'
+                                >
+                                    <span className='text-[18px]'>
+                                        <AntDesignSettingFilledWhite/>
+                                    </span>
+                                </Link>
+                            </div>
+                            {showUpdateProfileModal && (
+                                <ProfileUpdateModal
+                                    onClose={() => setShowUpdateProfileModal(false)}
+                                />
+                            )}
+                        </>
+                    ) : (
                         <div className='flex space-x-2'>
-                            <button 
-                                onClick={() => setShowUpdateProfileModal(true)}
+                            <button
+                                onClick={handleFollowUser}
                                 className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
                             >
                                 <span className='text-[18px]'>
                                     <MdiPen/>
                                 </span>
-                                <span className='text-sm font-normal'>Edit Profile</span>
+                                <span className='text-sm font-medium'>{isFollowing ? 'Unfollow' : 'Follow'}</span>
                             </button>
-                            <Link 
-                                to={'/settings'}
-                                className='bg-blue-600 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-blue-700 lg:mb-[7px]'
-                            >
-                                <span className='text-[18px]'>
-                                    <AntDesignSettingFilledWhite/>
-                                </span>
-                            </Link>
                         </div>
-                        {showUpdateProfileModal && (
-                            <ProfileUpdateModal
-                                onClose={() => setShowUpdateProfileModal(false)}
-                            />
-                        )}
-                    </>
-                ) : (
-                    <div className='flex space-x-2'>
-                        <button
-                            onClick={handleFollowUser}
-                            className='bg-gray-200 flex items-center space-x-1.5 py-2 px-4 rounded cursor-pointer hover:bg-gray-300 lg:mb-[7px]'
-                        >
-                            <span className='text-[18px]'>
-                                <MdiPen/>
-                            </span>
-                            <span className='text-sm font-medium'>{isFollowing ? 'Unfollow' : 'Follow'}</span>
-                        </button>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            </>)}
         </div>
     );
 }

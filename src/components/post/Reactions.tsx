@@ -1,4 +1,4 @@
-import { AntDesignDislikeFilled, NotoOrangeHeart, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
+import { AntDesignDislikeFilled, EmojioneSadButRelievedFace, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
 import { Post } from '../../interface/your-posts';
 import { useSelector } from 'react-redux';
 import { selectCurrentId } from '../../features/auth/authSlice';
@@ -36,13 +36,15 @@ export default function Reactions({ post }: PostsProps) {
                         <div className="rounded-full bg-slate-400 p-1 border-white border-2">
                             {currentReaction === "fire" && (<TwemojiFire />)}
                             {currentReaction === "handsUp" && (<TwemojiRaisingHands />)}
-                            {currentReaction === "disLike" && (<AntDesignDislikeFilled />)}
+                            {/* {currentReaction === "disLike" && (<AntDesignDislikeFilled />)} */}
+                            {currentReaction === "disLike" && (<NotoSadButRelievedFace className='text-[18px]' />)}
                             {currentReaction === "heart" && (<NotoOrangeHeart />)}
                         </div>
                         <div>
                             {currentReaction === "fire" && (<p className="flex text-sm">Fire</p>)}
                             {currentReaction === "handsUp" && (<p className="flex text-sm">Hands up</p>)}
-                            {currentReaction === "disLike" && (<p className="flex text-sm">Unlike</p>)}
+                            {/* {currentReaction === "disLike" && (<p className="flex text-sm">Unlike</p>)} */}
+                            {currentReaction === "disLike" && (<p className="flex text-sm">Sad</p>)}
                             {currentReaction === "heart" && (<p className="flex text-sm">Heart</p>)}  
                         </div>
                     </div>
