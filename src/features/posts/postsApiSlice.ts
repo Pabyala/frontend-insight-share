@@ -7,8 +7,6 @@ interface RequiredPost {
     authorId: string;
 }
 
-const API_VERSION = process.env.REACT_APP_API_VERSION
-
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getUserAllPosts: builder.query<TimelinePosts, string | void>({
