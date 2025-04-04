@@ -1,4 +1,4 @@
-import { AntDesignDislikeFilled, EmojioneSadButRelievedFace, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
+import { AntDesignDislikeFilled, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
 import { Post } from '../../interface/your-posts';
 import { useSelector } from 'react-redux';
 import { selectCurrentId } from '../../features/auth/authSlice';

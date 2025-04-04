@@ -45,7 +45,7 @@ export default function SignUp() {
         }
 
         if (formData.password.length < 8 || confirmPassword.length < 8) {
-            return showToast("Password must be morethan 8 character.", 'warning');
+            return showToast("Password must be more than 8 character.", 'warning');
         }
 
         try {

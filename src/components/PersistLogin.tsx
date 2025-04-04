@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken } from '../features/auth/authSlice';
 import usePersist from '../hooks/usePersist';
 import { useRefreshTokenQuery } from '../features/auth/authApiSlice';
 import { Link, Outlet } from 'react-router-dom';
 import BeatLoadingModal from './loading/BeatLoadingModal';
+import { FluentColorErrorCircle16 } from './others/CustomIcons';
 
 export default function PersistLogin() {
     const [persist] = usePersist();
@@ -35,14 +36,27 @@ export default function PersistLogin() {
             return <Outlet />;
         // if loading is true, refresh token is still in progress
         } else if (isLoading) {
-            return <BeatLoadingModal/>
+            return <div className='bg-white'>
+                <BeatLoadingModal/>
+            </div>
         // if has error during refresh token process
         } else if (isError) {
             return (
-                <div className="errmsg">
-                    <p>Error occurred. Please try again.</p>
-                    <Link to="/login">Please login again</Link>.
+                <div className='flex justify-center h-screen items-center'>
+                    <div className="errmsg flex flex-col items-center bg-red-100 text-red-700 p-4 rounded-md text-sm max-w-sm mx-auto mt-6 shadow-md">
+                        <span className="w-full flex item-center justify-center text-[100px]">
+                            <FluentColorErrorCircle16 />
+                        </span>
+                        <p className="mb-2 font-semibold">Something went wrong. Try again.</p>
+                        <Link 
+                            to="/login" 
+                            className="text-blue-600 underline hover:text-blue-800 transition-colors"
+                        >
+                            Please login again
+                        </Link>
+                    </div>
                 </div>
+
             );
         // if isSuccess is true or isRefreshed is true or token in valid. then user is authenticated. render that Outlet
         } else if (isSuccess || isRefreshed || token) {

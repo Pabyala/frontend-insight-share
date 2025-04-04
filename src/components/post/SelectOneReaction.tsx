@@ -1,4 +1,4 @@
-import { EmojioneSadButRelievedFace, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons'
+import { NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons'
 import { useGetPostByIdQuery, useReactPostMutation } from '../../features/posts/postsApiSlice';
 import { useSelector } from 'react-redux';
 import { selectCurrentId } from '../../features/auth/authSlice';

@@ -17,7 +17,7 @@ export default function ErrorAlert({ message, onClose }: ErrorAlertProps) {
                     <h2 className="text-base text-center font-semibold text-gray-900">
                         {message}
                     </h2>
-                    <div className="flex w-full space-x-3">
+                    <div className="flex w-full justify-center items-center space-x-3">
                         <button 
                             onClick={onClose}
                             className="text-sm w-1/2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"

@@ -11,7 +11,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import { useGetPostByIdQuery, useGetSavedPostQuery } from "../../features/posts/postsApiSlice";
 import socketSetup from "../../socket-io/socket-setup";
-import BeatLoading from "../loading/BeatLoading";
 import ErrorAlertModal from "../alert/ErrorAlertModal";
 
 interface PostProps {
@@ -29,8 +28,8 @@ interface PostProps {
 
 export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModal, setIsSavedPost, setSelectedPost, postId }: PostProps) {
 
-    const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading, refetch: refreshUserInfo } = useGetUserQuery();
-    const { data: post, error: errorPost, isLoading: isLoadingPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
+    const { data: userInfo, error: userInfoError, refetch: refreshUserInfo } = useGetUserQuery();
+    const { data: post, error: errorPost, refetch: refreshPost } = useGetPostByIdQuery(postId!,{
             skip: !postId,
     });
     const userId = userInfo?._id
@@ -40,7 +39,6 @@ export default function SinglePost({ openPostModal, isSavedPost, setOpenPostModa
 
 
     useEffect(() => {
-        console.log('SOCKET IO', socketSetup)
         socketSetup.on('addReactPost', ()=> {
             refreshPost();
         })

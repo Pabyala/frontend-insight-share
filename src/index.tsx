@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.REACT_APP_NODE_ENV === 'production') {
   disableReactDevTools();
 }
 

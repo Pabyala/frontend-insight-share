@@ -2,7 +2,6 @@ import CreatePost from '../post/CreatePost'
 import { useGetPostsForTimelineQuery } from '../../features/posts/postsApiSlice';
 import Posts from '../post/Posts';
 import BeatLoading from '../loading/BeatLoading';
-import ErrorComponent from '../alert/ErrorComponent';
 
 export default function Timeline() {
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useGetUserByIdQuery } from '../features/users/usersApiSlice';
 import { useGetUserAllPostsQuery } from '../features/posts/postsApiSlice';

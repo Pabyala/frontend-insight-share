@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useGetAllUserWhoReactToPostQuery } from '../../features/posts/postsApiSlice';
 import { Avatar } from '@mui/material';
-import { AntDesignDislikeFilled, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
+import { NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
 import BeatLoadingModal from '../loading/BeatLoadingModal';
 import ErrorAlert from '../alert/ErrorAlert';
 

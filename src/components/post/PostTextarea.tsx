@@ -13,7 +13,7 @@ export default function PostTextArea({ onClose }: closePostTextArea) {
 
     const { data: userInfo } = useGetUserQuery();
     const [addPost] = useAddPostMutation();
-    const { data: timelinePosts, error: errorTimelinePosts, isLoading: isLoadingTimelinePosts, refetch: refetchTimelinePosts } = useGetPostsForTimelineQuery();
+    const { refetch: refetchTimelinePosts } = useGetPostsForTimelineQuery();
 
     const [captionPost, setCaptionPost] = useState<string>('')
     const [isBtnDisable, setIsBtnDisable] = useState<boolean>(false)

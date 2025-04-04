@@ -10,7 +10,7 @@ interface RefreshResponse {
 }
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_BASE_URL,
+    baseUrl: `${process.env.REACT_APP_BASE_URL}/v1`,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.token;
@@ -24,11 +24,8 @@ const baseQuery = fetchBaseQuery({
 // wrapper function with re-authentication logic
 const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
-    console.log("API result status:", result?.error);
 
     if (result?.error?.status === "PARSING_ERROR") {
-        console.log(result?.error?.originalStatus)
-        console.log('Access token expired, attempting to refresh...');
         const refreshResult = await baseQuery('/refresh', api, extraOptions);
 
         if (refreshResult?.data) {
