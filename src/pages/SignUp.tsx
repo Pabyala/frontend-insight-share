@@ -40,8 +40,12 @@ export default function SignUp() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if(!formData.username || !formData.firstName || !formData.lastName || !formData.password || !formData.email || !formData.gender || !formData.phoneNumber || !formData.dateOfBirth) {
+            return showToast("All input fields are required.", 'warning');
+        }
+
         if (!isPasswordMatch(formData.password, confirmPassword)) {
-            return showToast("Password does not match", 'warning');
+            return showToast("Password does not match.", 'warning');
         }
 
         if (formData.password.length < 8 || confirmPassword.length < 8) {
@@ -243,7 +247,7 @@ export default function SignUp() {
                                 <button
                                     onClick={handleSubmit}
                                     type="submit"
-                                    className="w-full text-sm p-2 rounded font-semibold bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black  transition-colors"
+                                    className="w-full text-sm p-2 rounded font-semibold bg-blue-500 text-white hover:bg-blue-300 hover:text-white  transition-colors"
                                 >
                                     {isLoadingSignUp ? "Loading.." : "Sign Up"}
                                 </button>

@@ -102,12 +102,12 @@ export default function SignIn() {
                             onClick={handleSubmit}
                             disabled={disableBtn}
                             // Log In
-                            className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn || isLoading ? 'cursor-not-allowed' : ''} bg-gray-200 text-slate-700 hover:bg-gray-300 hover:text-black transition-colors`}>
+                            className={`w-full text-sm font-semibold rounded p-2.5 ${disableBtn || isLoading ? 'cursor-not-allowed' : ''} bg-blue-500 text-white hover:bg-blue-300 hover:text-white transition-colors`}>
                             {isLoading || isLoadingResendVerificationCode ? 'Logging in...' : 'Log In'}
                         </button>
 
                         <div className="text-center mt-4">
-                            <Link to='/reset-password-verify' className="text-blue-600 cursor-pointer text-sm">Forgot Password?</Link>
+                            <Link to='/reset-password-verify' className="text-red-600 cursor-pointer text-sm">Forgot Password?</Link>
                         </div>
                         {/* <label htmlFor="persist">
                             <input 
