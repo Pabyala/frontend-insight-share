@@ -1,4 +1,4 @@
-import { AntDesignDislikeFilled, NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
+import { NotoOrangeHeart, NotoSadButRelievedFace, TwemojiFire, TwemojiRaisingHands } from '../others/CustomIcons';
 import { Post } from '../../interface/your-posts';
 import { useSelector } from 'react-redux';
 import { selectCurrentId } from '../../features/auth/authSlice';
@@ -6,7 +6,8 @@ import { selectCurrentId } from '../../features/auth/authSlice';
 const reactions = [
     { component: <TwemojiFire />, id: 1, style: { zIndex: 5, left: 0 } },
     { component: <TwemojiRaisingHands />, id: 2, style: { zIndex: 4, left: "21px" } },
-    { component: <AntDesignDislikeFilled />, id: 3, style: { zIndex: 3, left: "42px" } },
+    // { component: <AntDesignDislikeFilled />, id: 3, style: { zIndex: 3, left: "42px" } },
+    { component: <NotoSadButRelievedFace />, id: 3, style: { zIndex: 3, left: "42px" } },
     { component: <NotoOrangeHeart />, id: 4, style: { zIndex: 2, left: "63px" } },
 ]
 
@@ -59,7 +60,7 @@ export default function Reactions({ post }: PostsProps) {
                         className="absolute top-0 bg-slate-400 p-1 rounded-full border-white border-2"
                         style={reaction.style}
                         >
-                        <span className="text-sm">{reaction.component}</span>
+                        <span className={`text-sm`}>{reaction.component}</span>
                         </div>
                     ))}
                 </div>

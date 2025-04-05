@@ -337,7 +337,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                 value={newSocialUrl}
                                 onChange={(event) => setNewSocialUrl(event.target.value)}
                                 type="text" 
-                                placeholder='Enter your social'
+                                placeholder='Enter your social link'
                                 className='p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm w-[77%]'
                             />
                             {isUpdateLink ? (
