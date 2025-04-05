@@ -40,6 +40,14 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
     const [newSocialUrl, setNewSocialUrl] = useState<string>('');
     const [editingSocial, setEditingSocial] = useState<string | null>(null);
     const [isUpdateLink, setIsUpdateLink]  = useState<boolean>(false)
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
+
     useEffect(() => {
         if (userInfo) {
             setUserDetailsInfo({
@@ -153,7 +161,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                 }))
                             }}}
                             placeholder="Describe who you are"
-                            className="w-full p-2 border border-gray-300 focus:border-black focus:outline-none rounded text-sm text-center h-[45px] md:h-[50px] resize-none"
+                            className={`w-full p-2 border border-gray-300 focus:border-black focus:outline-none rounded text-sm text-center h-[45px] md:h-[50px] resize-none ${!userDetailsInfo.bio ? '' : 'font-normal'}`}
                         />
                     </div>
 
@@ -167,7 +175,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                 ))}
                                 value={userDetailsInfo.livesIn} 
                                 placeholder='Enter city'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.livesIn ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -182,7 +190,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                 ))}
                                 value={userDetailsInfo.locFrom} 
                                 placeholder='Enter your home town'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.locFrom ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -192,7 +200,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                             <p className='text-sm font-medium mb-1'>
                                 Followed by 
                                 {userDetailsInfo.isFollowedShow && (
-                                        <span className='text-sm text-red-500 font-normal'> (It will shown on your profile)</span>
+                                        <span className='text-sm text-red-500 font-normal'> (It will be shown on your profile.)</span>
                                 )}
                             </p>
                         </div>
@@ -228,7 +236,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                 ))}
                                 value={userDetailsInfo.studyAt}
                                 placeholder='Enter school'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.studyAt ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -244,7 +252,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                     ))}
                                     value={userDetailsInfo.companyName}
                                     placeholder='Enter company'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.companyName ? '' : 'font-normal'}`}
                                 />
                             </div>
                             <div className='w-[49%]'>
@@ -255,7 +263,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                                     ))}
                                     value={userDetailsInfo.position}
                                     placeholder='Enter position'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.position ? '' : 'font-normal'}`}
                                 />
                             </div>
                         </div>
@@ -266,7 +274,7 @@ export default function DetailsModal({ onClose }:DetailsPropsInterface) {
                             <p className='text-sm font-medium mb-1'>
                                 Birthday
                                 {userDetailsInfo.isDateBirthShow && (
-                                        <span className='text-sm text-red-500 font-normal'> (It will shown on your profile)</span>
+                                        <span className='text-sm text-red-500 font-normal'> (It will be shown on your profile.)</span>
                                 )}
                             </p>
                         </div>

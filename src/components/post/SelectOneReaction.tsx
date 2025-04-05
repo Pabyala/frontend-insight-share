@@ -10,9 +10,10 @@ interface SelectOneReactionProps {
     // setClicked: React.Dispatch<React.SetStateAction<boolean>>;
     postId: string;
     // handleReaction: (postId: string, reactionType: string) => void;
+    onReact: () => void;
 }
 
-export default function SelectOneReaction({ postId } : SelectOneReactionProps) {
+export default function SelectOneReaction({ postId, onReact } : SelectOneReactionProps) {
 
     const { refetch: refreshPost } = useGetPostByIdQuery(postId!, {
             skip: !postId,
@@ -25,6 +26,7 @@ export default function SelectOneReaction({ postId } : SelectOneReactionProps) {
             await reactToPost({postId, userId, reactionType})
             refreshPost()
             socketSetup.emit('addReactPost', reactionType);
+            onReact();
         } catch (error) {
             showToast('An error occurred. Please reload the page and try again.', 'error')
         }

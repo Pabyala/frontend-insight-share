@@ -26,6 +26,7 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
     const { data: userInfo, error: userInfoError, isLoading: isUserInfoLoading } = useGetUserQuery();
     const userId = userInfo?._id
     const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+    const [clicked, setClicked] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -152,6 +153,10 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                             <div  className='w-full flex justify-between'>
                                 <div 
                                     className='w-1/3 flex items-center justify-center space-x-1 relative group rounded-full hover:bg-slate-200 cursor-pointer'
+                                    onMouseEnter={() => {
+                                        // reset hover if previously clicked
+                                        if (clicked) setClicked(false);
+                                    }}
                                 >
                                     <div className='space-x-2 block h-[26px]'>
                                         <Reactions
@@ -159,10 +164,11 @@ export default function ModalPost({ onClose, selectedPost, isSavedPost }: PostMo
                                         />
                                     </div>
                                     <div 
-                                        className={`absolute bottom-full  mb-2 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1`}
+                                        className={`absolute bottom-full mb-2 transition-transform duration-300 ease-in-out origin-center flex items-center space-x-1 ${ clicked ? 'opacity-0 scale-0 pointer-events-none' : 'opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100'}`}
                                     >
                                         <SelectOneReaction 
                                             postId={post._id}
+                                            onReact={() => setClicked(true)}
                                         />
                                     </div>
                                 </div>
