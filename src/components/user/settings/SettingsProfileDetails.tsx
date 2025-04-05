@@ -259,7 +259,7 @@ export default function SettingsProfileDetails() {
                                         { ...prev, firstName: e.target.value }
                                     ))}
                                     placeholder='Enter your first name'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userProfileDetails.firstName ? '' : 'font-normal'}`}
                                 />
                             </div>
                             <div className='w-full'>
@@ -270,7 +270,7 @@ export default function SettingsProfileDetails() {
                                         { ...prev, middleName: e.target.value }
                                     ))}
                                     placeholder='Enter your middle name'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userProfileDetails.middleName ? '' : 'font-normal'}`}
                                 />
                             </div>
                             <div className='w-full'>
@@ -281,7 +281,7 @@ export default function SettingsProfileDetails() {
                                         { ...prev, lastName: e.target.value }
                                     ))}
                                     placeholder='Enter your last name'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userProfileDetails.lastName ? '' : 'font-normal'}`}
                                 />
                             </div>
                         </div>
@@ -297,7 +297,7 @@ export default function SettingsProfileDetails() {
                                     { ...prev, username: e.target.value }
                                 ))}
                                 placeholder='Enter your username'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userProfileDetails.lastName ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -306,14 +306,14 @@ export default function SettingsProfileDetails() {
                         <button 
                             onClick={() => setShowConfirmAlert(true)}
                             disabled={isSaveDisabled}
-                            className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
+                            className={`w-full p-1.5 text-sm ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
                         >
                             Save Changes
                         </button>
                         <button 
                             onClick={revertToOriginalDetails}
                             disabled={isSaveDisabled}
-                            className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
+                            className={`w-full p-1.5 text-sm ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
                         >
                             Revert to Original
                         </button>

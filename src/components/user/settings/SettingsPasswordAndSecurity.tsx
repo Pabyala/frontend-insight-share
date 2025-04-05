@@ -23,7 +23,7 @@ export default function SettingsPasswordAndSecurity() {
                             type="email" 
                             value={userInfo?.email}
                             placeholder='Enter your email'
-                            className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userInfo?.email ? '' : 'font-normal'}`}
                             readOnly 
                         />
                     </div>
@@ -37,6 +37,7 @@ export default function SettingsPasswordAndSecurity() {
                             value={'sadsadasdasd'}
                             placeholder='Enter your first name'
                             className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                            readOnly
                         />
                     </div>
                 </div>
@@ -46,7 +47,7 @@ export default function SettingsPasswordAndSecurity() {
                         // onClick={handleSaveDetails}
                         // disabled={isSaveDisabled}
                         // className={`w-full p-2 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
-                        className='w-full p-1.5 bg-gray-200 font-semibold hover:bg-gray-300'
+                        className='w-full p-1.5 text-sm bg-gray-200 font-semibold hover:bg-gray-300'
                         // onClick={() => setShowModalPasswordEmail(!showModalPasswordEmail)}
                         onClick={toggleModal}
                     >

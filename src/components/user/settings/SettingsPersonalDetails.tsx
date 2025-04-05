@@ -171,12 +171,25 @@ export default function SettingsPersonalDetails() {
         }
     }
 
-    const handleSelect = (value: string) => {
-        setUserDetailsInfo((prev) => ({
-            ...prev,
-            gender: value,
-        }));
-        setIsActiveGender(false);
+    const handleSelect = (typeSelect: string, value: string) => {
+        if(!typeSelect || !value) return
+
+        if(typeSelect === 'gender') {
+            setUserDetailsInfo((prev) => ({
+                ...prev,
+                gender: value,
+            }));
+            setIsActiveGender(false);
+            return
+        }
+        if(typeSelect === 'status') {
+            setUserDetailsInfo((prev) => ({
+                ...prev,
+                status: value,
+            }));
+            setIsActiveStatus(false);
+            return
+        }
     };
 
     return (
@@ -197,7 +210,7 @@ export default function SettingsPersonalDetails() {
                                 }))
                             }}}
                             placeholder="Describe who you are"
-                            className="w-full p-2 border border-gray-300 focus:border-black focus:outline-none rounded text-sm text-center h-[45px] md:h-[50px] resize-none"
+                            className={`w-full p-2 border border-gray-300 focus:border-black focus:outline-none rounded text-sm text-center h-[45px] md:h-[50px] resize-none ${!userDetailsInfo.bio ? '' : 'font-normal'}`}
                         />
                     </div>
 
@@ -211,7 +224,7 @@ export default function SettingsPersonalDetails() {
                                     { ...prev, livesIn: e.target.value }
                                 ))}
                                 placeholder='Enter your city'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.livesIn ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -226,7 +239,7 @@ export default function SettingsPersonalDetails() {
                                     { ...prev, locFrom: e.target.value }
                                 ))}
                                 placeholder='Enter your home town'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.locFrom ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -241,7 +254,7 @@ export default function SettingsPersonalDetails() {
                                     { ...prev, studyAt: e.target.value }
                                 ))}
                                 placeholder='Enter your school'
-                                className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.studyAt ? '' : 'font-normal'}`}
                             />
                         </div>
                     </div>
@@ -257,7 +270,7 @@ export default function SettingsPersonalDetails() {
                                         { ...prev, companyName: e.target.value }
                                     ))}
                                     placeholder='Enter company'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.companyName ? '' : 'font-normal'}`}
                                 />
                             </div>
                             <div className='w-full'>
@@ -268,7 +281,7 @@ export default function SettingsPersonalDetails() {
                                         { ...prev, position: e.target.value }
                                     ))}
                                     placeholder='Enter position'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.position ? '' : 'font-normal'}`}
                                 />
                             </div>
                         </div>
@@ -279,7 +292,7 @@ export default function SettingsPersonalDetails() {
                             <p className='text-sm font-medium mb-1'>Birthday</p>
                             <div className='flex flex-col space-y-1'>
                                 <input 
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.dateOfBirth ? '' : 'font-normal'}`}
                                     type="date" 
                                     placeholder='Date'
                                     onChange={(e) => setUserDetailsInfo(prev => (
@@ -296,7 +309,7 @@ export default function SettingsPersonalDetails() {
                             <p className='text-sm font-medium mb-1'>Gender</p>
                             <div className='flex flex-col space-y-1 relative'>
                                 <div 
-                                    className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.gender ? '' : 'font-normal'}`}
                                     onClick={() => handleShowDropdownSelection("gender")}
                                 >
                                         <span>{userDetailsInfo.gender || 'Select Gender'}</span>
@@ -309,7 +322,7 @@ export default function SettingsPersonalDetails() {
                                         {dropdownValues.map((value, index) => (
                                             <div
                                                 key={index}
-                                                onClick={() => handleSelect(value)}
+                                                onClick={() => handleSelect("gender", value)}
                                                 className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
                                             >
                                                 {value}
@@ -336,7 +349,7 @@ export default function SettingsPersonalDetails() {
                                         }))
                                     }}}
                                     placeholder='Enter phone number'
-                                    className='w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.phoneNumber ? '' : 'font-normal'}`}
                                     style={{
                                         appearance: 'none',
                                         MozAppearance: 'textfield',
@@ -350,7 +363,7 @@ export default function SettingsPersonalDetails() {
                             <p className='text-sm font-medium mb-1'>Status</p>
                             <div className='flex flex-col space-y-1 relative'>
                                 <div 
-                                    className='w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm'
+                                    className={`w-full flex justify-between p-1.5 border border-gray-300 font-light focus:border-black focus:outline-none rounded text-sm ${!userDetailsInfo.status ? '' : 'font-normal'}`}
                                     onClick={() => handleShowDropdownSelection("status")}
                                 >
                                         <span>{userDetailsInfo.status || 'Select Status'}</span>
@@ -363,7 +376,7 @@ export default function SettingsPersonalDetails() {
                                         {dropdownValuesStatus.map((value, index) => (
                                             <div
                                                 key={index}
-                                                onClick={() => handleSelect(value)}
+                                                onClick={() => handleSelect("status", value)}
                                                 className="px-2 py-1.5 cursor-pointer hover:bg-gray-200 text-sm"
                                             >
                                                 {value}
@@ -456,14 +469,14 @@ export default function SettingsPersonalDetails() {
                         <button 
                             onClick={() => setShowConfirmAlert(true)}
                             disabled={isSaveDisabled}
-                            className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
+                            className={`w-full p-1.5 text-sm ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500'} text-white rounded`}
                         >
                             Save changes
                         </button>
                         <button 
                             onClick={revertToOriginalDetails}
                             disabled={isSaveDisabled}
-                            className={`w-full p-1.5 ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
+                            className={`w-full p-1.5 text-sm ${isSaveDisabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-500'} text-white rounded`}
                         >
                             Revert to Original
                         </button>
