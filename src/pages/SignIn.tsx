@@ -46,8 +46,8 @@ export default function SignIn() {
                 return
             }
             navigate(from, { replace: true });
-        } catch (error) {
-            showToast("Something went wrong. Please try again.", "error")
+        } catch (err: any) {
+            showToast(err?.data?.message, "error")
         }
         
     }
