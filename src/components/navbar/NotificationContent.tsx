@@ -77,7 +77,10 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
                     Mark all as read
                 </div>
             </div>
-            {getUserNotification?.map((notif) => (
+            {(showAllNotification
+              ? getUserNotification
+              : getUserNotification?.slice(0, 7)
+            )?.map((notif) => (
               <div
                 key={notif._id}
                 className={
@@ -232,7 +235,7 @@ export default function NotificationContent({ getUserNotification, refetch }: pr
           </div>
 
 
-          { getUserNotification && getUserNotification.length >= 6 && !showAllNotification && (
+          { getUserNotification && getUserNotification.length >= 7 && !showAllNotification && (
             <div className="block text-center px-4 py-2">
               <hr className="h-px mt-1 mb-1 bg-gray-200 border-0" />
               <button
