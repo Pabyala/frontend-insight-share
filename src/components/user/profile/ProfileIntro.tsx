@@ -13,15 +13,17 @@ interface ProfileIntroProps {
 
 export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
 
-    const { data: followersData } = useGetFollowersQuery();
+    // const { data: followersData } = useGetFollowersQuery();
     const [showInputDetails, setShowInputDetails] = useState<boolean>(false)
     const formattedDate = BdayFormater(userInfo?.dateOfBirth);
     const { data: authenticatedUserInfo, error: userInfoError } = useGetUserQuery();
     const authenticatedUserId = authenticatedUserInfo?._id
     const currentUserId = userInfo?._id
+    const { data: getFollowers } = useGetFollowersQuery(currentUserId)
 
     // if (isUserInfoLoading) return <BeatLoadingModal/>;
     if (userInfoError) return <div>Error fetching posts</div>;
+    
 
     return (
         <div className='w-full flex flex-col space-y-1.5 lg:space-y-2.5'>
@@ -65,7 +67,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                                 </div>
                             </div>
                         )}
-                        {userInfo?.isFollowedShow && followersData?.totalFollowers !== 0 && (
+                        {userInfo?.isFollowedShow && getFollowers?.totalFollowers !== 0 && (
                             <div className='flex items-center space-x-3 py-2'>
                                 <div className='flex'>
                                     <span className='text-[25px]'>
@@ -74,7 +76,7 @@ export default function ProfileIntro({ userInfo }: ProfileIntroProps    ) {
                                 </div>
                                 <div className='flex'>
                                 <p className='text-sm'>Followed by
-                                    <span className='font-semibold text-sm'> {followersData?.totalFollowers} </span>people
+                                    <span className='font-semibold text-sm'> {getFollowers?.totalFollowers} </span>people
                                 </p>
                                 </div>
                             </div>
